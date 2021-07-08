@@ -1,0 +1,24 @@
+<nav>
+  <button class="header-btn">Day</button>
+  <button class="header-btn">Week</button>
+  <button class="header-btn">Month</button>
+</nav>
+
+<table>
+  <thead>
+    <tr>
+      <td>Tasks</td>
+      <td>Actual start date</td>
+      <td>Actual end date</td>
+      <td>% Complete</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of tasks">
+      <td>{{ task.name }}</td>
+      <td>{{ task.startDate | date:'dd.MM.YY' }}</td>
+      <td>{{ task.endDate | date:'dd.MM.YY' }}</td>
+      <td>{{ task.readyPercent }}</td>
+    </tr>
+  </tbody>
+</table>

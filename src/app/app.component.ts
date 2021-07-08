@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GanttTask } from './shared/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-gantt';
+  public tasks: GanttTask[] = [
+    {
+      name: 'Create gantt component',
+      startDate: new Date(),
+      endDate: new Date(),
+      readyPercent: 3
+    },
+    {
+      name: 'Fix angular-grid bugs',
+      startDate: new Date(),
+      endDate: new Date(),
+      readyPercent: 77
+    },
+    {
+      name: 'Survive at work',
+      startDate: new Date(),
+      endDate: new Date(),
+      readyPercent: 1
+    }
+  ];
 }

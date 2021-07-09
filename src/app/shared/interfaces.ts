@@ -4,3 +4,5 @@ export interface GanttTask {
   endDate: Date;
   readyPercent: number;
 }
+
+export type GanttPeriod = 'day'| 'week' | 'month';

@@ -21,7 +21,16 @@ $header-btn-br: 3px;
     border-bottom-right-radius: $header-btn-br;
   }
   
-  &:hover {
+  &:hover:not(.header-btn-active) {
     background-color: #b1adad;
   }
+
+  &:hover:is(.header-btn-active) {
+    background-color: #ff6b6bcc;
+  }
+}
+
+.header-btn-active {
+  color: #fff;
+  background-color: #ff6b6b;
 }

@@ -1,5 +1,19 @@
 <nav>
-  <button class="header-btn">Day</button>
-  <button class="header-btn">Week</button>
-  <button class="header-btn">Month</button>
+  <button
+    (click)="period = 'day'"
+    class="header-btn"
+    [class.header-btn-active]="period === 'day'"
+  >Day</button>
+
+  <button
+    (click)="period = 'week'"
+    class="header-btn"
+    [class.header-btn-active]="period === 'week'"
+  >Week</button>
+
+  <button
+    (click)="period = 'month'"
+    class="header-btn"
+    [class.header-btn-active]="period === 'month'"
+  >Month</button>
 </nav>

@@ -5,4 +5,9 @@ export interface GanttTask {
   readyPercent: number;
 }
 
-export type GanttPeriod = 'day'| 'week' | 'month';
+export type GanttPeriod = 'Day'| 'Week' | 'Month';
+
+export interface PeriodSettings {
+  name: GanttPeriod;
+  title: string;
+}

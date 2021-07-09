@@ -8,7 +8,8 @@ import { GanttPeriod } from '../../interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttPeriodsComponent {
-  private selectedPeriod: GanttPeriod = 'week';
+  public readonly periods: GanttPeriod[] = ['Day', 'Week', 'Month'];
+  private selectedPeriod: GanttPeriod = 'Week';
   
   public get period(): GanttPeriod {
     return this.selectedPeriod;

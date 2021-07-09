@@ -1,0 +1,20 @@
+<div class="gantt-timeline">
+  <table>
+    <thead>
+      <tr>
+        <td *ngFor="let part of periodParts">
+          <ng-container [ngSwitch]="period">
+            <span *ngSwitchCase="'Day'">day</span>
+            <span *ngSwitchCase="'Week'">week</span>
+            <span *ngSwitchCase="'Month'">month</span>
+          </ng-container>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks">
+        <td *ngFor="let part of periodParts">{{ part }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

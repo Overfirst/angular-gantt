@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { GanttPeriod } from '../../interfaces';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnInit } from '@angular/core';
+import { GanttPeriod } from '../../../interfaces';
 
 @Component({
   selector: 'gantt-periods',
@@ -7,10 +7,10 @@ import { GanttPeriod } from '../../interfaces';
   styleUrls: ['./gantt-periods.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GanttPeriodsComponent {
+export class GanttPeriodsComponent implements OnInit {
   public readonly periods: GanttPeriod[] = ['Day', 'Week', 'Month'];
-  private selectedPeriod: GanttPeriod = 'Week';
-  
+  private selectedPeriod: GanttPeriod;
+
   public get period(): GanttPeriod {
     return this.selectedPeriod;
   }
@@ -21,4 +21,8 @@ export class GanttPeriodsComponent {
   }
 
   @Output() public periodChange = new EventEmitter<GanttPeriod>();
+
+  public ngOnInit(): void {
+    this.period = 'Week';
+  }
 }

@@ -1,4 +1,5 @@
 $header-btn-br: 3px;
+$header-btn-active-color:#ff6b6b;
 
 .header-btn {
   padding: 6px;
@@ -8,29 +9,30 @@ $header-btn-br: 3px;
   cursor: pointer;
   transition: all 0.15s;
   font-size: 14px;
-  
+
   &:first-child {
     border-top-left-radius: $header-btn-br;
     border-bottom-left-radius: $header-btn-br;
     border-right: none;
   }
-  
+
   &:last-child {
     border-left: none;
     border-top-right-radius: $header-btn-br;
     border-bottom-right-radius: $header-btn-br;
   }
-  
+
   &:hover:not(.header-btn-active) {
     background-color: #b1adad;
   }
 
   &:hover:is(.header-btn-active) {
-    background-color: #ff6b6bcc;
+    cursor: default;
   }
 }
 
 .header-btn-active {
   color: #fff;
-  background-color: #ff6b6b;
+  background-color: $header-btn-active-color;
+  border-color: $header-btn-active-color;
 }

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GanttTask } from '../../interfaces';
+import { GanttTask } from '../../../interfaces';
 
 @Component({
   selector: 'gantt-tasks',

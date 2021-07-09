@@ -5,23 +5,38 @@
   font-family: 'Roboto', 'sans-serif';
 }
 
-$even-cell-color: rgb(235, 235, 235);
-$odd-cell-color: rgb(245, 245, 245);
+body {
+  background-color: rgb(87, 84, 84);
+}
+
+$even-cell-color: rgb(245, 245, 245);
+$odd-cell-color: rgb(235, 235, 235);
 $hover-cell-color: rgb(250, 250, 250);
+$border-color: rgb(235, 235, 235);
 
 table {
   border-collapse: collapse;
 
   thead tr {
-    background-color: $odd-cell-color;
+    background-color: $hover-cell-color;
     font-weight: 700;
     text-overflow: ellipsis;
   }
 
   th, tr, td {
     height: 16px;
-    border: 1px solid #000;
+    border: 1px solid $border-color;
     padding: 8px;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  tr:first-child {
+    border-top: 1px solid $border-color;
+  }
+
+  tr:last-child {
+    border-bottom: 1px solid $border-color;
   }
 
   tbody {

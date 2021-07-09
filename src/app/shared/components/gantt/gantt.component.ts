@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GanttTask } from '../interfaces';
+import { GanttPeriod, GanttTask } from '../../interfaces';
 import { GanttService } from './gantt.service';
 
 @Component({
@@ -10,6 +10,11 @@ import { GanttService } from './gantt.service';
 })
 export class GanttComponent {
   constructor(private service: GanttService) {}
-  
+
   @Input() public tasks: GanttTask[] = [];
+  public period: GanttPeriod;
+
+  public periodChange(period: GanttPeriod): void {
+    this.period = period;
+  }
 }

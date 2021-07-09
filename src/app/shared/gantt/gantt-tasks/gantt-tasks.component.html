@@ -1,0 +1,20 @@
+<div class="gantt-tasks">
+  <table>
+    <thead>
+      <tr>
+        <td>Tasks</td>
+        <td>Actual start date</td>
+        <td>Actual end date</td>
+        <td>% Complete</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks">
+        <td>{{ task.name }}</td>
+        <td>{{ task.startDate | date:'dd.MM.YY' }}</td>
+        <td>{{ task.endDate | date:'dd.MM.YY' }}</td>
+        <td>{{ task.readyPercent }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,27 @@
+$header-btn-br: 3px;
+
+.header-btn {
+  padding: 6px;
+  border: 1px solid #a5a5a5;
+  background: #d6d6d6;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 14px;
+  
+  &:first-child {
+    border-top-left-radius: $header-btn-br;
+    border-bottom-left-radius: $header-btn-br;
+    border-right: none;
+  }
+  
+  &:last-child {
+    border-left: none;
+    border-top-right-radius: $header-btn-br;
+    border-bottom-right-radius: $header-btn-br;
+  }
+  
+  &:hover {
+    background-color: #b1adad;
+  }
+}

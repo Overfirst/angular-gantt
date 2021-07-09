@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { GanttTask } from '../interfaces';
 import { GanttService } from './gantt.service';
 
@@ -8,12 +8,8 @@ import { GanttService } from './gantt.service';
   styleUrls: ['./gantt.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GanttComponent implements OnInit {
+export class GanttComponent {
   constructor(private service: GanttService) {}
-
+  
   @Input() public tasks: GanttTask[] = [];
-
-  public ngOnInit(): void {
-  }
-
 }

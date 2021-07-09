@@ -10,18 +10,30 @@ import { GanttService } from '../gantt.service';
 })
 export class GanttTimelineComponent {
   public periodParts: any[] = [];
-  private selectedPeriod: GanttPeriod;
+  private selectedPeriod: GanttPeriod = 'Week';
+  private tasksList: GanttTask[] = [];
 
-  constructor(private service: GanttService) {}
+  constructor(public service: GanttService) {}
 
-  @Input() public tasks: GanttTask[] = [];
+  @Input() public set tasks(tasks: GanttTask[]) {
+    this.tasksList = tasks;
+    this.recalculatePeriodParts();
+  }
 
   @Input() public set period(period: GanttPeriod) {
     this.selectedPeriod = period;
-    this.periodParts = this.service.calculatePeriodParts(this.selectedPeriod);
+    this.recalculatePeriodParts();
+  }
+
+  public get tasks() {
+    return this.tasksList;
   }
 
   public get period() {
     return this.selectedPeriod;
+  }
+
+  private recalculatePeriodParts(): void {
+    this.periodParts = this.service.calculatePeriodParts(this.selectedPeriod, this.tasks);
   }
 }

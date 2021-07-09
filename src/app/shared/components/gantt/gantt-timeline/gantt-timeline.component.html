@@ -2,18 +2,18 @@
   <table>
     <thead>
       <tr>
-        <td *ngFor="let part of periodParts">
+        <td nowrap *ngFor="let part of periodParts">
           <ng-container [ngSwitch]="period">
-            <span *ngSwitchCase="'Day'">day</span>
-            <span *ngSwitchCase="'Week'">week</span>
-            <span *ngSwitchCase="'Month'">month</span>
+            <span *ngSwitchCase="'Day'">{{ part | date:"MMMM, dd" }}</span>
+            <span *ngSwitchCase="'Week'">{{ part | date:"MMMM dd" }} - {{ service.weekEnd(part) | date:"MMMM dd" }}</span>
+            <span *ngSwitchCase="'Month'">{{ part | date:"MMMM YYYY" }}</span>
           </ng-container>
         </td>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let task of tasks">
-        <td *ngFor="let part of periodParts">{{ part }}</td>
+        <td *ngFor="let part of periodParts">...</td>
       </tr>
     </tbody>
   </table>

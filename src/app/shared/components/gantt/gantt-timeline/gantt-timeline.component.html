@@ -8,13 +8,12 @@
           nowrap
         >
           <ng-container [ngSwitch]="period">
-            <span *ngSwitchCase="'Day'">{{ part.main | date:"MMMM, dd" }}</span>
+            <span *ngSwitchCase="'Day'">{{ part.main | date:"MMMM, cccc, dd" }}</span>
             <span *ngSwitchCase="'Week'">{{ part.main | date:"MMMM dd" }} – {{ service.weekEnd(part.main) | date:"MMMM dd" }}</span>
             <span *ngSwitchCase="'Month'">{{ part.main | date:"MMMM YYYY" }}</span>
           </ng-container>
         </td>
       </tr>
-
       <tr>
         <ng-container *ngFor="let part of periodParts">
           <td
@@ -31,15 +30,36 @@
         </ng-container>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let task of tasks">
-        <td
-          [attr.colspan]="service.colspanForHeader(period) * periodParts.length"
-          nowrap
-        >
-          <gantt-task-progress [progress]="task.readyPercent"></gantt-task-progress>
-        </td>
-      </tr>
-    </tbody>
   </table>
+
+  <div class="main-tables">
+    <div class="main-table">
+      <table>
+        <tbody>
+          <tr *ngFor="let task of tasks">
+            <ng-container *ngFor="let part of periodParts">
+              <td
+                *ngFor="let detail of part.detail"
+                nowrap
+              >&nbsp;</td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="main-table">
+      <table>
+        <tbody>
+          <tr *ngFor="let task of tasks">
+            <td>
+              <gantt-task-progress
+                [data]="{ task: task, period: period, periodParts: periodParts }"
+              ></gantt-task-progress>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

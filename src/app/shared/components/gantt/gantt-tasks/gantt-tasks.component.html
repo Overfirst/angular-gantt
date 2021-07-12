@@ -11,8 +11,8 @@
     <tbody>
       <tr *ngFor="let task of tasks">
         <td>{{ task.name }}</td>
-        <td>{{ task.startDate | date:'dd.MM.YY' }}</td>
-        <td>{{ task.endDate | date:'dd.MM.YY' }}</td>
+        <td>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+        <td>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
         <td>{{ task.readyPercent }}</td>
       </tr>
     </tbody>

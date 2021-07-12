@@ -107,7 +107,7 @@ export class GanttService {
 
       for (let j = 0; j <= 23; j++) {
         const detailDate = new Date(mainDate);
-        detailDate.setHours(detailDate.getHours() + j);
+        detailDate.setHours(j);
         detailDates.push(detailDate);
       }
 
@@ -144,5 +144,34 @@ export class GanttService {
 
   private partsForMonth(different: number, date: Date, periodParts: PeriodPart[]): void {
 
+  }
+
+  public computeTaskProgressOffset(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
+    let result: number;
+
+    switch (period) {
+      case 'Day':
+        result = this.getDifferentHours(task.startDate, parts[0].detail[0]);
+        break;
+      case 'Week':
+        result = this.getDifferentDays(task.startDate, parts[0].detail[0]);;
+        break
+      default:
+        result = 0;
+    }
+
+    return result * 100;
+  }
+
+  public computeTaskProgressWidth(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
+    return 200;
+  }
+
+  private getDifferentHours(first: Date, second: Date): number {
+    return Math.abs(first.getHours() - second.getHours());
+  }
+
+  private getDifferentDays(first: Date, second: Date): number {
+    return Math.abs(first.getDate() - second.getDate());
   }
 }

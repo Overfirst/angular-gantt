@@ -1,6 +1,5 @@
 .gantt-timeline {
   margin-top: 20px;
-  overflow: auto;
   height: 250px;
   background-color: #fff;
   width: max-content;
@@ -10,4 +9,34 @@ tbody tr td {
   position: relative;
   padding-left: 0;
   padding-right: 0;
+}
+
+.main-tables {
+  height: inherit;
+  position: relative;
+  user-select: none;
+
+  .main-table {
+    width: 100%;
+    height: inherit;
+    position: absolute;
+
+    table {
+      width: inherit;
+    }
+
+    &:first-child {
+      tr:first-child, td:first-child {
+        border-top: none;
+      }
+    }
+
+    &:last-child {
+      tr, td {
+        border: none;
+        background: none;
+        width: max-content;
+      }
+    }
+  }
 }

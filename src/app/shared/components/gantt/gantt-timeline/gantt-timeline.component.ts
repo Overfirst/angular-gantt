@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GanttPeriod, GanttTask } from '../../../interfaces';
+import { GanttPeriod, GanttTask, PeriodPart } from '../../../interfaces';
 import { GanttService } from '../gantt.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { GanttService } from '../gantt.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttTimelineComponent {
-  public periodParts: any[] = [];
+  public periodParts: PeriodPart[];
   private selectedPeriod: GanttPeriod = 'Week';
   private tasksList: GanttTask[] = [];
 

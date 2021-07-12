@@ -2,18 +2,41 @@
   <table>
     <thead>
       <tr>
-        <td nowrap *ngFor="let part of periodParts">
+        <td
+          *ngFor="let part of periodParts"
+          [attr.colspan]="service.colspanForHeader(period)"
+          nowrap
+        >
           <ng-container [ngSwitch]="period">
-            <span *ngSwitchCase="'Day'">{{ part | date:"MMMM, dd" }}</span>
-            <span *ngSwitchCase="'Week'">{{ part | date:"MMMM dd" }} - {{ service.weekEnd(part) | date:"MMMM dd" }}</span>
-            <span *ngSwitchCase="'Month'">{{ part | date:"MMMM YYYY" }}</span>
+            <span *ngSwitchCase="'Day'">{{ part.main | date:"MMMM, dd" }}</span>
+            <span *ngSwitchCase="'Week'">{{ part.main | date:"MMMM dd" }} – {{ service.weekEnd(part.main) | date:"MMMM dd" }}</span>
+            <span *ngSwitchCase="'Month'">{{ part.main | date:"MMMM YYYY" }}</span>
           </ng-container>
         </td>
+      </tr>
+
+      <tr>
+        <ng-container *ngFor="let part of periodParts">
+          <td
+            *ngFor="let detail of part.detail"
+            [attr.colspan]="service.colspanForDetail(period)"
+            nowrap
+          >
+            <ng-container [ngSwitch]="period">
+              <span *ngSwitchCase="'Day'">{{ detail | date:"HH:mm" }}</span>
+              <span *ngSwitchCase="'Week'">{{ detail | date:"ccc, dd" }}</span>
+              <span *ngSwitchCase="'Month'">{{ detail | date:"dd.MM" }} – {{ service.weekEnd(detail) | date:"dd.MM" }}</span>
+            </ng-container>
+          </td>
+        </ng-container>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let task of tasks">
-        <td *ngFor="let part of periodParts">...</td>
+        <td
+          *ngFor="let part of periodParts"
+          [attr.colspan]="service.colspanForHeader(period)"
+        >&nbsp;</td>
       </tr>
     </tbody>
   </table>

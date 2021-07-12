@@ -11,3 +11,8 @@ export interface PeriodSettings {
   name: GanttPeriod;
   title: string;
 }
+
+export interface PeriodPart {
+  main: Date,
+  detail: Date[]
+}

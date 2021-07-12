@@ -10,9 +10,9 @@ export class AppComponent {
   public tasks: GanttTask[] = [
     {
       name: 'Create gantt component',
-      startDate: new Date(2021, 6, 8),
-      endDate: new Date(2021, 9, 25),
-      readyPercent: 3
+      startDate: new Date(2021, 6, 21),
+      endDate: new Date(2021, 6, 22),
+      readyPercent: 15
     },
     {
       name: 'Fix angular-grid bugs',
@@ -22,8 +22,8 @@ export class AppComponent {
     },
     {
       name: 'Survive at work',
-      startDate: new Date(2021, 5, 21),
-      endDate: new Date(2021, 8, 21),
+      startDate: new Date(2021, 5, 23),
+      endDate: new Date(2021, 9, 25),
       readyPercent: 1
     }
   ];

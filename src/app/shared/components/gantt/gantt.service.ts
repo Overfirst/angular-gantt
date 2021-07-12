@@ -1,41 +1,67 @@
 import { Injectable } from '@angular/core';
-import { GanttPeriod, GanttTask } from '../../interfaces';
+import { GanttPeriod, GanttTask, PeriodPart } from '../../interfaces';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class GanttService {
-  public calculatePeriodParts(period: GanttPeriod, tasks: GanttTask[]): Date[] {
+  private weekStart(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setDate(date.getDate() - date.getDay() + (date.getDay() == 0 ? -6 : 1))
+    return newDate;
+  }
+
+  public weekEnd(date: Date): Date {
+    const endDate = new Date(date);
+    endDate.setDate(date.getDate() + 6 - (date.getDay() === 0 ? 6 : date.getDay() - 1));
+    return endDate;
+  }
+
+  public daysInMonth(date: Date): number {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  }
+
+  public calculatePeriodParts(period: GanttPeriod, tasks: GanttTask[]): PeriodPart[] {
     const { minDate, maxDate } = this.getDateLimits(tasks);
 
-    const periodParts: Date[] = [];
-    const different = this.datesDifferent(minDate, maxDate, period);
+    const periodParts: PeriodPart[] = [];
+    let different;
 
     switch (period) {
       case 'Day':
+        different = this.datesDifferent(minDate, maxDate, period);
+        this.partsForDay(different, minDate, periodParts);
+        break;
       case 'Week':
-        for (let i = 0; i <= different; i++) {
-          const date = new Date(minDate);
-          const mul = (period === 'Day') ? 1 : 7;
-
-          date.setDate(date.getDate() + mul * i)
-          periodParts.push(date);
-        }
+        different = this.datesDifferent(this.weekStart(minDate), this.weekEnd(maxDate), period);
+        this.partsForWeek(different, minDate, periodParts);
         break;
       case 'Month':
-        for (let i = 0; i <= different; i++) {
-          const date = new Date(minDate);
-          date.setMonth(date.getMonth() + i)
-          periodParts.push(date);
-        }
+        different = this.datesDifferent(minDate, maxDate, period);
+        this.partsForMonth(different, minDate, periodParts);
         break;
     }
 
     return periodParts;
   }
 
-  public weekEnd(date: Date): Date {
-    const endDate = new Date(date);
-    endDate.setDate(date.getDate() + 6);
-    return endDate;
+  public colspanForHeader(period: GanttPeriod): number {
+    switch (period) {
+      case 'Day':
+        return 24;
+      case 'Week':
+        return 7;
+      case 'Month':
+        return 30;
+    }
+  }
+
+  public colspanForDetail(period: GanttPeriod): number {
+    switch (period) {
+      case 'Day':
+      case 'Week':
+        return 1;
+      case 'Month':
+        return 7;
+    }
   }
 
   private getDateLimits(tasks: GanttTask[]): { minDate: Date, maxDate: Date } {
@@ -44,7 +70,7 @@ export class GanttService {
       ...tasks.map(task => Number(task.endDate))
     ];
 
-    return { 
+    return {
       minDate: new Date(Math.min(...dates)),
       maxDate: new Date(Math.max(...dates))
     };
@@ -62,19 +88,61 @@ export class GanttService {
         result = diff / (7 * 24 * 3600 * 1000);
         break;
       case 'Month':
-        const firstYear = first.getFullYear();
-        const firstMonth = first.getMonth();
-
-        const secondYear = second.getFullYear();
-        const secondMonth = second.getMonth();
-
-        result = (secondMonth + 12 * secondYear) - (firstMonth + 12 * firstYear);
+        result = (second.getMonth() + 12 * second.getFullYear()) - (first.getMonth() + 12 * first.getFullYear());
         break;
     }
 
     const different = parseInt(result.toString());
-    console.log(`date different (${period}):`, different);
-    
+    console.log(`dates different (${period}):`, different);
+
     return different;
+  }
+
+  private partsForDay(different: number, date: Date, periodParts: PeriodPart[]): void {
+    for (let i = 0; i <= different; i++) {
+      const mainDate = new Date(date);
+      mainDate.setDate(mainDate.getDate() + i);
+
+      const detailDates: Date[] = [];
+
+      for (let j = 0; j <= 23; j++) {
+        const detailDate = new Date(mainDate);
+        detailDate.setHours(detailDate.getHours() + j);
+        detailDates.push(detailDate);
+      }
+
+      const periodPart: PeriodPart = {
+        main: mainDate,
+        detail: detailDates
+      };
+
+      periodParts.push(periodPart);
+    }
+  }
+
+  private partsForWeek(different: number, date: Date, periodParts: PeriodPart[]): void {
+    for (let i = 0; i <= different; i++) {
+      const mainDate = this.weekStart(date);
+      mainDate.setDate(mainDate.getDate() + 7 * i);
+
+      const detailDates: Date[] = [];
+
+      for (let j = 0; j <= 6; j++) {
+        const detailDate = new Date(mainDate);
+        detailDate.setDate(detailDate.getDate() + j);
+        detailDates.push(detailDate);
+      }
+
+      const periodPart: PeriodPart = {
+        main: mainDate,
+        detail: detailDates
+      };
+
+      periodParts.push(periodPart);
+    }
+  }
+
+  private partsForMonth(different: number, date: Date, periodParts: PeriodPart[]): void {
+
   }
 }

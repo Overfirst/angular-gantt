@@ -1,0 +1,18 @@
+.task-container {
+  width: 200px;
+  height: 12px;
+  background-color: #ffaea8;
+  position: relative;
+  top: 0;
+  left: 0;
+
+  .task-progress {
+    width: 50%;
+    height: inherit;
+    background-color: #ff6358;
+  }
+
+  &, .task-progress {
+    border-radius: 2px;
+  }
+}

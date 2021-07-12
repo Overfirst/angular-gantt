@@ -3,6 +3,7 @@ export interface GanttTask {
   startDate: Date;
   endDate: Date;
   readyPercent: number;
+  color?: string;
 }
 
 export type GanttPeriod = 'Day'| 'Week' | 'Month';

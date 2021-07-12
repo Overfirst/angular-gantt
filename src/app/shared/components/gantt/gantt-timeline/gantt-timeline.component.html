@@ -34,9 +34,11 @@
     <tbody>
       <tr *ngFor="let task of tasks">
         <td
-          *ngFor="let part of periodParts"
-          [attr.colspan]="service.colspanForHeader(period)"
-        >&nbsp;</td>
+          [attr.colspan]="service.colspanForHeader(period) * periodParts.length"
+          nowrap
+        >
+          <gantt-task-progress [progress]="task.readyPercent"></gantt-task-progress>
+        </td>
       </tr>
     </tbody>
   </table>

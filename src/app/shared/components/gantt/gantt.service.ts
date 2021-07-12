@@ -164,11 +164,12 @@ export class GanttService {
   }
 
   public computeTaskProgressWidth(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
-    return 200;
+    return 400;
   }
 
   private getDifferentHours(first: Date, second: Date): number {
-    return Math.abs(first.getHours() - second.getHours());
+    const diff = Math.abs(first.getTime() - second.getTime());
+    return diff / (3600 * 1000);
   }
 
   private getDifferentDays(first: Date, second: Date): number {

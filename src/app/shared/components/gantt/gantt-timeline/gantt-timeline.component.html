@@ -1,36 +1,38 @@
 <div class="gantt-timeline">
-  <table>
-    <thead>
-      <tr>
-        <td
-          *ngFor="let part of periodParts"
-          [attr.colspan]="service.colspanForHeader(period)"
-          nowrap
-        >
-          <ng-container [ngSwitch]="period">
-            <span *ngSwitchCase="'Day'">{{ part.main | date:"MMMM, cccc, dd" }}</span>
-            <span *ngSwitchCase="'Week'">{{ part.main | date:"MMMM dd" }} – {{ service.weekEnd(part.main) | date:"MMMM dd" }}</span>
-            <span *ngSwitchCase="'Month'">{{ part.main | date:"MMMM YYYY" }}</span>
-          </ng-container>
-        </td>
-      </tr>
-      <tr>
-        <ng-container *ngFor="let part of periodParts">
+  <div class="timeline-header">
+    <table>
+      <thead>
+        <tr>
           <td
-            *ngFor="let detail of part.detail"
-            [attr.colspan]="service.colspanForDetail(period)"
+            *ngFor="let part of periodParts"
+            [attr.colspan]="service.colspanForHeader(period)"
             nowrap
           >
             <ng-container [ngSwitch]="period">
-              <span *ngSwitchCase="'Day'">{{ detail | date:"HH:mm" }}</span>
-              <span *ngSwitchCase="'Week'">{{ detail | date:"ccc, dd.MM" }}</span>
-              <span *ngSwitchCase="'Month'">{{ detail | date:"dd.MM" }} – {{ service.weekEnd(detail) | date:"dd.MM" }}</span>
+              <span *ngSwitchCase="'Day'">{{ part.main | date:"MMMM, cccc, dd" }}</span>
+              <span *ngSwitchCase="'Week'">{{ part.main | date:"MMMM dd" }} – {{ service.weekEnd(part.main) | date:"MMMM dd" }}</span>
+              <span *ngSwitchCase="'Month'">{{ part.main | date:"MMMM YYYY" }}</span>
             </ng-container>
           </td>
-        </ng-container>
-      </tr>
-    </thead>
-  </table>
+        </tr>
+        <tr>
+          <ng-container *ngFor="let part of periodParts">
+            <td
+              *ngFor="let detail of part.detail"
+              [attr.colspan]="service.colspanForDetail(period)"
+              nowrap
+            >
+              <ng-container [ngSwitch]="period">
+                <span *ngSwitchCase="'Day'">{{ detail | date:"HH:mm" }}</span>
+                <span *ngSwitchCase="'Week'">{{ detail | date:"ccc, dd.MM" }}</span>
+                <span *ngSwitchCase="'Month'">{{ detail | date:"dd.MM" }} – {{ service.weekEnd(detail) | date:"dd.MM" }}</span>
+              </ng-container>
+            </td>
+          </ng-container>
+        </tr>
+      </thead>
+    </table>
+  </div>
 
   <div class="main-tables">
     <div class="main-table">

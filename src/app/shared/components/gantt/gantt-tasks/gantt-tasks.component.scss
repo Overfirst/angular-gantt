@@ -1,4 +1,11 @@
 .gantt-tasks {
   background-color: #fff;
   width: max-content;
+  display: flex;
+}
+
+.tasks-content table {
+  tr, td, th {
+    border-top: none;
+  }
 }

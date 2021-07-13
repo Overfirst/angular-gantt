@@ -1,12 +1,3 @@
 .gantt-content {
-  overflow: auto;
-}
-
-gantt-tasks {
-  width: 100%;
-  overflow: auto;
-}
-
-gantt-timeline {
-  overflow: auto;
+  display: flex;
 }

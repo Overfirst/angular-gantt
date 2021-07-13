@@ -1,12 +1,18 @@
 .gantt-timeline {
-  margin-top: 20px;
   background-color: #fff;
   width: max-content;
 }
 
 tbody tr td {
+  border-left: none;
   padding-left: 0;
   padding-right: 0;
+}
+
+table:first-child {
+  tr, td, th {
+    border-left: none;
+  }
 }
 
 .main-tables {

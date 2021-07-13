@@ -4,6 +4,8 @@
   top: 0;
   left: 0;
   background-color: #cbcbcb;
+  transition: all 0.15s;
+  opacity: 0.9;
 
   .task-progress {
     width: 50%;
@@ -12,5 +14,10 @@
 
   &, .task-progress {
     border-radius: 2px;
+  }
+
+  &:hover {
+    transform: scale(1.025);
+    opacity: 1;
   }
 }

@@ -23,6 +23,6 @@ export class GanttPeriodsComponent implements OnInit {
   @Output() public periodChange = new EventEmitter<GanttPeriod>();
 
   public ngOnInit(): void {
-    this.period = 'Day';
+    this.period = 'Week';
   }
 }

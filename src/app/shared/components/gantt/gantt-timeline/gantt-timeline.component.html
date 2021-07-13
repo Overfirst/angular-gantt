@@ -23,7 +23,7 @@
           >
             <ng-container [ngSwitch]="period">
               <span *ngSwitchCase="'Day'">{{ detail | date:"HH:mm" }}</span>
-              <span *ngSwitchCase="'Week'">{{ detail | date:"ccc, dd" }}</span>
+              <span *ngSwitchCase="'Week'">{{ detail | date:"ccc, dd.MM" }}</span>
               <span *ngSwitchCase="'Month'">{{ detail | date:"dd.MM" }} – {{ service.weekEnd(detail) | date:"dd.MM" }}</span>
             </ng-container>
           </td>

@@ -1,12 +1,10 @@
 .gantt-timeline {
   margin-top: 20px;
-  height: 250px;
   background-color: #fff;
   width: max-content;
 }
 
 tbody tr td {
-  position: relative;
   padding-left: 0;
   padding-right: 0;
 }
@@ -18,13 +16,14 @@ tbody tr td {
   .main-table {
     width: 100%;
     height: inherit;
-    position: absolute;
 
     table {
       width: inherit;
     }
 
     &:first-child {
+      position: absolute;
+
       tr:first-child, td:first-child {
         border-top: none;
       }

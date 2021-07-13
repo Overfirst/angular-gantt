@@ -15,8 +15,41 @@ export class GanttService {
     return endDate;
   }
 
+  public addWeekForMonth(date: Date): Date {
+    const newDate = new Date(date);
+    const totalDays = this.daysInMonth(date);
+    const addition = newDate.getDate() + 6;
+
+    if (addition < totalDays) {
+      newDate.setDate(addition);
+    } else {
+      newDate.setDate(totalDays);
+    }
+
+    return newDate;
+  }
+
   public daysInMonth(date: Date): number {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  }
+
+  public addDays(date: Date, days: number): Date {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + days);
+    return newDate;
+  }
+
+  public getMonthWeekCapacity(date: Date): number {
+    const newDate = new Date(date);
+    
+    const totalDays = this.daysInMonth(newDate);
+    const addition = newDate.getDate();
+
+    if (addition + 6 >= totalDays) {
+      return totalDays - addition + 1;
+    }
+    
+    return 7;
   }
 
   public calculatePeriodParts(period: GanttPeriod, tasks: GanttTask[]): PeriodPart[] {
@@ -43,24 +76,24 @@ export class GanttService {
     return periodParts;
   }
 
-  public colspanForHeader(period: GanttPeriod): number {
+  public colspanForHeader(period: GanttPeriod, date: Date): number {
     switch (period) {
       case 'Day':
         return 24;
       case 'Week':
         return 7;
       case 'Month':
-        return 30;
+        return this.daysInMonth(date);
     }
   }
 
-  public colspanForDetail(period: GanttPeriod): number {
+  public colspanForDetail(period: GanttPeriod, date: Date): number {
     switch (period) {
       case 'Day':
       case 'Week':
         return 1;
       case 'Month':
-        return 7;
+        return this.getMonthWeekCapacity(date);
     }
   }
 
@@ -113,7 +146,7 @@ export class GanttService {
         detail: detailDates
       };
 
-      periodParts.push(periodPart);      
+      periodParts.push(periodPart);
     }
   }
 
@@ -140,7 +173,28 @@ export class GanttService {
   }
 
   private partsForMonth(different: number, date: Date, periodParts: PeriodPart[]): void {
+    const startDate = this.minimizeDate(date);
+    startDate.setDate(1);
 
+    for (let i = 0; i <= different; i++) {
+      const mainDate = new Date(startDate);
+      mainDate.setMonth(mainDate.getMonth() + i);
+
+      const detailDates: Date[] = [];
+
+      for (let j = 0; j < 5; j++) {
+        const detailDate = new Date(mainDate);
+        detailDate.setDate(detailDate.getDate() + 7 * j);
+        detailDates.push(detailDate);
+      }
+
+      const periodPart: PeriodPart = {
+        main: mainDate,
+        detail: detailDates
+      };
+
+      periodParts.push(periodPart);
+    }
   }
 
   public computeTaskProgressOffset(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
@@ -151,12 +205,14 @@ export class GanttService {
         result = this.getDifferentHours(task.startDate, parts[0].detail[0]);
         break;
       case 'Week':
-        result = this.getDifferentDays(task.startDate, parts[0].detail[0]);;
+        result = this.getDifferentDays(task.startDate, parts[0].detail[0]);
         break
-      default:
-        result = 0;
+      case 'Month':
+        result = this.getDifferentWeeks(task.startDate, parts[0].detail[0]);
+        break;
     }
 
+    console.log('computeTaskProgressOffset:', result);
     return result * 100;
   }
 
@@ -170,10 +226,12 @@ export class GanttService {
       case 'Week':
         result = this.getDifferentDays(task.startDate, task.endDate);
         break
-      default:
-        result = 0;
+      case 'Month':
+        result = 0 ; //this.getDifferentWeeks(task.startDate, task.endDate);
+        break;
     }
 
+    console.log('computeTaskProgressWidth:', result);
     return result * 100;
   }
 
@@ -182,6 +240,10 @@ export class GanttService {
   }
 
   private getDifferentDays(first: Date, second: Date): number {
+    return Math.abs(first.getTime() - second.getTime()) / (24 * 3600 * 1000);
+  }
+
+  private getDifferentWeeks(first: Date, second: Date): number {
     return Math.abs(first.getTime() - second.getTime()) / (24 * 3600 * 1000);
   }
 

@@ -5,7 +5,7 @@
         <tr>
           <td
             *ngFor="let part of periodParts"
-            [attr.colspan]="service.colspanForHeader(period)"
+            [attr.colspan]="service.colspanForHeader(period, part.main)"
             nowrap
           >
             <ng-container [ngSwitch]="period">
@@ -19,13 +19,13 @@
           <ng-container *ngFor="let part of periodParts">
             <td
               *ngFor="let detail of part.detail"
-              [attr.colspan]="service.colspanForDetail(period)"
+              [attr.colspan]="service.colspanForDetail(period, detail)"
               nowrap
             >
               <ng-container [ngSwitch]="period">
                 <span *ngSwitchCase="'Day'">{{ detail | date:"HH:mm" }}</span>
                 <span *ngSwitchCase="'Week'">{{ detail | date:"ccc, dd.MM" }}</span>
-                <span *ngSwitchCase="'Month'">{{ detail | date:"dd.MM" }} – {{ service.weekEnd(detail) | date:"dd.MM" }}</span>
+                <span *ngSwitchCase="'Month'">{{ detail | date:"dd.MM" }} – {{ service.addWeekForMonth(detail) | date:"dd.MM" }}</span>
               </ng-container>
             </td>
           </ng-container>

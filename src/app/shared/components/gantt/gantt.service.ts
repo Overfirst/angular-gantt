@@ -92,15 +92,12 @@ export class GanttService {
         break;
     }
 
-    const different = parseInt(result.toString());
-    console.log(`dates different (${period}):`, different);
-
-    return different;
+    return parseInt(result.toString());
   }
 
   private partsForDay(different: number, date: Date, periodParts: PeriodPart[]): void {
     for (let i = 0; i <= different; i++) {
-      const mainDate = new Date(date);
+      const mainDate = this.minimizeDate(date);
       mainDate.setDate(mainDate.getDate() + i);
 
       const detailDates: Date[] = [];
@@ -116,13 +113,13 @@ export class GanttService {
         detail: detailDates
       };
 
-      periodParts.push(periodPart);
+      periodParts.push(periodPart);      
     }
   }
 
   private partsForWeek(different: number, date: Date, periodParts: PeriodPart[]): void {
     for (let i = 0; i <= different; i++) {
-      const mainDate = this.weekStart(date);
+      const mainDate = this.weekStart(this.minimizeDate(date));
       mainDate.setDate(mainDate.getDate() + 7 * i);
 
       const detailDates: Date[] = [];
@@ -168,11 +165,21 @@ export class GanttService {
   }
 
   private getDifferentHours(first: Date, second: Date): number {
-    const diff = Math.abs(first.getTime() - second.getTime());
-    return diff / (3600 * 1000);
+    return Math.abs(first.getTime() - second.getTime()) / (3600 * 1000);
   }
 
   private getDifferentDays(first: Date, second: Date): number {
-    return Math.abs(first.getDate() - second.getDate());
+    return Math.abs(first.getTime() - second.getTime()) / (24 * 3600 * 1000);
+  }
+
+  private minimizeDate(date: Date): Date {
+    const newDate = new Date(date);
+
+    newDate.setHours(0);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+
+    return newDate;
   }
 }

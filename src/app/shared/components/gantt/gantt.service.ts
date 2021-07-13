@@ -161,7 +161,20 @@ export class GanttService {
   }
 
   public computeTaskProgressWidth(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
-    return 400;
+    let result: number;
+
+    switch (period) {
+      case 'Day':
+        result = this.getDifferentHours(task.startDate, task.endDate);
+        break;
+      case 'Week':
+        result = this.getDifferentDays(task.startDate, task.endDate);
+        break
+      default:
+        result = 0;
+    }
+
+    return result * 100;
   }
 
   private getDifferentHours(first: Date, second: Date): number {

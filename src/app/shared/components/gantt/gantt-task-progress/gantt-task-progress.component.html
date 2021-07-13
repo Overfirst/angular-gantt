@@ -1,3 +1,11 @@
-<div class="task-container" [style.width]="width + 'px'" [style.left]="offset + 'px'">
-  <div class="task-progress" [style.width]="progress + '%'"></div>
+<div
+  class="task-container"
+  [style.width]="width + 'px'"
+  [style.left]="offset + 'px'"
+>
+  <div
+    class="task-progress"
+    [style.background-color]="color"
+    [style.width]="progress + '%'"
+  ></div>
 </div>

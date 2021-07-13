@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GanttPeriod, GanttTask, TaskProgressInput } from 'src/app/shared/interfaces';
+import { TaskProgressInput } from 'src/app/shared/interfaces';
 import { GanttService } from '../gantt.service';
 
 @Component({
@@ -9,9 +9,17 @@ import { GanttService } from '../gantt.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttTaskProgressComponent {
-  constructor(private service: GanttService) {}
+  static defaultColor: string = '#ff6358';
 
   private _data: TaskProgressInput;
+
+  public progress = 0;
+  public offset = 0;
+  public width = 0;
+
+  public get data() {
+    return this._data;
+  }
 
   @Input() public set data(data: TaskProgressInput) {
     this._data = data;
@@ -21,11 +29,9 @@ export class GanttTaskProgressComponent {
     this.width = this.service.computeTaskProgressWidth(data.task, data.period, data.periodParts);
   }
 
-  public get data() {
-    return this._data;
-  }
+  constructor(private service: GanttService) {}
 
-  public progress = 0;
-  public offset = 0;
-  public width = 0;
+  public get color(): string {
+    return this.data.task.color || GanttTaskProgressComponent.defaultColor;
+  }
 }

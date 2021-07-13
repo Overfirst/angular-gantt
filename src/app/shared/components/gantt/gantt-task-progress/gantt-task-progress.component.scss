@@ -1,14 +1,13 @@
 .task-container {
   height: 12px;
-  background-color: #ffaea8;
   position: relative;
   top: 0;
   left: 0;
+  background-color: #cbcbcb;
 
   .task-progress {
     width: 50%;
     height: inherit;
-    background-color: #ff6358;
   }
 
   &, .task-progress {

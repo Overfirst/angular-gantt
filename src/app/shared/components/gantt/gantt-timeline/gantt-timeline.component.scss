@@ -1,6 +1,7 @@
 .gantt-timeline {
   background-color: #fff;
-  width: max-content;
+  overflow-y: hidden;
+  overflow-x: scroll;
 }
 
 tbody tr td {

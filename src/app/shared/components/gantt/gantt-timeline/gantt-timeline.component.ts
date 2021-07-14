@@ -25,6 +25,16 @@ export class GanttTimelineComponent {
     this.recalculatePeriodParts();
   }
 
+  private currentWidth = 0;
+
+  @Input() public set width(width: number) {
+    this.currentWidth = width;
+  }
+
+  public get width() {
+    return this.currentWidth;
+  }
+
   public get tasks() {
     return this.tasksList;
   }

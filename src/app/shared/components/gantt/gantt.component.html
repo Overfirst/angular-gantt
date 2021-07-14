@@ -1,11 +1,11 @@
 <gantt-periods (periodChange)="periodChange($event)"></gantt-periods>
 
-<div class="gantt-content">
+<div (window:resize)="onResize($event)" #mainRef class="gantt-content">
+  <div #tasksRef>
     <gantt-tasks [tasks]="tasks"></gantt-tasks>
+  </div>
 
-  
-    <gantt-timeline
-      [tasks]="tasks"
-      [period]="period"
-    ></gantt-timeline>
+  <div #timelineRef>
+    <gantt-timeline [width]="timelineWidth" [tasks]="tasks" [period]="period"></gantt-timeline>
+  </div>
 </div>

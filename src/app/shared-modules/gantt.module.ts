@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 
 import { GanttComponent } from '../shared/components/gantt/gantt.component';
@@ -15,13 +16,14 @@ import { GanttTaskProgressComponent } from '../shared/components/gantt/gantt-tas
       GanttPeriodsComponent,
       GanttTimelineComponent,
       GanttTaskProgressComponent
-    ],
+  ],
   exports: [
       GanttComponent,
       GanttTasksComponent,
       GanttPeriodsComponent,
       GanttTimelineComponent,
       GanttTaskProgressComponent
-    ]
+  ],
+  providers: [DatePipe]
 })
 export class GanttModule {}

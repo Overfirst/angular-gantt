@@ -45,7 +45,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   public ngOnDestroy(): void {
     if (!this.scrollSubscription?.closed) {
-      this.scrollSubscription?.unsubscribe()
+      this.scrollSubscription.unsubscribe()
     }
   }
 

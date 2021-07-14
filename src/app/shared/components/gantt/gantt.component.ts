@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { GanttPeriod, GanttTask } from '../../interfaces';
 
 @Component({
@@ -15,6 +15,8 @@ export class GanttComponent implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) {}
 
   @Input() public tasks: GanttTask[] = [];
+  @Input() public contentHeight = 500;
+
   public period: GanttPeriod;
 
   public timelineWidth = 0;
@@ -35,7 +37,7 @@ export class GanttComponent implements AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  public onResize(event: Event): void {
+  @HostListener('window:resize') public onResize(): void {
     this.calculateWidth();
   }
 }

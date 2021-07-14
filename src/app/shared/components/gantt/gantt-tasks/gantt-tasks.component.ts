@@ -9,4 +9,5 @@ import { GanttTask } from '../../../interfaces';
 })
 export class GanttTasksComponent {
   @Input() public tasks: GanttTask[] = [];
+  @Input() public contentHeight = 500;
 }

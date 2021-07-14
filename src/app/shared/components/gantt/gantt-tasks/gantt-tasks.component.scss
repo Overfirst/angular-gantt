@@ -4,6 +4,11 @@
   display: flex;
 }
 
+.tasks-content {
+  height: 500px;
+  overflow: scroll;
+}
+
 .tasks-content table {
   tr, td, th {
     border-top: none;

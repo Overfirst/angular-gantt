@@ -1,5 +1,5 @@
 <div [style.width]="width + 'px'" class="gantt-timeline">
-  <div class="timeline-header">
+  <div #header class="timeline-header">
     <table>
       <thead>
         <tr>
@@ -34,7 +34,7 @@
     </table>
   </div>
 
-  <div class="main-tables">
+  <div #mainTable [style.height]="contentHeight + 'px'" class="main-tables">
     <div class="main-table">
       <table>
         <tbody>

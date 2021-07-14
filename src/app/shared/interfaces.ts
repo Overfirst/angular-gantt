@@ -1,9 +1,16 @@
+export interface GanttTaskDependency {
+  taskID: number;
+  side: 'start' | 'end';
+}
+
 export interface GanttTask {
+  id?: number;
   name: string;
   startDate: Date;
   endDate: Date;
   readyPercent: number;
   color?: string;
+  dependencies?: GanttTaskDependency[];
 }
 
 export type GanttPeriod = 'Day'| 'Week' | 'Month';

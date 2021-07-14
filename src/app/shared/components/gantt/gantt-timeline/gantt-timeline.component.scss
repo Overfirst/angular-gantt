@@ -1,7 +1,17 @@
 .gantt-timeline {
   background-color: #fff;
-  overflow-y: hidden;
-  overflow-x: scroll;
+  // overflow-y: hidden;
+  // overflow-x: scroll;
+}
+
+.timeline-header {
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    opacity: 0;
+    height: 0;
+    background: rgba(0, 0, 0, 0);
+  }
 }
 
 tbody tr td {
@@ -19,10 +29,12 @@ table:first-child {
 .main-tables {
   position: relative;
   user-select: none;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  height: 500px;
 
   .main-table {
     width: 100%;
-    height: inherit;
 
     table {
       width: inherit;
@@ -37,6 +49,7 @@ table:first-child {
     }
 
     &:last-child {
+      
       tr, td {
         border: none;
         background: none;

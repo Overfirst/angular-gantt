@@ -10,10 +10,10 @@
         </colgroup>
         <thead>
           <tr>
-            <td rowspan="2">Tasks</td>
-            <td rowspan="2">Actual start date</td>
-            <td rowspan="2">Actual end date</td>
-            <td rowspan="2">% Complete</td>
+            <td nowrap rowspan="2">Tasks</td>
+            <td nowrap rowspan="2">Actual start date</td>
+            <td nowrap rowspan="2">Actual end date</td>
+            <td nowrap rowspan="2">% Complete</td>
           </tr>
           <tr></tr>
         </thead>
@@ -30,10 +30,10 @@
         </colgroup>
         <tbody>
           <tr *ngFor="let task of tasks">
-            <td>{{ task.name }}</td>
-            <td>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-            <td>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-            <td>{{ task.readyPercent }}</td>
+            <td nowrap>{{ task.name }}</td>
+            <td nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+            <td nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+            <td nowrap>{{ task.readyPercent }}</td>
           </tr>
         </tbody>
       </table>

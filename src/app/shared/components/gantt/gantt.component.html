@@ -5,6 +5,8 @@
     <gantt-tasks
       [contentHeight]="contentHeight"
       [tasks]="tasks"
+      [scrollTop]="tasksScrollTop"
+      (onScroll)="tasksOnScroll($event)"
     ></gantt-tasks>
   </div>
 
@@ -13,6 +15,9 @@
       [contentHeight]="contentHeight"
       [width]="timelineWidth"
       [tasks]="tasks"
-      [period]="period"></gantt-timeline>
+      [scrollTop]="timelineScrollTop"
+      [period]="period"
+      (onScroll)="timelineOnScroll($event)"
+    ></gantt-timeline>
   </div>
 </div>

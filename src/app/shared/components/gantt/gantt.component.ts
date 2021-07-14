@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { GanttPeriod, GanttTask } from '../../interfaces';
+import { GanttPeriod, GanttScrollEvent, GanttTask } from '../../interfaces';
 
 @Component({
   selector: 'app-gantt',
@@ -17,8 +17,10 @@ export class GanttComponent implements AfterViewInit {
   @Input() public tasks: GanttTask[] = [];
   @Input() public contentHeight = 500;
 
-  public period: GanttPeriod;
+  public tasksScrollTop = 0;
+  public timelineScrollTop = 0;
 
+  public period: GanttPeriod;
   public timelineWidth = 0;
 
   public ngAfterViewInit(): void {
@@ -39,5 +41,13 @@ export class GanttComponent implements AfterViewInit {
 
   @HostListener('window:resize') public onResize(): void {
     this.calculateWidth();
+  }
+
+  public tasksOnScroll(event: GanttScrollEvent): void {
+    this.timelineScrollTop = event.scrollTop;
+  }
+
+  public timelineOnScroll(event: GanttScrollEvent): void {
+    this.tasksScrollTop = event.scrollTop;
   }
 }

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
-import { GanttPeriod, GanttTask, PeriodPart } from '../../../interfaces';
+import { GanttPeriod, GanttScrollEvent, GanttTask, PeriodPart } from '../../../interfaces';
 import { GanttService } from '../gantt.service';
 
 @Component({
@@ -39,8 +39,18 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     this.currentWidth = width;
   }
 
+  private scrollTopValue = 0;
+
+  @Input() public set scrollTop(scrollValue: number) {
+    this.scrollTopValue = scrollValue;
+    this.updateScrollPosition();
+  }
+
+  @Output() public onScroll = new EventEmitter<GanttScrollEvent>()
+
   public ngAfterViewInit(): void {
     this.initScrollCallbacks();
+    this.updateScrollPosition();
   }
 
   public ngOnDestroy(): void {
@@ -71,13 +81,28 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     mainTable.onwheel = (event: WheelEvent) => {
       if (event.shiftKey) {
         this.header.nativeElement.scrollLeft = this.header.nativeElement.scrollLeft + event.deltaY;
+        return;
       }
+
+      const scrollEvent: GanttScrollEvent = {
+        scrollLeft: this.mainTable.nativeElement.scrollLeft,
+        scrollTop: this.mainTable.nativeElement.scrollTop + event.deltaY
+      }
+  
+      this.onScroll.emit(scrollEvent);
     }
 
     mainTable.onmousedown = (event: MouseEvent) => {
-      this.scrollSubscription = interval(10).subscribe(() =>
-        this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft
-      );
+      this.scrollSubscription = interval(5).subscribe(() => {
+        this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
+        
+        const scrollEvent: GanttScrollEvent = {
+          scrollLeft: this.mainTable.nativeElement.scrollLeft,
+          scrollTop: this.mainTable.nativeElement.scrollTop
+        }
+    
+        this.onScroll.emit(scrollEvent);
+      });
     }
 
     mainTable.onmouseup = (event: MouseEvent) => {
@@ -85,5 +110,13 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
         this.scrollSubscription.unsubscribe()
       }
     }
+  }
+
+  private updateScrollPosition(): void {
+    if (!this.mainTable) {
+      return;
+    }
+
+    this.mainTable.nativeElement.scrollTop = this.scrollTopValue;
   }
 }

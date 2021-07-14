@@ -7,6 +7,12 @@
 .tasks-content {
   height: 500px;
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    opacity: 0;
+    width: 0;
+    background: rgba(0, 0, 0, 0);
+  }
 }
 
 .tasks-content table {

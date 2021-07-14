@@ -25,8 +25,8 @@ export class GanttTaskProgressComponent {
     this._data = data;
     this.progress = this.data.task.readyPercent;
     
-    this.offset = this.service.computeTaskProgressOffset(data.task, data.period, data.periodParts)
-    this.width = this.service.computeTaskProgressWidth(data.task, data.period, data.periodParts);
+    this.offset = this.service.computeTaskProgressOffset(data.task, data.period, data.minDate)
+    this.width = this.service.computeTaskProgressWidth(data.task, data.period);
   }
 
   constructor(private service: GanttService) {}

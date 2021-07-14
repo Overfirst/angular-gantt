@@ -56,7 +56,7 @@
           <tr *ngFor="let task of tasks">
             <td>
               <gantt-task-progress
-                [data]="{ task: task, period: period, periodParts: periodParts }"
+                [data]="{ task: task, period: period, minDate: periodParts[0].detail[0] }"
               ></gantt-task-progress>
             </td>
           </tr>

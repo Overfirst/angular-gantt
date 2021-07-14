@@ -42,6 +42,7 @@ export class GanttService {
   public getMonthWeekCapacity(date: Date): number {
     const newDate = new Date(date);
     
+
     const totalDays = this.daysInMonth(newDate);
     const addition = newDate.getDate();
 
@@ -49,6 +50,7 @@ export class GanttService {
       return totalDays - addition + 1;
     }
     
+
     return 7;
   }
 
@@ -197,26 +199,25 @@ export class GanttService {
     }
   }
 
-  public computeTaskProgressOffset(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
+  public computeTaskProgressOffset(task: GanttTask, period: GanttPeriod, minDate: Date): number {
     let result: number;
 
     switch (period) {
       case 'Day':
-        result = this.getDifferentHours(task.startDate, parts[0].detail[0]);
+        result = this.getDifferentHours(task.startDate, minDate);
         break;
       case 'Week':
-        result = this.getDifferentDays(task.startDate, parts[0].detail[0]);
+        result = this.getDifferentDays(task.startDate, minDate);
         break
       case 'Month':
-        result = this.getDifferentWeeks(task.startDate, parts[0].detail[0]);
+        result = this.getDifferentWeeks(task.startDate, minDate);
         break;
     }
 
-    console.log('computeTaskProgressOffset:', result);
     return result * 100;
   }
 
-  public computeTaskProgressWidth(task: GanttTask, period: GanttPeriod, parts: PeriodPart[]): number {
+  public computeTaskProgressWidth(task: GanttTask, period: GanttPeriod): number {
     let result: number;
 
     switch (period) {
@@ -227,11 +228,10 @@ export class GanttService {
         result = this.getDifferentDays(task.startDate, task.endDate);
         break
       case 'Month':
-        result = 0 ; //this.getDifferentWeeks(task.startDate, task.endDate);
+        result = this.getDifferentWeeks(task.startDate, task.endDate);
         break;
     }
 
-    console.log('computeTaskProgressWidth:', result);
     return result * 100;
   }
 
@@ -244,7 +244,10 @@ export class GanttService {
   }
 
   private getDifferentWeeks(first: Date, second: Date): number {
-    return Math.abs(first.getTime() - second.getTime()) / (24 * 3600 * 1000);
+    const result = Math.abs(first.getTime() - second.getTime()) / (7 * 24 * 3600 * 1000)
+    console.log('getDifferentWeeks:', result);
+
+    return result;
   }
 
   private minimizeDate(date: Date): Date {

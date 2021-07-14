@@ -21,5 +21,5 @@ export interface PeriodPart {
 export interface TaskProgressInput {
   task: GanttTask;
   period: GanttPeriod;
-  periodParts: PeriodPart[];
+  minDate: Date;
 }

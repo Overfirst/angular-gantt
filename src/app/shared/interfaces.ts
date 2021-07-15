@@ -31,7 +31,6 @@ export interface TaskProgressInput {
   minDate: Date;
 }
 
-export interface GanttScrollEvent {
-  scrollLeft: number;
-  scrollTop: number;
+export interface GanttScrollSyncEvent {
+  scrollValue: number;
 }

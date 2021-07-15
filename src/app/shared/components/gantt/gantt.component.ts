@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { GanttPeriod, GanttScrollEvent, GanttTask } from '../../interfaces';
+import { GanttPeriod, GanttScrollSyncEvent, GanttTask } from '../../interfaces';
 
 @Component({
   selector: 'app-gantt',
@@ -8,9 +8,9 @@ import { GanttPeriod, GanttScrollEvent, GanttTask } from '../../interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttComponent implements AfterViewInit {
-  @ViewChild('mainRef') public mainRef: ElementRef<any>;
-  @ViewChild('tasksRef') public tasksRef: ElementRef<any>;
-  @ViewChild('timelineRef') public timelineRef: ElementRef<any>;
+  @ViewChild('mainRef') public mainRef: ElementRef<HTMLElement>;
+  @ViewChild('tasksRef') public tasksRef: ElementRef<HTMLElement>;
+  @ViewChild('timelineRef') public timelineRef: ElementRef<HTMLElement>;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -43,11 +43,11 @@ export class GanttComponent implements AfterViewInit {
     this.calculateWidth();
   }
 
-  public tasksOnScroll(event: GanttScrollEvent): void {
-    this.timelineScrollTop = event.scrollTop;
+  public tasksOnScroll(event: GanttScrollSyncEvent): void {
+    this.timelineScrollTop = event.scrollValue;
   }
 
-  public timelineOnScroll(event: GanttScrollEvent): void {
-    this.tasksScrollTop = event.scrollTop;
+  public timelineOnScroll(event: GanttScrollSyncEvent): void {
+    this.tasksScrollTop = event.scrollValue;
   }
 }

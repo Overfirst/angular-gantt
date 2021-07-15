@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { GanttScrollEvent, GanttTask } from '../../../interfaces';
+import { GanttScrollSyncEvent, GanttTask } from '../../../interfaces';
 
 @Component({
   selector: 'gantt-tasks',
@@ -16,8 +16,6 @@ export class GanttTasksComponent implements AfterViewInit {
   private scrollTopValue = 0;
 
   @Input() public set scrollTop(scrollValue: number) {
-    console.log('set scrollTop');
-    
     this.scrollTopValue = scrollValue;
     this.updateScrollPosition();
   }
@@ -27,23 +25,21 @@ export class GanttTasksComponent implements AfterViewInit {
     this.updateScrollPosition();
   }
 
-  @Output() public onScroll = new EventEmitter<GanttScrollEvent>();
+  @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>();
 
   private updateScrollPosition(): void {
-    console.log('updateScrollPosition', this.table);
-    
-    if (!this.table) {
-      return;
+    if (this.table) {
+      this.table.nativeElement.scrollTop = this.scrollTopValue;
     }
-
-    this.table.nativeElement.scrollTop = this.scrollTopValue;
   }
 
   private initScrollCallbacks(): void {
     const table = this.table.nativeElement;
 
     table.onwheel = (event: WheelEvent) => {
-      this.onScroll.emit({ scrollLeft: 0, scrollTop: table.scrollTop + event.deltaY });
+      if (!event.shiftKey) {
+        this.onScroll.emit({ scrollValue: table.scrollTop + event.deltaY });
+      }
     }
   }
 }

@@ -34,39 +34,49 @@
     </table>
   </div>
 
-  <div #mainTable [style.height]="contentHeight + 'px'" class="main-tables">
-    <div class="main-table">
-      <table>
-        <tbody>
-          <tr
-            *ngFor="let task of tasks; index as idx"
-            (click)="selectRow(idx)"
-            [class.active-row]="activeRowID === idx"
-          >
-            <ng-container *ngFor="let part of periodParts">
-              <td
-                *ngFor="let detail of part.detail"
-                nowrap
-              >&nbsp;</td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="main-table">
-      <table>
-        <tbody>
-          <tr *ngFor="let task of tasks; index as idx" >
-            <td>
-              <gantt-task-progress
-                [data]="{ task: task, period: period, minDate: periodParts[0].detail[0] }"
-                (click)="selectRow(idx)"
-              ></gantt-task-progress>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="content">
+    <div #mainTable [style.height]="contentHeight + 'px'" class="main-tables">
+      <div class="main-table">
+        <table>
+          <tbody>
+            <tr
+              *ngFor="let task of tasks; index as idx"
+              (click)="selectRow(idx)"
+              [class.active-row]="activeRowID === idx"
+            >
+              <ng-container *ngFor="let part of periodParts">
+                <td
+                  *ngFor="let detail of part.detail"
+                  nowrap
+                >&nbsp;</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="main-table">
+        <table>
+          <tbody>
+            <tr *ngFor="let task of tasks; index as idx" >
+              <td>
+                <gantt-task-progress
+                  [data]="{ taskInfo: { task: task, rowID: idx }, period: period, minDate: periodParts[0].detail[0] }"
+                  (click)="selectRow(idx)"
+                  (dataChanged)="taskProgressDataChanged($event)"
+                ></gantt-task-progress>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <gantt-dependencies
+          [data]="{
+            tasksInfo: tasksTimelineData,
+            dependencies: dependencies,
+            period: period
+          }"
+        ></gantt-dependencies>
+      </div>
     </div>
   </div>
 </div>

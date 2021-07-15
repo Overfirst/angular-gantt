@@ -7,6 +7,7 @@ import { GanttTasksComponent } from '../shared/components/gantt/gantt-tasks/gant
 import { GanttPeriodsComponent } from '../shared/components/gantt/gantt-periods/gantt-periods.component';
 import { GanttTimelineComponent } from '../shared/components/gantt/gantt-timeline/gantt-timeline.component';
 import { GanttTaskProgressComponent } from '../shared/components/gantt/gantt-task-progress/gantt-task-progress.component';
+import { GanttDependenciesComponent } from '../shared/components/gantt/gantt-dependencies/gantt-dependencies.component';
 
 @NgModule({
   imports: [SharedModule],
@@ -15,14 +16,16 @@ import { GanttTaskProgressComponent } from '../shared/components/gantt/gantt-tas
       GanttTasksComponent,
       GanttPeriodsComponent,
       GanttTimelineComponent,
-      GanttTaskProgressComponent
+      GanttTaskProgressComponent,
+      GanttDependenciesComponent
   ],
   exports: [
       GanttComponent,
       GanttTasksComponent,
       GanttPeriodsComponent,
       GanttTimelineComponent,
-      GanttTaskProgressComponent
+      GanttTaskProgressComponent,
+      GanttDependenciesComponent
   ],
   providers: [DatePipe]
 })

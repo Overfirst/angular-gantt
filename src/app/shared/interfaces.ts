@@ -1,16 +1,15 @@
 export interface GanttTaskDependency {
-  taskID: number;
-  side: 'start' | 'end';
+  fromID: number;
+  toID: number;
 }
 
 export interface GanttTask {
-  id?: number;
+  id: number;
   name: string;
   startDate: Date;
   endDate: Date;
   readyPercent: number;
   color?: string;
-  dependencies?: GanttTaskDependency[];
 }
 
 export type GanttPeriod = 'Day'| 'Week' | 'Month';
@@ -26,11 +25,25 @@ export interface PeriodPart {
 }
 
 export interface TaskProgressInput {
-  task: GanttTask;
+  taskInfo: { task: GanttTask; rowID: number; };
   period: GanttPeriod;
   minDate: Date;
 }
 
 export interface GanttScrollSyncEvent {
   scrollValue: number;
+}
+
+
+export interface TaskTimelineData {
+  taskID: number;
+  rowID: number;
+  width: number;
+  offset: number;
+}
+
+export interface GanttDependenciesData {
+  tasksInfo: TaskTimelineData[];
+  dependencies: GanttTaskDependency[];
+  period: GanttPeriod;
 }

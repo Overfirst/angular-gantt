@@ -49,7 +49,6 @@ table:first-child {
     }
 
     &:last-child {
-      
       tr, td {
         border: none;
         background: none;
@@ -57,4 +56,8 @@ table:first-child {
       }
     }
   }
+}
+
+.content {
+  position: relative;
 }

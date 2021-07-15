@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { GanttPeriod, GanttScrollSyncEvent, GanttTask } from '../../interfaces';
+import { GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency } from '../../interfaces';
 
 @Component({
   selector: 'app-gantt',
@@ -15,6 +15,8 @@ export class GanttComponent implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) {}
 
   @Input() public tasks: GanttTask[] = [];
+  @Input() public dependencies: GanttTaskDependency[] = [];
+
   @Input() public contentHeight = 500;
 
   public selectedDate: Date;

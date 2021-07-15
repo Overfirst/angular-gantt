@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { GanttPeriod, GanttScrollSyncEvent, GanttTask, PeriodPart } from '../../../interfaces';
+import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, PeriodPart, TaskTimelineData } from '../../../interfaces';
 import { GanttService } from '../gantt.service';
 
 @Component({
@@ -15,7 +15,10 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   private selectedPeriod: GanttPeriod = 'Week';
   private tasksList: GanttTask[] = [];
+
   private scrollSubscription: Subscription;
+
+  public tasksTimelineData: TaskTimelineData[] = [];
 
   @ViewChild('header') header: ElementRef<HTMLElement>;
   @ViewChild('mainTable') mainTable: ElementRef<HTMLElement>;
@@ -80,6 +83,8 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     return this._selectedDate;
   }
 
+  @Input() public dependencies: GanttTaskDependency[] = [];
+  
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>()
   @Output() public rowChanged = new EventEmitter<number>();
 
@@ -156,5 +161,9 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     if (this.scrollSubscription && !this.scrollSubscription.closed) {
       this.scrollSubscription.unsubscribe()
     }
+  }
+
+  public taskProgressDataChanged(data: TaskTimelineData): void {
+    this.tasksTimelineData.push(data);
   }
 }

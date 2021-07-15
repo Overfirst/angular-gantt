@@ -47,7 +47,7 @@ export class GanttTasksComponent implements AfterViewInit {
   }
 
   public selectRow(rowID: number): void {
-    this.activeRowID = this.activeRowID !== rowID ? rowID: -1;
+    this.activeRowID = rowID;
     this.rowChanged.emit(this.activeRowID);
   }
 

@@ -1,5 +1,5 @@
 <div [style.width]="width + 'px'" class="gantt-timeline">
-  <div #header class="timeline-header">
+  <div (click)="selectRow(-1)" #header class="timeline-header">
     <table>
       <thead>
         <tr>
@@ -38,7 +38,11 @@
     <div class="main-table">
       <table>
         <tbody>
-          <tr *ngFor="let task of tasks">
+          <tr
+            *ngFor="let task of tasks; index as idx"
+            (click)="selectRow(idx)"
+            [class.active-row]="activeRowID === idx"
+          >
             <ng-container *ngFor="let part of periodParts">
               <td
                 *ngFor="let detail of part.detail"
@@ -53,10 +57,11 @@
     <div class="main-table">
       <table>
         <tbody>
-          <tr *ngFor="let task of tasks">
+          <tr *ngFor="let task of tasks; index as idx" >
             <td>
               <gantt-task-progress
                 [data]="{ task: task, period: period, minDate: periodParts[0].detail[0] }"
+                (click)="selectRow(idx)"
               ></gantt-task-progress>
             </td>
           </tr>

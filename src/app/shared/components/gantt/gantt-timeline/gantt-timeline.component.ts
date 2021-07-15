@@ -22,6 +22,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   constructor(public service: GanttService) {}
 
   @Input() public contentHeight = 500;
+  @Input() public activeRowID = -1;
 
   @Input() public set tasks(tasks: GanttTask[]) {
     this.tasksList = tasks;
@@ -47,6 +48,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>()
+  @Output() public rowChanged = new EventEmitter<number>();
 
   public ngAfterViewInit(): void {
     this.initScrollCallbacks();
@@ -114,5 +116,10 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     if (this.mainTable) {
       this.mainTable.nativeElement.scrollTop = this.scrollTopValue;
     }
+  }
+
+  public selectRow(rowID: number): void {
+    this.activeRowID = this.activeRowID !== rowID ? rowID: -1;
+    this.rowChanged.emit(this.activeRowID);
   }
 }

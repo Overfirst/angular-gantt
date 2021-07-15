@@ -1,6 +1,6 @@
 <div #tasksContainer class="gantt-tasks">
   <div class="tables">
-    <div class="tasks-header">
+    <div (click)="selectRow(-1)" class="tasks-header">
       <table>
         <colgroup>
           <col style="width: 260px;">
@@ -19,7 +19,7 @@
         </thead>
       </table>
     </div>
-  
+
     <div #table [style.height]="contentHeight + 'px'" class="tasks-content">
       <table>
         <colgroup>
@@ -29,7 +29,11 @@
           <col style="width: 110px;">
         </colgroup>
         <tbody>
-          <tr *ngFor="let task of tasks">
+          <tr
+            *ngFor="let task of tasks; index as idx"
+            (click)="selectRow(idx)"
+            [class.active-row]="activeRowID === idx"
+          >
             <td nowrap>{{ task.name }}</td>
             <td nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
             <td nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>

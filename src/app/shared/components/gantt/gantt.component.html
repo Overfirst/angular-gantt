@@ -6,7 +6,9 @@
       [contentHeight]="contentHeight"
       [tasks]="tasks"
       [scrollTop]="tasksScrollTop"
+      [activeRowID]="activeRowID"
       (onScroll)="tasksOnScroll($event)"
+      (rowChanged)="changeRow($event)"
     ></gantt-tasks>
   </div>
 
@@ -16,8 +18,10 @@
       [width]="timelineWidth"
       [tasks]="tasks"
       [scrollTop]="timelineScrollTop"
+      [activeRowID]="activeRowID"
       [period]="period"
       (onScroll)="timelineOnScroll($event)"
+      (rowChanged)="changeRow($event)"
     ></gantt-timeline>
   </div>
 </div>

@@ -17,8 +17,8 @@ export class AppComponent {
     },
     {
       name: 'Fix angular-grid bugs',
-      startDate: new Date(2021, 5, 1, 12),
-      endDate: new Date(2021, 5, 9, 13),
+      startDate: new Date(2021, 7, 1, 12),
+      endDate: new Date(2021, 12, 9, 13),
       readyPercent: 71,
       color: '#5a63cf'
     },

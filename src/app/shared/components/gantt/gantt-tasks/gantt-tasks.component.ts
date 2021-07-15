@@ -12,6 +12,7 @@ export class GanttTasksComponent implements AfterViewInit {
 
   @Input() public tasks: GanttTask[] = [];
   @Input() public contentHeight = 500;
+  @Input() public activeRowID = -1;
 
   private scrollTopValue = 0;
 
@@ -26,6 +27,7 @@ export class GanttTasksComponent implements AfterViewInit {
   }
 
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>();
+  @Output() public rowChanged = new EventEmitter<number>();
 
   private updateScrollPosition(): void {
     if (this.table) {
@@ -41,5 +43,10 @@ export class GanttTasksComponent implements AfterViewInit {
         this.onScroll.emit({ scrollValue: table.scrollTop + event.deltaY });
       }
     }
+  }
+
+  public selectRow(rowID: number): void {
+    this.activeRowID = this.activeRowID !== rowID ? rowID: -1;
+    this.rowChanged.emit(this.activeRowID);
   }
 }

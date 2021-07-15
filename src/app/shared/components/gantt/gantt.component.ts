@@ -23,6 +23,8 @@ export class GanttComponent implements AfterViewInit {
   public period: GanttPeriod;
   public timelineWidth = 0;
 
+  public activeRowID = -1;
+
   public ngAfterViewInit(): void {
     this.calculateWidth();
   }
@@ -49,5 +51,9 @@ export class GanttComponent implements AfterViewInit {
 
   public timelineOnScroll(event: GanttScrollSyncEvent): void {
     this.tasksScrollTop = event.scrollValue;
+  }
+
+  public changeRow(rowID: number): void {
+    this.activeRowID = rowID;
   }
 }

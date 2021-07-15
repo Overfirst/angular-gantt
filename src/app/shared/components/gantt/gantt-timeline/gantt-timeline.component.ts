@@ -66,19 +66,14 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     const intervalTime = 10;
     const takeCount = animationTime / intervalTime;
 
-    const toLeft = diff > 0;
-
     let step = Math.abs(diff) / takeCount;
 
     this.scrollSubscription = interval(intervalTime)
       .pipe(take(takeCount))
       .subscribe(() => {
-        this.mainTable.nativeElement.scrollLeft += toLeft ? -step : step;
+        this.mainTable.nativeElement.scrollLeft += diff > 0 ? -step : step;
         this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
       });
-
-    // this.mainTable.nativeElement.scrollLeft = offset;
-    // this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
   }
 
   public get selectedDate() {

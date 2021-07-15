@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { GanttPeriod, GanttScrollSyncEvent, GanttTask, PeriodPart } from '../../../interfaces';
 import { GanttService } from '../gantt.service';
 
@@ -19,7 +20,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   @ViewChild('header') header: ElementRef<HTMLElement>;
   @ViewChild('mainTable') mainTable: ElementRef<HTMLElement>;
 
-  constructor(public service: GanttService) {}
+  constructor(public service: GanttService) { }
 
   @Input() public contentHeight = 500;
   @Input() public activeRowID = -1;
@@ -56,7 +57,28 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    console.log('select date', this.selectedDate);
+    this.clearScrollSubscription();
+
+    const offset = this.service.computeDateOffset(date, this.selectedPeriod, this.periodParts[0].main) - 75;
+    const diff = this.mainTable.nativeElement.scrollLeft - offset;
+
+    const animationTime = 400;
+    const intervalTime = 10;
+    const takeCount = animationTime / intervalTime;
+
+    const toLeft = diff > 0;
+
+    let step = Math.abs(diff) / takeCount;
+
+    this.scrollSubscription = interval(intervalTime)
+      .pipe(take(takeCount))
+      .subscribe(() => {
+        this.mainTable.nativeElement.scrollLeft += toLeft ? -step : step;
+        this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
+      });
+
+    // this.mainTable.nativeElement.scrollLeft = offset;
+    // this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
   }
 
   public get selectedDate() {
@@ -72,9 +94,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (!this.scrollSubscription?.closed) {
-      this.scrollSubscription.unsubscribe()
-    }
+    this.clearScrollSubscription();
   }
 
   public get width() {
@@ -105,27 +125,25 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
       const scrollEvent: GanttScrollSyncEvent = {
         scrollValue: this.mainTable.nativeElement.scrollTop + event.deltaY
       };
-  
+
       this.onScroll.emit(scrollEvent);
     }
 
     mainTable.onmousedown = (event: MouseEvent) => {
+      this.clearScrollSubscription();
+      
       this.scrollSubscription = interval(5).subscribe(() => {
         this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
-        
+
         const scrollEvent: GanttScrollSyncEvent = {
           scrollValue: this.mainTable.nativeElement.scrollTop
         };
-    
+
         this.onScroll.emit(scrollEvent);
       });
     }
 
-    mainTable.onmouseup = (event: MouseEvent) => {
-      if (!this.scrollSubscription?.closed) {
-        this.scrollSubscription.unsubscribe()
-      }
-    }
+    mainTable.onmouseup = (event: MouseEvent) => this.clearScrollSubscription();
   }
 
   private updateScrollPosition(): void {
@@ -137,5 +155,11 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   public selectRow(rowID: number): void {
     this.activeRowID = rowID;
     this.rowChanged.emit(this.activeRowID);
+  }
+
+  private clearScrollSubscription(): void {
+    if (this.scrollSubscription && !this.scrollSubscription.closed) {
+      this.scrollSubscription.unsubscribe()
+    }
   }
 }

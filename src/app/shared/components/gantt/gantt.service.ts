@@ -199,18 +199,18 @@ export class GanttService {
     }
   }
 
-  public computeTaskProgressOffset(task: GanttTask, period: GanttPeriod, minDate: Date): number {
+  public computeDateOffset(date: Date, period: GanttPeriod, minDate: Date): number {
     let result: number;
 
     switch (period) {
       case 'Day':
-        result = this.getDifferentHours(task.startDate, minDate);
+        result = this.getDifferentHours(date, minDate);
         break;
       case 'Week':
-        result = this.getDifferentDays(task.startDate, minDate);
+        result = this.getDifferentDays(date, minDate);
         break
       case 'Month':
-        result = this.getDifferentWeeks(task.startDate, minDate);
+        result = this.getDifferentWeeks(date, minDate);
         break;
     }
 

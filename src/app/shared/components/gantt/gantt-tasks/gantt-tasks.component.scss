@@ -1,4 +1,4 @@
-@import url('../gantt.component.scss');
+@import url("../gantt.component.scss");
 
 .gantt-tasks {
   background-color: #fff;
@@ -21,4 +21,9 @@
   tr, td, th {
     border-top: none;
   }
+}
+
+.date-td {
+  user-select: none;
+  cursor: pointer;
 }

@@ -47,6 +47,22 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     this.updateScrollPosition();
   }
 
+  private _selectedDate: Date;
+
+  @Input() public set selectedDate(date: Date) {
+    this._selectedDate = date;
+
+    if (!this.selectedDate || !this.mainTable) {
+      return;
+    }
+
+    console.log('select date', this.selectedDate);
+  }
+
+  public get selectedDate() {
+    return this._selectedDate;
+  }
+
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>()
   @Output() public rowChanged = new EventEmitter<number>();
 

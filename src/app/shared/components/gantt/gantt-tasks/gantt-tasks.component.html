@@ -35,8 +35,8 @@
             [class.active-row]="activeRowID === idx"
           >
             <td nowrap>{{ task.name }}</td>
-            <td nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-            <td nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+            <td class="date-td" (click)="dateClick(task.startDate)" nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+            <td class="date-td" (click)="dateClick(task.endDate)" nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
             <td nowrap>{{ task.readyPercent }}</td>
           </tr>
         </tbody>

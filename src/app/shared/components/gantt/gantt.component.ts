@@ -17,6 +17,8 @@ export class GanttComponent implements AfterViewInit {
   @Input() public tasks: GanttTask[] = [];
   @Input() public contentHeight = 500;
 
+  public selectedDate: Date;
+
   public tasksScrollTop = 0;
   public timelineScrollTop = 0;
 
@@ -55,5 +57,9 @@ export class GanttComponent implements AfterViewInit {
 
   public changeRow(rowID: number): void {
     this.activeRowID = rowID;
+  }
+
+  public tasksDateClick(date: Date): void {
+    this.selectedDate = new Date(date);
   }
 }

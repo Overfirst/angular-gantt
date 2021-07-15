@@ -28,6 +28,7 @@ export class GanttTasksComponent implements AfterViewInit {
 
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>();
   @Output() public rowChanged = new EventEmitter<number>();
+  @Output() public dateClicked = new EventEmitter<Date>();
 
   private updateScrollPosition(): void {
     if (this.table) {
@@ -48,5 +49,9 @@ export class GanttTasksComponent implements AfterViewInit {
   public selectRow(rowID: number): void {
     this.activeRowID = this.activeRowID !== rowID ? rowID: -1;
     this.rowChanged.emit(this.activeRowID);
+  }
+
+  public dateClick(date: Date): void {
+    this.dateClicked.emit(date);
   }
 }

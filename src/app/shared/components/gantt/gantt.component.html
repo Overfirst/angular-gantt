@@ -9,6 +9,7 @@
       [activeRowID]="activeRowID"
       (onScroll)="tasksOnScroll($event)"
       (rowChanged)="changeRow($event)"
+      (dateClicked)="tasksDateClick($event)"
     ></gantt-tasks>
   </div>
 
@@ -20,6 +21,7 @@
       [scrollTop]="timelineScrollTop"
       [activeRowID]="activeRowID"
       [period]="period"
+      [selectedDate]="selectedDate"
       (onScroll)="timelineOnScroll($event)"
       (rowChanged)="changeRow($event)"
     ></gantt-timeline>

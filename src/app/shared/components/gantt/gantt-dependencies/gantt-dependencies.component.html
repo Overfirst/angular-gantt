@@ -1,12 +1,17 @@
-<div class="wrapper">
+<div class="wrapper" [attr.width]="width + 'px'" [attr.height]="height + 'px'">
   <svg [attr.width]="width + 'px'" [attr.height]="height + 'px'">
-    <line *ngFor="let line of lines"
-      [attr.x1]="line.x1"
-      [attr.y1]="line.y1"
-      [attr.x2]="line.x2"
-      [attr.y2]="line.y2"
-      stroke="#000"
-      stroke-width="2"
-    />
+    
+    <ng-container *ngFor="let line of lines">
+      <line
+        [attr.x1]="line.x1"
+        [attr.y1]="line.y1"
+        [attr.x2]="line.x2"
+        [attr.y2]="line.y2"
+        stroke="#000"
+        stroke-width="2"
+      />
+    </ng-container>
+    
+
   </svg>
 </div>

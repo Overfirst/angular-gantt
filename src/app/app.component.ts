@@ -51,8 +51,8 @@ export class AppComponent {
   ];
 
   public dependencies: GanttTaskDependency[] = [
-    { fromID: 1, toID: 2 },
-    { fromID: 2, toID: 3 },
-    { fromID: 3, toID: 4 },
+    { fromID: 1, toID: 4 },
+    { fromID: 4, toID: 5 },
+    { fromID: 3, toID: 2 },
   ];
 }

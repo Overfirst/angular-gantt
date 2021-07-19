@@ -260,7 +260,91 @@ export class GanttService {
   }
 
   public computeDependencies(data: GanttDependenciesData): GanttLine[] {
+    let FIRST_LINE_WIDTH: number;
+
+    switch (data.period) {
+      case 'Day':
+        FIRST_LINE_WIDTH = 48;
+        break;
+      case 'Week':
+        FIRST_LINE_WIDTH = 24;
+        break;
+      case 'Month':
+        FIRST_LINE_WIDTH = 16;
+        break;
+    }
+
     const lines: GanttLine[] = [];
+    const { dependencies, tasksInfo } = data;
+    
+    dependencies.forEach(dependency => {
+      const taskFrom = tasksInfo.find(task => task.taskID === dependency.fromID);
+      const taskTo = tasksInfo.find(task => task.taskID === dependency.toID);
+
+      if (!taskFrom || !taskTo) {
+        return;
+      }
+
+      if (taskFrom.taskID === taskTo.taskID) {
+        return;
+      }
+
+      let x1 = taskFrom.offset + taskFrom.width;
+      let y1 = 40 * taskFrom.rowID - 40 / 2;
+      let x2: number;
+
+      const fromFirstLine = {
+        x1,
+        y1,
+        x2: x1 + FIRST_LINE_WIDTH,
+        y2: y1
+      };
+
+      x1 = taskTo.offset - FIRST_LINE_WIDTH;
+      y1 = 40 * taskTo.rowID - 40 / 2;
+
+      const toFirstLine = {
+        x1,
+        y1,
+        x2: x1 + FIRST_LINE_WIDTH,
+        y2: y1,
+        hasArrow: true
+      };
+
+      x1 = taskTo.offset - FIRST_LINE_WIDTH;
+      y1 = 40 * taskFrom.rowID;
+
+      if (taskFrom.rowID > taskTo.rowID) {
+        y1 -= 40;
+      }
+
+      const horizontalLine = {
+        x1: toFirstLine.x1,
+        x2: fromFirstLine.x2,
+        y1,
+        y2: y1
+      };
+
+      const leftVerticalLine = {
+        x1: horizontalLine.x1,
+        y1: horizontalLine.y1,
+        x2: x1,
+        y2: toFirstLine.y1
+      };
+
+      const rightVerticalLine = {
+        x1: fromFirstLine.x2,
+        y1: fromFirstLine.y2,
+        x2: horizontalLine.x2,
+        y2: horizontalLine.y2
+      };
+    
+      lines.push(fromFirstLine);
+      lines.push(toFirstLine);
+      lines.push(horizontalLine);
+      lines.push(leftVerticalLine);
+      lines.push(rightVerticalLine);
+    });
 
     return lines;
   }

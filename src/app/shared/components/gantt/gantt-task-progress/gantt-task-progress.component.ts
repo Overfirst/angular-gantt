@@ -23,6 +23,10 @@ export class GanttTaskProgressComponent {
   }
 
   @Input() public set data(data: TaskProgressInput) {
+    if (this.data && (this.data.period === data.period)) {
+      return;
+    }
+    
     this._data = data;
     const task = this.data.taskInfo.task;
 

@@ -186,7 +186,12 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   public taskProgressDataChanged(data: TaskTimelineData): void {  
-    console.log('taskProgressDataChanged', data);
+    const idx = this.tasksTimelineData.findIndex(task => data.taskID === task.taskID);
+
+    if (idx !== -1) {
+      this.tasksTimelineData.splice(idx, 1);
+    }
+
     this.tasksTimelineData.push(data);
   }
 }

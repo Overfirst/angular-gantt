@@ -13,9 +13,12 @@ export class GanttDependenciesComponent {
   private _data: GanttDependenciesData;
 
   @Input() public set data(data: GanttDependenciesData) {
-    this._data = data;
-    console.log('data set:', data);
+    if (this.data && data.tasksInfo === this.data.tasksInfo && data.dependencies === this.data.dependencies && data.period === this.data.period) {
+      return;
+    }
 
+    this._data = data;
+    console.log('dependencies data set:', data);
     this.computeDependencies();
   }
 

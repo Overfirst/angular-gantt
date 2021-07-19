@@ -31,4 +31,8 @@ export class GanttDependenciesComponent {
   public get data() {
     return this._data;
   }
+
+  public getLineArrowPoints(line: GanttLine): string {
+    return this.service.getLineArrowPoints(line);
+  }
 }

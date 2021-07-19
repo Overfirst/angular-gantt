@@ -348,4 +348,28 @@ export class GanttService {
 
     return lines;
   }
+
+  public getLineArrowPoints(line: GanttLine): string {
+    const width = 6;
+    const height = 8;
+
+    let x1 = 0;
+    let y1 = -height / 2;
+
+    let x2 = width;
+    let y2 = 0;
+    
+    let x3 = 0;
+    let y3 = height / 2;
+
+    x1 += line.x2 - width + 1;
+    x2 += line.x2 - width + 1;
+    x3 += line.x2 - width + 1;
+
+    y1 += line.y1;
+    y2 += line.y1;
+    y3 += line.y1;
+
+    return `${x1}, ${y1} ${x2}, ${y2} ${x3}, ${y3}`;
+  }
 }

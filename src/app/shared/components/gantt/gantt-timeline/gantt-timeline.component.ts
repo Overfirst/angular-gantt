@@ -115,10 +115,13 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   private initScrollCallbacks(): void {
     const mainTable = this.mainTable.nativeElement;
+    const header = this.header.nativeElement;
+
+    header.onwheel = (event: WheelEvent) => event.preventDefault();
 
     mainTable.onwheel = (event: WheelEvent) => {
       if (event.shiftKey) {
-        this.header.nativeElement.scrollLeft = this.header.nativeElement.scrollLeft + event.deltaY;
+        header.scrollLeft = this.header.nativeElement.scrollLeft + event.deltaY;
         return;
       }
 
@@ -133,7 +136,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
       this.clearScrollSubscription();
       
       this.scrollSubscription = interval(5).subscribe(() => {
-        this.header.nativeElement.scrollLeft = this.mainTable.nativeElement.scrollLeft;
+        header.scrollLeft = this.mainTable.nativeElement.scrollLeft;
 
         const scrollEvent: GanttScrollSyncEvent = {
           scrollValue: this.mainTable.nativeElement.scrollTop

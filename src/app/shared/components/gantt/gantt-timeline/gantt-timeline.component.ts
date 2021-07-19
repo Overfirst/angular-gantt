@@ -23,6 +23,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('header') header: ElementRef<HTMLElement>;
   @ViewChild('mainTable') mainTable: ElementRef<HTMLElement>;
+  @ViewChild('tasksProgressTable') tasksProgressTable: ElementRef<HTMLElement>;
 
   constructor(public service: GanttService) { }
 
@@ -163,6 +164,15 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
       period: this.period
     };
   }
+
+  public getMainTableWidth(): number {
+    return this.tasksProgressTable.nativeElement.clientWidth;
+  }
+
+  public getMainTableHeight(): number {
+    return this.tasksProgressTable.nativeElement.clientHeight;
+  }
+
 
   public getTaskProgressData(idx: number): TaskProgressInput {
     this.showDependencies = idx === this.tasks.length - 1;

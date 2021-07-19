@@ -8,6 +8,7 @@ import { GanttDependenciesData, GanttTask, GanttTaskDependency } from 'src/app/s
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttDependenciesComponent {
+  @Input() public width = 0;
   @Input() public height = 0;
   
   private _data: GanttDependenciesData;

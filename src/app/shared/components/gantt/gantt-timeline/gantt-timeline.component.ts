@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, PeriodPart, TaskTimelineData } from '../../../interfaces';
+import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, PeriodPart, TaskProgressInput, TaskTimelineData } from '../../../interfaces';
 import { GanttService } from '../gantt.service';
 
 @Component({
@@ -153,6 +153,14 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     if (this.mainTable) {
       this.mainTable.nativeElement.scrollTop = this.scrollTopValue;
     }
+  }
+
+  public getTaskProgressDate(idx: number): TaskProgressInput {
+    return {
+      taskInfo: { task: this.tasks[idx], rowID: idx },
+      period: this.period,
+      minDate: this.periodParts[0].detail[0]
+    };
   }
 
   public selectRow(rowID: number): void {

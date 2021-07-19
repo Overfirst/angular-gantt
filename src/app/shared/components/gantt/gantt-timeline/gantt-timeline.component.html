@@ -68,7 +68,7 @@
             <tr *ngFor="let task of tasks; index as idx" >
               <td>
                 <gantt-task-progress
-                  [data]="{ taskInfo: { task: task, rowID: idx }, period: period, minDate: periodParts[0].detail[0] }"
+                  [data]="getTaskProgressDate(idx)"
                   (click)="selectRow(idx)"
                   (dataChanged)="taskProgressDataChanged($event)"
                 ></gantt-task-progress>

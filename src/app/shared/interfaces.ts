@@ -47,3 +47,10 @@ export interface GanttDependenciesData {
   dependencies: GanttTaskDependency[];
   period: GanttPeriod;
 }
+
+export interface GanttLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}

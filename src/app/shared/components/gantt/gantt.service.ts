@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GanttPeriod, GanttTask, PeriodPart } from '../../interfaces';
+import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, PeriodPart } from '../../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class GanttService {
@@ -257,5 +257,11 @@ export class GanttService {
     newDate.setMilliseconds(0);
 
     return newDate;
+  }
+
+  public computeDependencies(data: GanttDependenciesData): GanttLine[] {
+    const lines: GanttLine[] = [];
+
+    return lines;
   }
 }

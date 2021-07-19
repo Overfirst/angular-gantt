@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GanttDependenciesData, GanttTask, GanttTaskDependency } from 'src/app/shared/interfaces';
+import { GanttDependenciesData, GanttLine, GanttTask, GanttTaskDependency } from 'src/app/shared/interfaces';
+import { GanttService } from '../gantt.service';
 
 @Component({
   selector: 'gantt-dependencies',
@@ -8,26 +9,19 @@ import { GanttDependenciesData, GanttTask, GanttTaskDependency } from 'src/app/s
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttDependenciesComponent {
+  constructor(private service: GanttService) {}
+
   @Input() public width = 0;
   @Input() public height = 0;
-  
-  private _data: GanttDependenciesData;
+
+  public lines: GanttLine[] = [];
 
   @Input() public set data(data: GanttDependenciesData) {
     if (this.data && data.tasksInfo === this.data.tasksInfo && data.dependencies === this.data.dependencies && data.period === this.data.period) {
       return;
     }
-
-    this._data = data;
+    
     console.log('dependencies data set:', data);
-    this.computeDependencies();
-  }
-
-  public get data() {
-    return this._data;
-  }
-
-  private computeDependencies(): void {
-
+    this.lines = this.service.computeDependencies(this.data);
   }
 }

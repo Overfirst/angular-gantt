@@ -245,8 +245,6 @@ export class GanttService {
 
   private getDifferentWeeks(first: Date, second: Date): number {
     const result = Math.abs(first.getTime() - second.getTime()) / (7 * 24 * 3600 * 1000)
-    console.log('getDifferentWeeks:', result);
-
     return result;
   }
 

@@ -55,14 +55,8 @@
         </table>
       </div>
 
-      <div #tasksProgressTable class="main-table">
-        <gantt-dependencies
-          *ngIf="showDependencies"
-          [data]="getDependenciesData()"
-          [width]="getMainTableWidth()"
-          [height]="getMainTableHeight()"
-        ></gantt-dependencies>
-        <table>
+      <div class="main-table">
+        <table #tasksProgressTable>
           <tbody>
             <tr *ngFor="let task of tasks; index as idx">
               <td>
@@ -75,6 +69,13 @@
             </tr>
           </tbody>
         </table>
+        <gantt-dependencies
+          class="dependencies"
+          *ngIf="showDependencies"
+          [data]="getDependenciesData()"
+          [width]="getMainTableWidth()"
+          [height]="getMainTableHeight()"
+        ></gantt-dependencies>
       </div>
     </div>
   </div>

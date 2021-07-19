@@ -49,6 +49,12 @@ table:first-child {
     }
 
     &:last-child {
+      display: flex;
+
+      table {
+        z-index: 10;
+      }
+
       tr, td {
         border: none;
         background: none;

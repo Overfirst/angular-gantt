@@ -56,6 +56,13 @@
       </div>
   
       <div class="main-table">
+        <gantt-dependencies
+          [data]="{
+            tasksInfo: tasksTimelineData,
+            dependencies: dependencies,
+            period: period
+          }"
+        ></gantt-dependencies>
         <table>
           <tbody>
             <tr *ngFor="let task of tasks; index as idx" >
@@ -69,13 +76,6 @@
             </tr>
           </tbody>
         </table>
-        <gantt-dependencies
-          [data]="{
-            tasksInfo: tasksTimelineData,
-            dependencies: dependencies,
-            period: period
-          }"
-        ></gantt-dependencies>
       </div>
     </div>
   </div>

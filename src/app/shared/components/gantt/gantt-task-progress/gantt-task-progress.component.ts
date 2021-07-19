@@ -24,7 +24,6 @@ export class GanttTaskProgressComponent {
 
   @Input() public set data(data: TaskProgressInput) {
     this._data = data;
-
     const task = this.data.taskInfo.task;
 
     this.progress = task.readyPercent;
@@ -33,7 +32,8 @@ export class GanttTaskProgressComponent {
 
     this.dataChanged.emit({
       rowID: this.data.taskInfo.rowID,
-      taskID: task.id, offset: this.offset,
+      taskID: task.id,
+      offset: this.offset,
       width: this.width
     });
   }

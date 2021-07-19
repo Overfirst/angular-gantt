@@ -19,6 +19,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   private scrollSubscription: Subscription;
 
   public tasksTimelineData: TaskTimelineData[] = [];
+  public showDependencies = false;
 
   @ViewChild('header') header: ElementRef<HTMLElement>;
   @ViewChild('mainTable') mainTable: ElementRef<HTMLElement>;
@@ -155,7 +156,17 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public getTaskProgressDate(idx: number): TaskProgressInput {
+  public getDependenciesData(): GanttDependenciesData {
+    return {
+      tasksInfo: this.tasksTimelineData,
+      dependencies: this.dependencies,
+      period: this.period
+    };
+  }
+
+  public getTaskProgressData(idx: number): TaskProgressInput {
+    this.showDependencies = idx === this.tasks.length - 1;
+
     return {
       taskInfo: { task: this.tasks[idx], rowID: idx },
       period: this.period,
@@ -174,7 +185,8 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public taskProgressDataChanged(data: TaskTimelineData): void {
+  public taskProgressDataChanged(data: TaskTimelineData): void {  
+    console.log('taskProgressDataChanged', data);
     this.tasksTimelineData.push(data);
   }
 }

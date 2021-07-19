@@ -54,21 +54,18 @@
           </tbody>
         </table>
       </div>
-  
+
       <div class="main-table">
         <gantt-dependencies
-          [data]="{
-            tasksInfo: tasksTimelineData,
-            dependencies: dependencies,
-            period: period
-          }"
+          *ngIf="showDependencies"
+          [data]="getDependenciesData()"
         ></gantt-dependencies>
         <table>
           <tbody>
-            <tr *ngFor="let task of tasks; index as idx" >
+            <tr *ngFor="let task of tasks; index as idx">
               <td>
                 <gantt-task-progress
-                  [data]="getTaskProgressDate(idx)"
+                  [data]="getTaskProgressData(idx)"
                   (click)="selectRow(idx)"
                   (dataChanged)="taskProgressDataChanged($event)"
                 ></gantt-task-progress>

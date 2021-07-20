@@ -9,13 +9,13 @@
           <col style="width: 110px;">
         </colgroup>
         <thead>
-          <tr>
+          <tr rowHeight>
             <td nowrap rowspan="2">Tasks</td>
             <td nowrap rowspan="2">Actual start date</td>
             <td nowrap rowspan="2">Actual end date</td>
             <td nowrap rowspan="2">% Complete</td>
           </tr>
-          <tr></tr>
+          <tr rowHeight></tr>
         </thead>
       </table>
     </div>
@@ -29,16 +29,18 @@
           <col style="width: 110px;">
         </colgroup>
         <tbody>
-          <tr
-            *ngFor="let task of tasks; index as idx"
-            (click)="selectRow(idx)"
-            [class.active-row]="activeRowID === idx"
-          >
-            <td nowrap>{{ task.name }}</td>
-            <td class="date-td" (click)="dateClick(task.startDate)" nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-            <td class="date-td" (click)="dateClick(task.endDate)" nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-            <td nowrap>{{ task.readyPercent }}</td>
-          </tr>
+          <ng-container *ngFor="let task of tasks; index as idx">
+            <tr
+              rowHeight
+              (click)="selectRow(idx)"
+              [class.active-row]="activeRowID === idx"
+            >
+              <td nowrap>{{ task.name }}</td>
+              <td class="date-td" (click)="dateClick(task.startDate)" nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+              <td class="date-td" (click)="dateClick(task.endDate)" nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
+              <td nowrap>{{ task.readyPercent }}</td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>

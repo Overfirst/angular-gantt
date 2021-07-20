@@ -3,6 +3,8 @@ import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, PeriodPart } 
 
 @Injectable({ providedIn: 'root' })
 export class GanttService {
+  public readonly rowHeight = 40;
+
   private weekStart(date: Date): Date {
     const newDate = new Date(date);
     newDate.setDate(date.getDate() - date.getDay() + (date.getDay() == 0 ? -6 : 1))
@@ -260,17 +262,17 @@ export class GanttService {
   }
 
   public computeDependencies(data: GanttDependenciesData): GanttLine[] {
-    let FIRST_LINE_WIDTH: number;
+    let firstLineWidth: number;
 
     switch (data.period) {
       case 'Day':
-        FIRST_LINE_WIDTH = 48;
+        firstLineWidth = 48;
         break;
       case 'Week':
-        FIRST_LINE_WIDTH = 24;
+        firstLineWidth = 24;
         break;
       case 'Month':
-        FIRST_LINE_WIDTH = 16;
+        firstLineWidth = 16;
         break;
     }
 
@@ -290,32 +292,31 @@ export class GanttService {
       }
 
       let x1 = taskFrom.offset + taskFrom.width;
-      let y1 = 40 * taskFrom.rowID - 40 / 2;
-      let x2: number;
+      let y1 = this.rowHeight * taskFrom.rowID - this.rowHeight / 2;
 
       const fromFirstLine = {
         x1,
         y1,
-        x2: x1 + FIRST_LINE_WIDTH,
+        x2: x1 + firstLineWidth,
         y2: y1
       };
 
-      x1 = taskTo.offset - FIRST_LINE_WIDTH;
-      y1 = 40 * taskTo.rowID - 40 / 2;
+      x1 = taskTo.offset - firstLineWidth;
+      y1 = this.rowHeight * taskTo.rowID - this.rowHeight / 2;
 
       const toFirstLine = {
         x1,
         y1,
-        x2: x1 + FIRST_LINE_WIDTH,
+        x2: x1 + firstLineWidth,
         y2: y1,
         hasArrow: true
       };
 
-      x1 = taskTo.offset - FIRST_LINE_WIDTH;
-      y1 = 40 * taskFrom.rowID;
+      x1 = taskTo.offset - firstLineWidth;
+      y1 = this.rowHeight * taskFrom.rowID;
 
       if (taskFrom.rowID > taskTo.rowID) {
-        y1 -= 40;
+        y1 -= this.rowHeight;
       }
 
       const horizontalLine = {

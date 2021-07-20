@@ -9,6 +9,8 @@ import { GanttTimelineComponent } from '../shared/components/gantt/gantt-timelin
 import { GanttTaskProgressComponent } from '../shared/components/gantt/gantt-task-progress/gantt-task-progress.component';
 import { GanttDependenciesComponent } from '../shared/components/gantt/gantt-dependencies/gantt-dependencies.component';
 
+import { RowHeightDirective } from '../shared/directives/row-height.directive';
+
 @NgModule({
   imports: [SharedModule],
   declarations: [
@@ -17,7 +19,8 @@ import { GanttDependenciesComponent } from '../shared/components/gantt/gantt-dep
       GanttPeriodsComponent,
       GanttTimelineComponent,
       GanttTaskProgressComponent,
-      GanttDependenciesComponent
+      GanttDependenciesComponent,
+      RowHeightDirective
   ],
   exports: [
       GanttComponent,

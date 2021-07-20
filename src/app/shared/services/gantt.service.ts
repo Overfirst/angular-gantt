@@ -396,4 +396,26 @@ export class GanttService {
 
     return `${x1}, ${y1} ${x2}, ${y2} ${x3}, ${y3}`;
   }
+
+  public searchRow(needRow: GanttTaskRow | null, rows: GanttTaskRow[]): GanttTaskRow | null {
+    let result: GanttTaskRow | null = null;
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+
+      if (row === needRow) {
+        result = row;
+        break;
+      }
+
+      if (row?.childs) {
+        result = this.searchRow(needRow, row.childs);
+        if (result === needRow) {
+          break;
+        }
+      }
+    }
+    
+    return result;
+  }
 }

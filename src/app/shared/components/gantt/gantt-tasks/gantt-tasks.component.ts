@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfaces';
 
 @Component({
@@ -8,6 +9,8 @@ import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfac
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttTasksComponent implements AfterViewInit {
+  constructor(private service: GanttService) {}
+
   @ViewChild('table') private table: ElementRef<any>;
 
   @Input() public tasks: GanttTaskRow[] = [];
@@ -47,29 +50,7 @@ export class GanttTasksComponent implements AfterViewInit {
   }
 
   public selectRow(needRow: GanttTaskRow | null): void {
-    const searchRow = (rows: GanttTaskRow[]): GanttTaskRow | null => {
-      let result: GanttTaskRow | null = null;
-
-      for (let i = 0; i < this.tasks.length; i++) {
-        const row = rows[i];
-
-        if (row === needRow) {
-          result = row;
-          break;
-        }
-
-        if (row?.childs) {
-          result = searchRow(row.childs);
-          if (result === needRow) {
-            break;
-          }
-        }
-      }
-      
-      return result;
-    }
-
-    this.activeRow = searchRow(this.tasks);
+    this.activeRow = this.service.searchRow(needRow, this.tasks);
     this.rowChanged.emit(this.activeRow);
   }
 

@@ -29,19 +29,6 @@
           <col style="width: 110px;">
         </colgroup>
         <tbody>
-          <!-- <ng-container *ngFor="let task of tasks; index as idx">
-            <tr
-              rowHeight
-              (click)="selectRow(idx)"
-              [class.active-row]="activeRowID === idx"
-            >
-              <td nowrap>{{ task.name }}</td>
-              <td class="date-td" (click)="dateClick(task.startDate)" nowrap>{{ task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-              <td class="date-td" (click)="dateClick(task.endDate)" nowrap>{{ task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-              <td nowrap>{{ task.readyPercent }}</td>
-            </tr>
-          </ng-container> -->
-
           <ng-template #recursiveTemplate let-tasks let-level="level">
             <ng-container *ngFor="let taskRow of tasks; index as idx">
               <tr

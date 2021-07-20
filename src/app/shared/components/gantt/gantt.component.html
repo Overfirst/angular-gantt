@@ -10,6 +10,7 @@
       (onScroll)="tasksOnScroll($event)"
       (rowChanged)="changeRow($event)"
       (dateClicked)="tasksDateClick($event)"
+      (openCloseClicked)="openCloseClicked($event)"
     ></gantt-tasks>
   </div>
 
@@ -17,15 +18,14 @@
     <gantt-timeline
       [contentHeight]="contentHeight"
       [width]="timelineWidth"
-      [tasks]="tasks"
+      [tasksRows]="tasksRows"
       [dependencies]="dependencies"
       [scrollTop]="timelineScrollTop"
+      [activeRow]="activeRow"
       [period]="period"
       [selectedDate]="selectedDate"
       (onScroll)="timelineOnScroll($event)"
+      (rowChanged)="changeRow($event)"
     ></gantt-timeline>
-<!-- 
-    [activeRowID]="activeRowID"
-    (rowChanged)="changeRow($event)" -->
   </div>
 </div>

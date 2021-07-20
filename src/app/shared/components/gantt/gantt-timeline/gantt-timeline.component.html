@@ -1,5 +1,5 @@
 <div [style.width]="width + 'px'" class="gantt-timeline">
-  <div (click)="selectRow(-1)" #header class="timeline-header">
+  <div (click)="selectRow(null)" #header class="timeline-header">
     <table>
       <thead>
         <tr rowHeight>
@@ -39,20 +39,29 @@
       <div class="main-table">
         <table>
           <tbody>
-            <ng-container *ngFor="let task of tasks; index as idx">
-              <tr
-                rowHeight
-                (click)="selectRow(idx)"
-                [class.active-row]="activeRowID === idx"
-              >
-              <ng-container *ngFor="let part of periodParts">
-                <td
-                  *ngFor="let detail of part.detail"
-                  nowrap
-                >&nbsp;</td>
-              </ng-container>
-            </tr>
-            </ng-container>
+            <ng-template #recursiveTemplate1 let-tasks let-level="level">
+              <ng-container *ngFor="let taskRow of tasks; index as idx">
+                <tr
+                  rowHeight
+                  (click)="selectRow(taskRow)"
+                  [class.active-row]="activeRow === taskRow"
+                >
+                <ng-container *ngFor="let part of periodParts">
+                  <td
+                    *ngFor="let detail of part.detail"
+                    nowrap
+                  >&nbsp;</td>
+                </ng-container>
+                </tr>
+                 <ng-container *ngIf="taskRow.childs && taskRow.opened">
+                   <ng-container *ngTemplateOutlet="recursiveTemplate1; context: {$implicit: taskRow.childs}">
+                   </ng-container>
+                 </ng-container>
+               </ng-container>
+             </ng-template>
+  
+             <ng-container *ngTemplateOutlet="recursiveTemplate1; context: {$implicit: tasksRows}">
+             </ng-container>
           </tbody>
         </table>
       </div>
@@ -60,7 +69,7 @@
       <div class="main-table">
         <table #tasksProgressTable>
           <tbody>
-            <ng-container *ngFor="let task of tasks; index as idx">
+            <!-- <ng-container *ngFor="let task of tasks; index as idx">
               <tr rowHeight>
                 <td>
                   <gantt-task-progress
@@ -70,9 +79,10 @@
                   ></gantt-task-progress>
                 </td>
               </tr>
-            </ng-container>
+            </ng-container> -->
           </tbody>
         </table>
+
         <gantt-dependencies
           class="dependencies"
           *ngIf="showDependencies"

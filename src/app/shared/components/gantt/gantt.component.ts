@@ -27,7 +27,6 @@ export class GanttComponent implements AfterViewInit {
   }
 
   @Input() public dependencies: GanttTaskDependency[] = [];
-
   @Input() public contentHeight = 500;
 
   public tasksRows: GanttTaskRow[] = [];
@@ -75,5 +74,9 @@ export class GanttComponent implements AfterViewInit {
 
   public tasksDateClick(date: Date): void {
     this.selectedDate = new Date(date);
+  }
+
+  public openCloseClicked(row: GanttTaskRow | null): void {
+    this.tasksRows = [...this.tasksRows];
   }
 }

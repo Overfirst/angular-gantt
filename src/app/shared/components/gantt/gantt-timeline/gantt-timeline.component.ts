@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, PeriodPart, TaskProgressInput, TaskTimelineData } from '../../../interfaces';
+import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow, PeriodPart, TaskProgressInput, TaskTimelineData } from '../../../interfaces';
 import { GanttService } from '../../../services/gantt.service';
 
 @Component({
@@ -14,6 +14,8 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   public periodParts: PeriodPart[];
 
   private selectedPeriod: GanttPeriod = 'Week';
+
+  private tasksRowsList: GanttTaskRow[] = [];
   private tasksList: GanttTask[] = [];
 
   private scrollSubscription: Subscription;
@@ -28,9 +30,18 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   constructor(public service: GanttService) { }
 
   @Input() public contentHeight = 500;
-  @Input() public activeRowID = -1;
+  @Input() public activeRow: GanttTaskRow | null = null;
 
-  @Input() public set tasks(tasks: GanttTask[]) {
+  @Input() public set tasksRows(tasksRows: GanttTaskRow[]) {
+    this.tasksRowsList = tasksRows;
+    this.tasks = tasksRows.map(taskRow => taskRow.task);
+  }
+
+  public get tasksRows() {
+    return this.tasksRowsList;
+  }
+
+  public set tasks(tasks: GanttTask[]) {
     this.tasksList = tasks;
     this.recalculatePeriodParts();
   }
@@ -88,7 +99,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   @Input() public dependencies: GanttTaskDependency[] = [];
   
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>()
-  @Output() public rowChanged = new EventEmitter<number>();
+  @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
 
   public ngAfterViewInit(): void {
     this.initScrollCallbacks();
@@ -184,9 +195,9 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  public selectRow(rowID: number): void {
-    this.activeRowID = rowID;
-    this.rowChanged.emit(this.activeRowID);
+  public selectRow(rows: GanttTaskRow | null): void {
+    this.activeRow = rows;
+    this.rowChanged.emit(this.activeRow);
   }
 
   private clearScrollSubscription(): void {

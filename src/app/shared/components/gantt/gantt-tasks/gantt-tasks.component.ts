@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfaces';
 
@@ -32,6 +32,7 @@ export class GanttTasksComponent implements AfterViewInit {
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>();
   @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
   @Output() public dateClicked = new EventEmitter<Date>();
+  @Output() public openCloseClicked = new EventEmitter<GanttTaskRow | null>();
 
   private updateScrollPosition(): void {
     if (this.table) {
@@ -62,6 +63,8 @@ export class GanttTasksComponent implements AfterViewInit {
     if (this.rowHasChilds(row)) {
       row.opened = !row.opened
     }
+
+    this.openCloseClicked.emit(row);
   }
 
   public getRowOpenSymbol(row: GanttTaskRow): string {

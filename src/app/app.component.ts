@@ -74,8 +74,17 @@ export class AppComponent {
       startDate: new Date(2021, 5, 5, 16, 0),
       endDate: new Date(2021, 5, 18, 4, 35),
       readyPercent: 51,
-      color: '#5096a2'
-    }
+      color: '#c70f5c'
+    },
+    {
+      ID: 10,
+      parentID: 7,
+      name: 'Add horizontal scroll',
+      startDate: new Date(2021, 5, 4, 5, 44),
+      endDate: new Date(2021, 5, 8, 4, 35),
+      readyPercent: 68,
+      color: '#ff7615'
+    },
   ];
 
   public dependencies: GanttTaskDependency[] = [

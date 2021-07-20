@@ -43,7 +43,7 @@
           </ng-container> -->
 
           <ng-template #recursiveTemplate let-tasks let-level="level">
-            <ng-container *ngFor="let taskRow of tasks; index as idx">
+            <ng-container *ngFor="let taskRow of tasksRows; index as idx">
               <tr
                 rowHeight
                 (click)="selectRow(taskRow)"
@@ -69,7 +69,7 @@
              </ng-container>
            </ng-template>
 
-           <ng-container *ngTemplateOutlet="recursiveTemplate; context: {$implicit: tasks, level: 0}">
+           <ng-container *ngTemplateOutlet="recursiveTemplate; context: {$implicit: tasksRows, level: 0}">
            </ng-container>
         </tbody>
       </table>

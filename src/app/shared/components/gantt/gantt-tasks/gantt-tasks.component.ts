@@ -13,7 +13,7 @@ export class GanttTasksComponent implements AfterViewInit {
 
   @ViewChild('table') private table: ElementRef<any>;
 
-  @Input() public tasks: GanttTaskRow[] = [];
+  @Input() public tasksRows: GanttTaskRow[] = [];
   @Input() public contentHeight = 500;
   @Input() public activeRow: GanttTaskRow | null = null;
 
@@ -50,7 +50,7 @@ export class GanttTasksComponent implements AfterViewInit {
   }
 
   public selectRow(needRow: GanttTaskRow | null): void {
-    this.activeRow = this.service.searchRow(needRow, this.tasks);
+    this.activeRow = this.service.searchRow(needRow, this.tasksRows);
     this.rowChanged.emit(this.activeRow);
   }
 

@@ -19,8 +19,8 @@ export class AppComponent {
     {
       ID: 2,
       name: 'Fix angular-grid bugs',
-      startDate: new Date(2021, 7, 1, 12),
-      endDate: new Date(2021, 12, 9, 13),
+      startDate: new Date(2021, 5, 1, 12),
+      endDate: new Date(2021, 9, 9, 13),
       readyPercent: 71,
       color: '#5a63cf'
     },
@@ -41,14 +41,6 @@ export class AppComponent {
       color: '#8c22f6'
     },
     {
-      ID: 5,
-      name: 'Wait teamlead from the day off',
-      startDate: new Date(2021, 5, 2, 16, 45),
-      endDate: new Date(2021, 5, 16, 12, 30),
-      readyPercent: 61,
-      color: '#05e9f4'
-    },
-    {
       ID: 6,
       parentID: 1,
       name: 'Create tasks table',
@@ -61,7 +53,7 @@ export class AppComponent {
       ID: 7,
       parentID: 1,
       name: 'Create timeline table',
-      startDate: new Date(2021, 5, 2, 12, 0),
+      startDate: new Date(2021, 5, 2, 5, 44),
       endDate: new Date(2021, 5, 9, 4, 35),
       readyPercent: 68,
       color: '#2c2628'
@@ -69,12 +61,21 @@ export class AppComponent {
     {
       ID: 8,
       parentID: 1,
-      name: 'Create timeline table',
-      startDate: new Date(2021, 5, 5, 12, 0),
+      name: 'Create dependencies',
+      startDate: new Date(2021, 5, 5, 16, 0),
       endDate: new Date(2021, 5, 18, 4, 35),
       readyPercent: 51,
       color: '#5096a2'
     },
+    {
+      ID: 9,
+      parentID: 2,
+      name: 'Fix template with start',
+      startDate: new Date(2021, 5, 5, 16, 0),
+      endDate: new Date(2021, 5, 18, 4, 35),
+      readyPercent: 51,
+      color: '#5096a2'
+    }
   ];
 
   public dependencies: GanttTaskDependency[] = [

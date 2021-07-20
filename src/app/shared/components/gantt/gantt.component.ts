@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency } from '../../interfaces';
+import { GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow } from '../../interfaces';
 import { GanttService } from '../../services/gantt.service';
 
 @Component({
@@ -15,11 +15,22 @@ export class GanttComponent implements AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef, private service: GanttService) {}
 
-  @Input() public tasks: GanttTask[] = [];
+  private _tasks: GanttTask[];
+
+  @Input() public set tasks(tasks: GanttTask[]) {
+    this._tasks = tasks;
+    this.tasksRows = this.service.getTasksRows(tasks);
+  }
+
+  public get tasks() {
+    return this._tasks;
+  }
+
   @Input() public dependencies: GanttTaskDependency[] = [];
 
   @Input() public contentHeight = 500;
 
+  public tasksRows: GanttTaskRow[] = [];
   public selectedDate: Date;
 
   public tasksScrollTop = 0;
@@ -28,7 +39,7 @@ export class GanttComponent implements AfterViewInit {
   public period: GanttPeriod;
   public timelineWidth = 0;
 
-  public activeRowID = -1;
+  public activeRow: GanttTaskRow | null = null;
 
   public ngAfterViewInit(): void {
     this.calculateWidth();
@@ -58,8 +69,8 @@ export class GanttComponent implements AfterViewInit {
     this.tasksScrollTop = event.scrollValue;
   }
 
-  public changeRow(rowID: number): void {
-    this.activeRowID = rowID;
+  public changeRow(row: GanttTaskRow | null): void {
+    this.activeRow = row;
   }
 
   public tasksDateClick(date: Date): void {

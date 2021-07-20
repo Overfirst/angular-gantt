@@ -4,9 +4,9 @@
   <div #tasksRef>
     <gantt-tasks
       [contentHeight]="contentHeight"
-      [tasks]="tasks"
+      [tasks]="tasksRows"
       [scrollTop]="tasksScrollTop"
-      [activeRowID]="activeRowID"
+      [activeRow]="activeRow"
       (onScroll)="tasksOnScroll($event)"
       (rowChanged)="changeRow($event)"
       (dateClicked)="tasksDateClick($event)"
@@ -20,11 +20,12 @@
       [tasks]="tasks"
       [dependencies]="dependencies"
       [scrollTop]="timelineScrollTop"
-      [activeRowID]="activeRowID"
       [period]="period"
       [selectedDate]="selectedDate"
       (onScroll)="timelineOnScroll($event)"
-      (rowChanged)="changeRow($event)"
     ></gantt-timeline>
+<!-- 
+    [activeRowID]="activeRowID"
+    (rowChanged)="changeRow($event)" -->
   </div>
 </div>

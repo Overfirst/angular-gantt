@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { GanttScrollSyncEvent, GanttTask } from '../../../interfaces';
+import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfaces';
 
 @Component({
   selector: 'gantt-tasks',
@@ -10,9 +10,9 @@ import { GanttScrollSyncEvent, GanttTask } from '../../../interfaces';
 export class GanttTasksComponent implements AfterViewInit {
   @ViewChild('table') private table: ElementRef<any>;
 
-  @Input() public tasks: GanttTask[] = [];
+  @Input() public tasks: GanttTaskRow[] = [];
   @Input() public contentHeight = 500;
-  @Input() public activeRowID = -1;
+  @Input() public activeRow: GanttTaskRow | null = null;
 
   private scrollTopValue = 0;
 
@@ -27,7 +27,7 @@ export class GanttTasksComponent implements AfterViewInit {
   }
 
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>();
-  @Output() public rowChanged = new EventEmitter<number>();
+  @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
   @Output() public dateClicked = new EventEmitter<Date>();
 
   private updateScrollPosition(): void {
@@ -46,9 +46,49 @@ export class GanttTasksComponent implements AfterViewInit {
     }
   }
 
-  public selectRow(rowID: number): void {
-    this.activeRowID = rowID;
-    this.rowChanged.emit(this.activeRowID);
+  public selectRow(needRow: GanttTaskRow | null): void {
+    const searchRow = (rows: GanttTaskRow[]): GanttTaskRow | null => {
+      let result: GanttTaskRow | null = null;
+
+      for (let i = 0; i < this.tasks.length; i++) {
+        const row = rows[i];
+
+        if (row === needRow) {
+          result = row;
+          break;
+        }
+
+        if (row?.childs) {
+          result = searchRow(row.childs);
+          if (result === needRow) {
+            break;
+          }
+        }
+      }
+      
+      return result;
+    }
+
+    this.activeRow = searchRow(this.tasks);
+    this.rowChanged.emit(this.activeRow);
+  }
+
+  private rowHasChilds(row: GanttTaskRow): boolean {
+    return !!row.childs && row.childs.length > 0;
+  }
+
+  public rowOpenCloseClicked(row: GanttTaskRow): void {
+    if (this.rowHasChilds(row)) {
+      row.opened = !row.opened
+    }
+  }
+
+  public getRowOpenSymbol(row: GanttTaskRow): string {
+    if (!this.rowHasChilds(row)) {
+      return ' '
+    }
+
+    return row.opened ? '▾' : '▸';
   }
 
   public dateClick(date: Date): void {

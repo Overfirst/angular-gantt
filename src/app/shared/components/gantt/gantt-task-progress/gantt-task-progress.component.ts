@@ -36,7 +36,7 @@ export class GanttTaskProgressComponent {
 
     this.dataChanged.emit({
       rowID: this.data.taskInfo.rowID,
-      taskID: task.id,
+      taskID: task.ID,
       offset: this.offset,
       width: this.width
     });

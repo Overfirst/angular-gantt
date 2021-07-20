@@ -1,9 +1,32 @@
 import { Injectable } from '@angular/core';
-import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, PeriodPart } from '../interfaces';
+import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, GanttTaskRow, PeriodPart } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class GanttService {
   public readonly rowHeight = 40;
+
+  public getTasksRows(tasks: GanttTask[]): GanttTaskRow[] {
+    const createTasksRows = (tasks: GanttTask[], parentID: number | null): GanttTaskRow[] => {
+      const rows: GanttTaskRow[] = [];
+
+      tasks.forEach(task => {
+        if (task.parentID === undefined) {
+          task.parentID = null;
+        }
+
+        if (task.parentID === parentID) {
+          rows.push({
+            task,
+            childs: createTasksRows(tasks, task.ID)
+          });
+        }
+      });      
+
+      return rows;
+    };
+
+    return createTasksRows(tasks, null);
+  }
 
   private weekStart(date: Date): Date {
     const newDate = new Date(date);

@@ -4,7 +4,8 @@ export interface GanttTaskDependency {
 }
 
 export interface GanttTask {
-  id: number;
+  ID: number;
+  parentID?: number | null;
   name: string;
   startDate: Date;
   endDate: Date;
@@ -54,4 +55,10 @@ export interface GanttLine {
   x2: number;
   y2: number;
   hasArrow?: boolean;
+}
+
+export interface GanttTaskRow {
+  task: GanttTask;
+  childs?: GanttTaskRow[];
+  opened?: boolean;
 }

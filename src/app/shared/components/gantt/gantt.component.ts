@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency } from '../../interfaces';
+import { GanttService } from '../../services/gantt.service';
 
 @Component({
   selector: 'app-gantt',
@@ -12,7 +13,7 @@ export class GanttComponent implements AfterViewInit {
   @ViewChild('tasksRef') public tasksRef: ElementRef<HTMLElement>;
   @ViewChild('timelineRef') public timelineRef: ElementRef<HTMLElement>;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private service: GanttService) {}
 
   @Input() public tasks: GanttTask[] = [];
   @Input() public dependencies: GanttTaskDependency[] = [];

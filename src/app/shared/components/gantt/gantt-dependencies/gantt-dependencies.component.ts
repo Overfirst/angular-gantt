@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { GanttDependenciesData, GanttLine, GanttTask, GanttTaskDependency } from 'src/app/shared/interfaces';
-import { GanttService } from '../gantt.service';
+import { GanttService } from '../../../services/gantt.service';
 
 @Component({
   selector: 'gantt-dependencies',

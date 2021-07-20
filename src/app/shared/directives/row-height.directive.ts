@@ -1,5 +1,5 @@
 import { Directive, ElementRef } from '@angular/core';
-import { GanttService } from '../components/gantt/gantt.service';
+import { GanttService } from '../services/gantt.service';
 
 @Directive({
   selector: '[rowHeight]'

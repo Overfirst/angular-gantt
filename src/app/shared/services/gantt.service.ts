@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, PeriodPart } from '../../interfaces';
+import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, PeriodPart } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class GanttService {

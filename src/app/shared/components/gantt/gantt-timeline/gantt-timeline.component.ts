@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, After
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, PeriodPart, TaskProgressInput, TaskTimelineData } from '../../../interfaces';
-import { GanttService } from '../gantt.service';
+import { GanttService } from '../../../services/gantt.service';
 
 @Component({
   selector: 'gantt-timeline',

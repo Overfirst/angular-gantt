@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { TaskProgressInput, TaskTimelineData } from 'src/app/shared/interfaces';
-import { GanttService } from '../gantt.service';
+import { GanttService } from '../../../services/gantt.service';
 
 @Component({
   selector: 'gantt-task-progress',

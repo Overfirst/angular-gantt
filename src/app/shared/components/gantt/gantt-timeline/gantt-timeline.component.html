@@ -80,16 +80,36 @@
                 </td>
               </tr>
             </ng-container> -->
+            <ng-template #recursiveTemplate2 let-tasks>
+              <ng-container *ngFor="let taskRow of tasks">
+                <tr rowHeight>
+                  <td>
+                    <gantt-task-progress
+                      [data]="getTaskProgressData(taskRow)"
+                      (click)="selectRow(taskRow)"
+                      (dataChanged)="taskProgressDataChanged($event)"
+                    ></gantt-task-progress>
+                  </td>
+                </tr>
+                 <ng-container *ngIf="taskRow.childs && taskRow.opened">
+                   <ng-container *ngTemplateOutlet="recursiveTemplate2; context: {$implicit: taskRow.childs}">
+                   </ng-container>
+                 </ng-container>
+               </ng-container>
+             </ng-template>
+  
+             <ng-container *ngTemplateOutlet="recursiveTemplate2; context: {$implicit: tasksRows}">
+             </ng-container>
           </tbody>
         </table>
 
-        <gantt-dependencies
+        <!-- <gantt-dependencies
           class="dependencies"
           *ngIf="showDependencies"
           [data]="getDependenciesData()"
           [width]="getMainTableWidth()"
           [height]="getMainTableHeight()"
-        ></gantt-dependencies>
+        ></gantt-dependencies> -->
       </div>
     </div>
   </div>

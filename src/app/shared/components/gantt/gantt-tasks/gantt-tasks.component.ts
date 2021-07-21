@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfaces';
 
@@ -9,7 +9,7 @@ import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfac
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttTasksComponent implements AfterViewInit {
-  constructor(private service: GanttService, private ngZone: NgZone) {}
+  constructor(private service: GanttService) {}
 
   @ViewChild('table') private table: ElementRef<any>;
 
@@ -25,7 +25,7 @@ export class GanttTasksComponent implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.ngZone.runOutsideAngular(() => this.initScrollCallbacks());
+    this.initScrollCallbacks();
     this.updateScrollPosition();
   }
 
@@ -61,7 +61,7 @@ export class GanttTasksComponent implements AfterViewInit {
 
   public rowOpenCloseClicked(event: MouseEvent, row: GanttTaskRow): void {
     event.stopImmediatePropagation();
-
+    
     if (this.rowHasChilds(row)) {
       row.opened = !row.opened
     }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter, NgZone } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { GanttDependenciesData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow, PeriodPart, TaskProgressInput, TaskTimelineData } from '../../../interfaces';
@@ -27,7 +27,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mainTable') mainTable: ElementRef<HTMLElement>;
   @ViewChild('tasksProgressTable') tasksProgressTable: ElementRef<HTMLElement>;
 
-  constructor(public service: GanttService, private ngZone: NgZone) { }
+  constructor(public service: GanttService) { }
 
   @Input() public contentHeight = 500;
   @Input() public activeRow: GanttTaskRow | null = null;
@@ -102,8 +102,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
 
   public ngAfterViewInit(): void {
-    this.showDependencies = true;
-    this.ngZone.runOutsideAngular(() => this.initScrollCallbacks());
+    this.initScrollCallbacks();
     this.updateScrollPosition();
   }
 
@@ -124,7 +123,6 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   private recalculatePeriodParts(): void {
-    console.log('recalculatePeriodParts');
     this.periodParts = this.service.calculatePeriodParts(this.selectedPeriod, this.tasks);
   }
 
@@ -171,8 +169,6 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   public getDependenciesData(): GanttDependenciesData {
-    console.log('getDependenciesData:', this.tasksTimelineData);
-    
     return {
       tasksInfo: this.tasksTimelineData,
       dependencies: this.dependencies,
@@ -188,17 +184,14 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     return this.tasksProgressTable.nativeElement.clientHeight;
   }
 
-  public taskParentOpened(taskRow: GanttTaskRow): boolean {
-    return this.service.taskParentOpened(taskRow, this.tasksRows);
-  }
 
-  public getTaskProgressData(taskRow: GanttTaskRow, wrapper: HTMLElement): TaskProgressInput {
-    console.log('getTaskProgressData:', wrapper.parentElement!.offsetTop + wrapper.offsetTop + wrapper.clientHeight);
+  public getTaskProgressData(taskRow: GanttTaskRow): TaskProgressInput {
+    // this.showDependencies = idx === this.tasks.length - 1;
+
     return {
-      taskInfo: { task: taskRow.task },
+      taskInfo: { task: taskRow.task, rowID: -1 },
       period: this.period,
-      minDate: this.periodParts[0].detail[0],
-      offsetY: wrapper.parentElement!.offsetTop + wrapper.offsetTop + wrapper.clientHeight * 2.5
+      minDate: this.periodParts[0].detail[0]
     };
   }
 
@@ -213,9 +206,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public taskProgressDataChanged(data: TaskTimelineData): void {
-    console.log('taskProgressDataChanged:', data);
-    
+  public taskProgressDataChanged(data: TaskTimelineData): void {  
     const idx = this.tasksTimelineData.findIndex(task => data.taskID === task.taskID);
 
     if (idx !== -1) {

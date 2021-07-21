@@ -73,14 +73,11 @@
               <ng-container *ngFor="let taskRow of tasks">
                 <tr rowHeight>
                   <td>
-                    <div #progressWrapper>
-                      <gantt-task-progress
-                        *ngIf="taskParentOpened(taskRow)"
-                        [data]="getTaskProgressData(taskRow, progressWrapper)"
-                        (click)="selectRow(taskRow)"
-                        (dataChanged)="taskProgressDataChanged($event)"
-                      ></gantt-task-progress>
-                    </div>
+                    <gantt-task-progress
+                      [data]="getTaskProgressData(taskRow)"
+                      (click)="selectRow(taskRow)"
+                      (dataChanged)="taskProgressDataChanged($event)"
+                    ></gantt-task-progress>
                   </td>
                 </tr>
                  <ng-container *ngIf="taskRow.childs && taskRow.opened">
@@ -95,13 +92,13 @@
           </tbody>
         </table>
 
-        <gantt-dependencies
+        <!-- <gantt-dependencies
           class="dependencies"
           *ngIf="showDependencies"
           [data]="getDependenciesData()"
           [width]="getMainTableWidth()"
           [height]="getMainTableHeight()"
-        ></gantt-dependencies>
+        ></gantt-dependencies> -->
       </div>
     </div>
   </div>

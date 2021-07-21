@@ -24,7 +24,6 @@ export class GanttDependenciesComponent {
     }
 
     this._data = data;
-    console.log('dependencies data set:', data);
     this.lines = this.service.computeDependencies(this.data);
   }
 

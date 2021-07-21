@@ -39,29 +39,20 @@
       <div class="main-table">
         <table>
           <tbody>
-            <ng-template #recursiveTemplate1 let-tasks let-level="level">
-              <ng-container *ngFor="let taskRow of tasks; index as idx">
-                <tr
-                  rowHeight
-                  (click)="selectRow(taskRow)"
-                  [class.active-row]="activeRow === taskRow"
-                >
-                <ng-container *ngFor="let part of periodParts">
-                  <td
-                    *ngFor="let detail of part.detail"
-                    nowrap
-                  >&nbsp;</td>
-                </ng-container>
-                </tr>
-                 <ng-container *ngIf="taskRow.childs && taskRow.opened">
-                   <ng-container *ngTemplateOutlet="recursiveTemplate1; context: {$implicit: taskRow.childs}">
-                   </ng-container>
-                 </ng-container>
-               </ng-container>
-             </ng-template>
-  
-             <ng-container *ngTemplateOutlet="recursiveTemplate1; context: {$implicit: tasksRows}">
-             </ng-container>
+            <ng-container *ngFor="let taskRow of tasksRows; index as idx">
+              <tr
+              (click)="selectRow(taskRow)"
+              [class.active-row]="activeRow === taskRow"
+                rowHeight
+              >
+              <ng-container *ngFor="let part of periodParts">
+                <td
+                  *ngFor="let detail of part.detail"
+                  nowrap
+                >&nbsp;</td>
+              </ng-container>
+            </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
@@ -69,26 +60,17 @@
       <div class="main-table">
         <table #tasksProgressTable>
           <tbody>
-            <ng-template #recursiveTemplate2 let-tasks>
-              <ng-container *ngFor="let taskRow of tasks">
-                <tr rowHeight>
-                  <td #wrapper>
-                    <gantt-task-progress
-                      [data]="getTaskProgressData(taskRow, wrapper)"
-                      (click)="selectRow(taskRow)"
-                      (dataChanged)="taskProgressDataChanged($event)"
-                    ></gantt-task-progress>
-                  </td>
-                </tr>
-                 <ng-container *ngIf="taskRow.childs && taskRow.opened">
-                   <ng-container *ngTemplateOutlet="recursiveTemplate2; context: {$implicit: taskRow.childs}">
-                   </ng-container>
-                 </ng-container>
-               </ng-container>
-             </ng-template>
-  
-             <ng-container *ngTemplateOutlet="recursiveTemplate2; context: {$implicit: tasksRows}">
-             </ng-container>
+            <ng-container *ngFor="let taskRow of tasksRows; index as idx">
+              <tr rowHeight>
+                <td #wrapper>
+                  <gantt-task-progress
+                    [data]="getTaskProgressData(taskRow, wrapper)"
+                    (click)="selectRow(taskRow)"
+                    (dataChanged)="taskProgressDataChanged($event)"
+                  ></gantt-task-progress>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
 

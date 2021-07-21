@@ -20,6 +20,7 @@ export class GanttComponent implements AfterViewInit {
   @Input() public set tasks(tasks: GanttTask[]) {
     this._tasks = tasks;
     this.tasksRows = this.service.getTasksRows(tasks);
+    this.visibleRows = this.service.getVisibleRows(this.tasksRows);
   }
 
   public get tasks() {
@@ -79,7 +80,6 @@ export class GanttComponent implements AfterViewInit {
   }
 
   public openCloseClicked(row: GanttTaskRow | null): void {
-    this.tasksRows = [...this.tasksRows];
     this.visibleRows = this.service.getVisibleRows(this.tasksRows);
   }
 }

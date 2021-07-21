@@ -17,10 +17,11 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   private tasksRowsList: GanttTaskRow[] = [];
   private tasksList: GanttTask[] = [];
+  private tasksProgressData: TaskProgressInput[] = []
 
   private scrollSubscription: Subscription;
 
-  public tasksTimelineData: TaskTimelineData[] = [];
+  private tasksTimelineData: TaskTimelineData[] = [];
   public showDependencies = false;
 
   @ViewChild('header') header: ElementRef<HTMLElement>;
@@ -35,6 +36,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   @Input() public set tasksRows(tasksRows: GanttTaskRow[]) {
     this.tasksRowsList = tasksRows;
     this.tasks = tasksRows.map(taskRow => taskRow.task);
+    this.tasksTimelineData = this.service.updateTimelineData(this.tasksRows, this.tasksTimelineData);
   }
 
   public get tasksRows() {
@@ -186,12 +188,21 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   public getTaskProgressData(taskRow: GanttTaskRow, wrapper: HTMLElement): TaskProgressInput {
-    return {
+    const data: TaskProgressInput = {
       task: taskRow.task,
       period: this.period,
       minDate: this.periodParts[0].detail[0],
       marginTop: wrapper.offsetTop
     };
+
+    const idx = this.tasksProgressData.findIndex(currentData => currentData.task === data.task);
+    
+    if (idx !== -1) {
+      this.tasksProgressData.splice(idx, 1);
+    }
+
+    this.tasksProgressData.push(data);
+    return data;
   }
 
   public selectRow(rows: GanttTaskRow | null): void {
@@ -205,7 +216,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public taskProgressDataChanged(data: TaskTimelineData): void {  
+  public taskProgressDataChanged(data: TaskTimelineData): void {
     const idx = this.tasksTimelineData.findIndex(task => data.taskID === task.taskID);
 
     if (idx !== -1) {

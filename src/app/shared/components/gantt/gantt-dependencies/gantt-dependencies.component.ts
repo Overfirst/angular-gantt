@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GanttDependenciesData, GanttLine, GanttTask, GanttTaskDependency } from 'src/app/shared/interfaces';
+import { GanttDependenciesData, GanttLine } from 'src/app/shared/interfaces';
 import { GanttService } from '../../../services/gantt.service';
 
 @Component({
@@ -19,9 +19,9 @@ export class GanttDependenciesComponent {
   public lines: GanttLine[] = [];
 
   @Input() public set data(data: GanttDependenciesData) {
-    if (this.data && data.tasksInfo === this.data.tasksInfo && data.dependencies === this.data.dependencies && data.period === this.data.period) {
-      return;
-    }
+    // if (this.data && data.tasksInfo === this.data.tasksInfo && data.dependencies === this.data.dependencies && data.period === this.data.period) {
+    //   return;
+    // }
 
     this._data = data;
     console.log('dependencies data set:', data);

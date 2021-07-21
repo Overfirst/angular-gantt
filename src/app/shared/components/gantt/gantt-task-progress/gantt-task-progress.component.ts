@@ -15,7 +15,7 @@ export class GanttTaskProgressComponent {
   private _data: TaskProgressInput;
 
   public progress = 0;
-  public offset = 0;
+  public offsetX = 0;
   public width = 0;
 
   public get data() {
@@ -31,13 +31,13 @@ export class GanttTaskProgressComponent {
     const task = this.data.taskInfo.task;
 
     this.progress = task.readyPercent;
-    this.offset = this.service.computeDateOffset(task.startDate, data.period, data.minDate)
+    this.offsetX = this.service.computeDateOffset(task.startDate, data.period, data.minDate)
     this.width = this.service.computeTaskProgressWidth(task, data.period);
 
     this.dataChanged.emit({
-      rowID: this.data.taskInfo.rowID,
       taskID: task.ID,
-      offset: this.offset,
+      offsetX: this.offsetX,
+      offsetY: data.offsetY,
       width: this.width
     });
   }

@@ -6,6 +6,7 @@ export class GanttService {
   public readonly rowHeight = 40;
 
   public getTasksRows(tasks: GanttTask[]): GanttTaskRow[] {
+    console.log('getTasksRows');
     const createTasksRows = (tasks: GanttTask[], parentID: number | null): GanttTaskRow[] => {
       const rows: GanttTaskRow[] = [];
 
@@ -314,8 +315,8 @@ export class GanttService {
         return;
       }
 
-      let x1 = taskFrom.offset + taskFrom.width;
-      let y1 = this.rowHeight * taskFrom.rowID - this.rowHeight / 2;
+      let x1 = taskFrom.offsetX + taskFrom.width;
+      let y1 = taskFrom.offsetY - this.rowHeight / 2;
 
       const fromFirstLine = {
         x1,
@@ -324,8 +325,8 @@ export class GanttService {
         y2: y1
       };
 
-      x1 = taskTo.offset - firstLineWidth;
-      y1 = this.rowHeight * taskTo.rowID - this.rowHeight / 2;
+      x1 = taskTo.offsetX - firstLineWidth;
+      y1 = taskTo.offsetY - this.rowHeight / 2;
 
       const toFirstLine = {
         x1,
@@ -335,10 +336,10 @@ export class GanttService {
         hasArrow: true
       };
 
-      x1 = taskTo.offset - firstLineWidth;
-      y1 = this.rowHeight * taskFrom.rowID;
+      x1 = taskTo.offsetX - firstLineWidth;
+      y1 = taskFrom.offsetY;
 
-      if (taskFrom.rowID > taskTo.rowID) {
+      if (taskFrom.offsetY > taskTo.offsetY) {
         y1 -= this.rowHeight;
       }
 
@@ -417,5 +418,13 @@ export class GanttService {
     }
     
     return result;
+  }
+
+  public taskParentOpened(taskRow: GanttTaskRow, tasksRows: GanttTaskRow[]): boolean {
+    if (!taskRow.task.parentID) {
+      return true;
+    }
+
+    return true;
   }
 }

@@ -174,7 +174,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   public getDependenciesData(): GanttDependenciesData {
     return {
       tasksInfo: this.tasksTimelineData,
-      dependencies: this.dependencies,
+      dependencies: this.service.getVisibleDependencies(this.dependencies, this.tasksRows),
       period: this.period
     };
   }

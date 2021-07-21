@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, GanttTaskRow, PeriodPart, TaskTimelineData } from '../interfaces';
+import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, GanttTaskDependency, GanttTaskRow, PeriodPart, TaskTimelineData } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class GanttService {
@@ -485,5 +485,22 @@ export class GanttService {
     })
 
     return newData;
+  }
+
+  public getVisibleDependencies(dependencies: GanttTaskDependency[], tasksRows: GanttTaskRow[]): GanttTaskDependency[] {
+    const visibleDependencies: GanttTaskDependency[] = [];
+
+    dependencies.forEach(dependency => {
+      const rowTaskFrom = tasksRows.find(row => row.task.ID === dependency.fromID);
+      const rowTaskTo = tasksRows.find(row => row.task.ID === dependency.toID);
+
+      if (!rowTaskFrom || !rowTaskTo) {
+        return;
+      }
+
+      visibleDependencies.push(dependency);
+    });
+
+    return visibleDependencies;
   }
 }

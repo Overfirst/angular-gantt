@@ -102,6 +102,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
 
   public ngAfterViewInit(): void {
+    this.showDependencies = true;
     this.initScrollCallbacks();
     this.updateScrollPosition();
   }
@@ -184,14 +185,12 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     return this.tasksProgressTable.nativeElement.clientHeight;
   }
 
-
-  public getTaskProgressData(taskRow: GanttTaskRow): TaskProgressInput {
-    // this.showDependencies = idx === this.tasks.length - 1;
-
+  public getTaskProgressData(taskRow: GanttTaskRow, wrapper: HTMLElement): TaskProgressInput {
     return {
       taskInfo: { task: taskRow.task, rowID: -1 },
       period: this.period,
-      minDate: this.periodParts[0].detail[0]
+      minDate: this.periodParts[0].detail[0],
+      marginTop: wrapper.offsetTop
     };
   }
 

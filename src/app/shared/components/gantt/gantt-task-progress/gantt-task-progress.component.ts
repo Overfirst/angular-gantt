@@ -38,7 +38,8 @@ export class GanttTaskProgressComponent {
       rowID: this.data.taskInfo.rowID,
       taskID: task.ID,
       offset: this.offset,
-      width: this.width
+      width: this.width,
+      marginTop: data.marginTop
     });
   }
 

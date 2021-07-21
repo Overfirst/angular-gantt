@@ -29,6 +29,7 @@ export interface TaskProgressInput {
   taskInfo: { task: GanttTask; rowID: number; };
   period: GanttPeriod;
   minDate: Date;
+  marginTop: number;
 }
 
 export interface GanttScrollSyncEvent {
@@ -41,6 +42,7 @@ export interface TaskTimelineData {
   rowID: number;
   width: number;
   offset: number;
+  marginTop: number;
 }
 
 export interface GanttDependenciesData {

@@ -316,7 +316,7 @@ export class GanttService {
       }
 
       let x1 = taskFrom.offset + taskFrom.width;
-      let y1 = this.rowHeight * taskFrom.rowID - this.rowHeight / 2;
+      let y1 = taskFrom.marginTop + this.rowHeight / 2;
 
       const fromFirstLine = {
         x1,
@@ -326,7 +326,7 @@ export class GanttService {
       };
 
       x1 = taskTo.offset - firstLineWidth;
-      y1 = this.rowHeight * taskTo.rowID - this.rowHeight / 2;
+      y1 = taskTo.marginTop + this.rowHeight / 2;
 
       const toFirstLine = {
         x1,
@@ -337,10 +337,10 @@ export class GanttService {
       };
 
       x1 = taskTo.offset - firstLineWidth;
-      y1 = this.rowHeight * taskFrom.rowID;
+      y1 = taskTo.marginTop;
 
-      if (taskFrom.rowID > taskTo.rowID) {
-        y1 -= this.rowHeight;
+      if (taskFrom.marginTop > taskTo.marginTop) {
+        y1 += this.rowHeight;
       }
 
       const horizontalLine = {

@@ -72,9 +72,9 @@
             <ng-template #recursiveTemplate2 let-tasks>
               <ng-container *ngFor="let taskRow of tasks">
                 <tr rowHeight>
-                  <td>
+                  <td #wrapper>
                     <gantt-task-progress
-                      [data]="getTaskProgressData(taskRow)"
+                      [data]="getTaskProgressData(taskRow, wrapper)"
                       (click)="selectRow(taskRow)"
                       (dataChanged)="taskProgressDataChanged($event)"
                     ></gantt-task-progress>
@@ -92,13 +92,13 @@
           </tbody>
         </table>
 
-        <!-- <gantt-dependencies
+        <gantt-dependencies
           class="dependencies"
           *ngIf="showDependencies"
           [data]="getDependenciesData()"
           [width]="getMainTableWidth()"
           [height]="getMainTableHeight()"
-        ></gantt-dependencies> -->
+        ></gantt-dependencies>
       </div>
     </div>
   </div>

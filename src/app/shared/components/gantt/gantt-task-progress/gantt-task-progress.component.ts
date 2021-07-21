@@ -62,4 +62,8 @@ export class GanttTaskProgressComponent {
            'End date: ' + convert(task.endDate) + '\n' +
            'Progress: ' + task.readyPercent + '%';
   }
+
+  public get height() {
+    return this.service.taskProgressHeight;
+  }
 }

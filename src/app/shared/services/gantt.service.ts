@@ -4,6 +4,7 @@ import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, GanttTaskRow,
 @Injectable({ providedIn: 'root' })
 export class GanttService {
   public readonly rowHeight = 40;
+  public readonly taskProgressHeight = 10;
 
   public getTasksRows(tasks: GanttTask[]): GanttTaskRow[] {
     const createTasksRows = (tasks: GanttTask[], parentID: number | null): GanttTaskRow[] => {

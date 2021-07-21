@@ -187,7 +187,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   public getTaskProgressData(taskRow: GanttTaskRow, wrapper: HTMLElement): TaskProgressInput {
     return {
-      taskInfo: { task: taskRow.task, rowID: -1 },
+      task: taskRow.task,
       period: this.period,
       minDate: this.periodParts[0].detail[0],
       marginTop: wrapper.offsetTop

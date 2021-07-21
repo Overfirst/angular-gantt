@@ -28,14 +28,13 @@ export class GanttTaskProgressComponent {
     }
     
     this._data = data;
-    const task = this.data.taskInfo.task;
+    const task = this.data.task;
 
     this.progress = task.readyPercent;
     this.offset = this.service.computeDateOffset(task.startDate, data.period, data.minDate)
     this.width = this.service.computeTaskProgressWidth(task, data.period);
 
     this.dataChanged.emit({
-      rowID: this.data.taskInfo.rowID,
       taskID: task.ID,
       offset: this.offset,
       width: this.width,
@@ -51,12 +50,12 @@ export class GanttTaskProgressComponent {
   ) {}
 
   public get color(): string {
-    return this.data.taskInfo.task.color || GanttTaskProgressComponent.defaultColor;
+    return this.data.task.color || GanttTaskProgressComponent.defaultColor;
   }
 
   public get title(): string {
     const convert = (date: Date) => this.datePipe.transform(date, 'dd.MM.YYYY, HH:mm');
-    const task = this.data.taskInfo.task;
+    const task = this.data.task;
 
     return 'Task: ' + task.name + '\n' +
            'Start date: ' + convert(task.startDate) + '\n' +

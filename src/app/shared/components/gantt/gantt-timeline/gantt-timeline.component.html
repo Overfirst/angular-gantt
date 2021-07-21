@@ -69,17 +69,6 @@
       <div class="main-table">
         <table #tasksProgressTable>
           <tbody>
-            <!-- <ng-container *ngFor="let task of tasks; index as idx">
-              <tr rowHeight>
-                <td>
-                  <gantt-task-progress
-                    [data]="getTaskProgressData(idx)"
-                    (click)="selectRow(idx)"
-                    (dataChanged)="taskProgressDataChanged($event)"
-                  ></gantt-task-progress>
-                </td>
-              </tr>
-            </ng-container> -->
             <ng-template #recursiveTemplate2 let-tasks>
               <ng-container *ngFor="let taskRow of tasks">
                 <tr rowHeight>

@@ -185,11 +185,11 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   }
 
 
-  public getTaskProgressData(idx: number): TaskProgressInput {
-    this.showDependencies = idx === this.tasks.length - 1;
+  public getTaskProgressData(taskRow: GanttTaskRow): TaskProgressInput {
+    // this.showDependencies = idx === this.tasks.length - 1;
 
     return {
-      taskInfo: { task: this.tasks[idx], rowID: idx + 1 },
+      taskInfo: { task: taskRow.task, rowID: -1 },
       period: this.period,
       minDate: this.periodParts[0].detail[0]
     };

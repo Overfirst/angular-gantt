@@ -20,7 +20,7 @@ export class AppComponent {
       ID: 2,
       name: 'Fix angular-grid bugs',
       startDate: new Date(2021, 5, 1, 12),
-      endDate: new Date(2021, 9, 9, 13),
+      endDate: new Date(2021, 6, 9, 13),
       readyPercent: 71,
       color: '#5a63cf'
     },
@@ -90,6 +90,7 @@ export class AppComponent {
   public dependencies: GanttTaskDependency[] = [
     { fromID: 1, toID: 4 },
     { fromID: 4, toID: 5 },
+    { fromID: 2, toID: 1 },
     { fromID: 3, toID: 2 },
     { fromID: 6, toID: 7 },
     { fromID: 7, toID: 8 },

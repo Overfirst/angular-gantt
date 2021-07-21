@@ -59,7 +59,9 @@ export class GanttTasksComponent implements AfterViewInit {
     return !!row.childs && row.childs.length > 0;
   }
 
-  public rowOpenCloseClicked(row: GanttTaskRow): void {
+  public rowOpenCloseClicked(event: MouseEvent, row: GanttTaskRow): void {
+    event.stopImmediatePropagation();
+    
     if (this.rowHasChilds(row)) {
       row.opened = !row.opened
     }

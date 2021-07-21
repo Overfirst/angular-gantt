@@ -419,4 +419,59 @@ export class GanttService {
     
     return result;
   }
+
+  private getAllRows(rows: GanttTaskRow[]): GanttTaskRow[] {
+    const allRows: GanttTaskRow[] = [];
+
+    (function openRows(rows: GanttTaskRow[]) {
+      rows.forEach(row => {
+        allRows.push(row);
+
+        if (row.childs) {
+          openRows(row.childs);
+        }
+      })
+    })(rows);
+
+    return allRows;
+  }
+
+  private rowIsVisible(row: GanttTaskRow, rows: GanttTaskRow[]): boolean {
+    let isVisible = true;
+
+    (function parentIsOpened(row: GanttTaskRow) {
+      if (row.task.parentID === undefined || row.task.parentID === null) {
+        return;
+      }
+
+      const parentRow = rows.find(currentRow => currentRow.task.ID === row.task.parentID);
+
+      if (!parentRow) {
+        return;
+      }
+
+      if (!parentRow.opened) {
+        isVisible = false;
+        return;
+      }
+      
+      parentIsOpened(parentRow);
+    })(row);
+
+    return isVisible;
+  }
+
+  public getVisibleRows(rows: GanttTaskRow[]): GanttTaskRow[] {
+    const visibleRows: GanttTaskRow[] = [];
+    const allRows = this.getAllRows(rows);
+
+    allRows.forEach(row => {
+      if (this.rowIsVisible(row, allRows)) {
+        visibleRows.push(row);
+      }
+    });
+    
+    console.log('getVisibleRows:', visibleRows);
+    return visibleRows;
+  }
 }

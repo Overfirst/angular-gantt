@@ -30,6 +30,8 @@ export class GanttComponent implements AfterViewInit {
   @Input() public contentHeight = 500;
 
   public tasksRows: GanttTaskRow[] = [];
+  public visibleRows: GanttTaskRow[] = [];
+
   public selectedDate: Date;
 
   public tasksScrollTop = 0;
@@ -78,5 +80,6 @@ export class GanttComponent implements AfterViewInit {
 
   public openCloseClicked(row: GanttTaskRow | null): void {
     this.tasksRows = [...this.tasksRows];
+    this.visibleRows = this.service.getVisibleRows(this.tasksRows);
   }
 }

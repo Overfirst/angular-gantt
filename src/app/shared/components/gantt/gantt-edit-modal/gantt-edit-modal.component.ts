@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { GanttTask } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'gantt-edit-modal',
@@ -7,6 +8,8 @@ import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttEditModalComponent {
+  @Input() public task: GanttTask | null = null;
+
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
   @Output() public saveClicked = new EventEmitter<MouseEvent>();

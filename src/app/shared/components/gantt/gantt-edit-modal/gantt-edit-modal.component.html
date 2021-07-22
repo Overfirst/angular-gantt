@@ -5,7 +5,27 @@
   </div>
 
   <div class="content">
+    <form>
+      <div class="input-group">
+        <label>Task name</label>
+        <input type="text">
+      </div>
 
+      <div class="input-group">
+        <label>Start date</label>
+        <input type="date">
+      </div>
+
+      <div class="input-group">
+        <label>End date</label>
+        <input type="date">
+      </div>
+
+      <div class="input-group">
+        <label>Complete percent</label>
+        <input type="number" min="0" max="100" [value]="task!.readyPercent">
+      </div>
+    </form>
   </div>
 
   <div class="top-bottom">

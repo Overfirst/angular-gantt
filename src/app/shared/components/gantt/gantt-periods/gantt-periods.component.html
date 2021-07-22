@@ -4,5 +4,7 @@
     (click)="period = p"
     class="header-btn"
     [class.header-btn-active]="period === p"
+    [disabled]="disabled"
+    [class.btn-disabled]="disabled"
   >{{ p }}</button>
 </nav>

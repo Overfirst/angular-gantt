@@ -6,7 +6,12 @@ $header-btn-active-color:#ff6b6b;
   border: 1px solid #a5a5a5;
   background: #d6d6d6;
   margin-bottom: 20px;
-  cursor: pointer;
+  
+
+  &:not(.btn-disabled) {
+    cursor: pointer;
+  }
+
   transition: all 0.15s;
   font-size: 14px;
 
@@ -22,7 +27,7 @@ $header-btn-active-color:#ff6b6b;
     border-bottom-right-radius: $header-btn-br;
   }
 
-  &:hover:not(.header-btn-active) {
+  &:hover:not(.header-btn-active, .btn-disabled) {
     background-color: #b1adad;
   }
 

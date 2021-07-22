@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnInit, Input } from '@angular/core';
 import { GanttPeriod } from '../../../interfaces';
 
 @Component({
@@ -21,6 +21,7 @@ export class GanttPeriodsComponent implements OnInit {
   }
 
   @Output() public periodChange = new EventEmitter<GanttPeriod>();
+  @Input() public disabled = false;
 
   public ngOnInit(): void {
     this.period = 'Week';

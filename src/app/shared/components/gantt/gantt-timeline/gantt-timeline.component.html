@@ -67,6 +67,7 @@
                     [data]="getTaskProgressData(taskRow, wrapper)"
                     (click)="selectRow(taskRow)"
                     (dataChanged)="taskProgressDataChanged($event)"
+                    (dblclick)="taskProgressDoubleClick(taskRow)"
                   ></gantt-task-progress>
                 </td>
               </tr>

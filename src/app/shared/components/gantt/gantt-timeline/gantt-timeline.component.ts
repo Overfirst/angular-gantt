@@ -102,6 +102,7 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>()
   @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
+  @Output() public editTaskClicked = new EventEmitter<GanttTask>();
 
   public ngAfterViewInit(): void {
     this.showDependencies = true;
@@ -224,5 +225,9 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     }
 
     this.tasksTimelineData.push(data);
+  }
+
+  public taskProgressDoubleClick(taskRow: GanttTaskRow): void {
+    this.editTaskClicked.emit(taskRow.task);
   }
 }

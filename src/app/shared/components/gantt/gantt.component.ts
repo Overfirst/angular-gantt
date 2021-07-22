@@ -30,7 +30,7 @@ export class GanttComponent implements AfterViewInit {
   @Input() public dependencies: GanttTaskDependency[] = [];
   @Input() public contentHeight = 500;
 
-  public modalOpened = true;
+  public modalOpened = false;
 
   public tasksRows: GanttTaskRow[] = [];
   public visibleRows: GanttTaskRow[] = [];
@@ -44,7 +44,7 @@ export class GanttComponent implements AfterViewInit {
   public timelineWidth = 0;
 
   public activeRow: GanttTaskRow | null = null;
-  public editableTask: GanttTask | null = null;
+  public editableTask: GanttTask;
 
   public ngAfterViewInit(): void {
     this.calculateWidth();
@@ -103,8 +103,16 @@ export class GanttComponent implements AfterViewInit {
 
   }
 
-  public modalSaveClicked(event: MouseEvent): void {
+  public modalSaveClicked(editedTask: GanttTask): void {
+    console.log(editedTask);
 
+    this.editableTask.name = editedTask.name;
+    this.editableTask.readyPercent = editedTask.readyPercent;
+    this.editableTask.startDate = editedTask.startDate;
+    this.editableTask.endDate = editedTask.endDate;
+
+    this.tasks = [...this.tasks];
+    this.modalOpened = false;
   }
 
   public modalCancelClicked(event: MouseEvent): void {

@@ -3,10 +3,10 @@
     <div (click)="selectRow(null)" class="tasks-header">
       <table>
         <colgroup>
-          <col style="width: 260px;">
-          <col style="width: 160px;">
-          <col style="width: 160px;">
-          <col style="width: 110px;">
+          <col style="max-width: 260px; width: 260px;">
+          <col style="max-width: 160px; width: 160px;">
+          <col style="max-width: 160px; width: 160px;">
+          <col style="max-width: 110px; width: 110px;">
         </colgroup>
         <thead>
           <tr rowHeight>
@@ -23,10 +23,10 @@
     <div #table [style.height]="contentHeight + 'px'" class="tasks-content">
       <table>
         <colgroup>
-          <col style="width: 260px;">
-          <col style="width: 160px;">
-          <col style="width: 160px;">
-          <col style="width: 110px;">
+          <col style="max-width: 260px; width: 260px;">
+          <col style="max-width: 160px; width: 160px;">
+          <col style="max-width: 160px; width: 160px;">
+          <col style="max-width: 110px; width: 110px;">
         </colgroup>
         <tbody>
           <ng-template #recursiveTemplate let-tasks let-level="level">

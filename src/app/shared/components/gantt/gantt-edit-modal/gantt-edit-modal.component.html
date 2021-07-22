@@ -5,25 +5,33 @@
   </div>
 
   <div class="content">
-    <form>
+    <form [formGroup]="form">
       <div class="input-group">
         <label>Task name</label>
-        <input type="text">
+        <input formControlName="name" type="text">
       </div>
 
       <div class="input-group">
         <label>Start date</label>
-        <input type="date">
+        <input formControlName="startDate" type="date">
+
+        <select>
+          <option>0:00</option>
+        </select>
       </div>
 
       <div class="input-group">
         <label>End date</label>
-        <input type="date">
+        <input formControlName="endDate" type="date">
+
+        <select>
+          <option>0:00</option>
+        </select>
       </div>
 
       <div class="input-group">
         <label>Complete percent</label>
-        <input type="number" min="0" max="100" [value]="task!.readyPercent">
+        <input formControlName="readyPercent" type="number">
       </div>
     </form>
   </div>
@@ -32,7 +40,7 @@
     <button (click)="deleteClick($event)" class="btn btn-delete">Delete ✕</button>
 
     <div>
-      <button (click)="saveClick($event)" class="btn btn-save">Save ✓</button>
+      <button [disabled]="form.invalid" (click)="saveClick($event)" class="btn btn-save">Save ✓</button>
       <button (click)="cancelClick($event)" class="btn">Cancel</button>
     </div>
   </div>

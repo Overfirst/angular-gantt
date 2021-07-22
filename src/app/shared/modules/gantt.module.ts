@@ -8,6 +8,7 @@ import { GanttPeriodsComponent } from '../components/gantt/gantt-periods/gantt-p
 import { GanttTimelineComponent } from '../components/gantt/gantt-timeline/gantt-timeline.component';
 import { GanttTaskProgressComponent } from '../components/gantt/gantt-task-progress/gantt-task-progress.component';
 import { GanttDependenciesComponent } from '../components/gantt/gantt-dependencies/gantt-dependencies.component';
+import { GanttEditModalComponent } from '../components/gantt/gantt-edit-modal/gantt-edit-modal.component';
 
 import { RowHeightDirective } from '../directives/row-height.directive';
 
@@ -20,6 +21,7 @@ import { RowHeightDirective } from '../directives/row-height.directive';
       GanttTimelineComponent,
       GanttTaskProgressComponent,
       GanttDependenciesComponent,
+      GanttEditModalComponent,
       RowHeightDirective
   ],
   exports: [
@@ -28,7 +30,8 @@ import { RowHeightDirective } from '../directives/row-height.directive';
       GanttPeriodsComponent,
       GanttTimelineComponent,
       GanttTaskProgressComponent,
-      GanttDependenciesComponent
+      GanttDependenciesComponent,
+      GanttEditModalComponent
   ],
   providers: [DatePipe]
 })

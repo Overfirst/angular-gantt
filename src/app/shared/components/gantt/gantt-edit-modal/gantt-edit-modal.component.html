@@ -1,0 +1,19 @@
+<div class="modal">
+  <div class="top-bottom">
+    <span class="header-text">Edit task</span>
+    <span (click)="closeClick($event)" class="header-text">x</span>
+  </div>
+
+  <div class="content">
+
+  </div>
+
+  <div class="top-bottom">
+    <button (click)="deleteClick($event)" class="btn btn-delete">Delete</button>
+
+    <div>
+      <button (click)="saveClick($event)" class="btn btn-save">Save</button>
+      <button (click)="cancelClick($event)" class="btn">Cancel</button>
+    </div>
+  </div>
+</div>

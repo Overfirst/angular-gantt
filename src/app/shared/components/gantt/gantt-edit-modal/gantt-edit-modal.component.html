@@ -15,8 +15,8 @@
         <label>Start date</label>
         <input formControlName="startDate" type="date">
 
-        <select>
-          <option>0:00</option>
+        <select formControlName="startDateTimePoints">
+          <option *ngFor="let timePoint of timePoints">{{ timePoint.hours}}:{{ timePoint.minutes }}</option>
         </select>
       </div>
 
@@ -24,8 +24,8 @@
         <label>End date</label>
         <input formControlName="endDate" type="date">
 
-        <select>
-          <option>0:00</option>
+        <select formControlName="endDateTimePoints">
+          <option *ngFor="let timePoint of timePoints">{{ timePoint.hours}}:{{ timePoint.minutes }}</option>
         </select>
       </div>
 

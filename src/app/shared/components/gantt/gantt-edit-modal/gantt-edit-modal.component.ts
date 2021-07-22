@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GanttTask } from 'src/app/shared/interfaces';
+import { GanttTask, TimePoint } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'gantt-edit-modal',
@@ -17,6 +17,29 @@ export class GanttEditModalComponent {
   public form: FormGroup;
   private editableTask: GanttTask;
 
+  public timePoints: TimePoint[] = this.createTimePoints();
+
+  private createTimePoints(): TimePoint[] {
+    const timePoints: TimePoint[] = [];
+
+    for (let i = 0; i < 24; i++) {
+      for (let j = 0; j < 2; j++) {
+        
+        const hours = i;
+        const minutes = j % 2 === 0 ? 0 : 30;
+
+        const timePoint = {
+          hours: hours < 10 ? `0${hours}` : `${hours}`,
+          minutes: minutes < 10 ? `0${minutes}` : `${minutes}`
+        }
+
+        timePoints.push(timePoint);
+      }
+    }
+
+    return timePoints;
+  }
+
   @Input() public set task(task: GanttTask) {
     this.editableTask = task;
 
@@ -24,7 +47,9 @@ export class GanttEditModalComponent {
       name: new FormControl(task.name, Validators.required),
       startDate: new FormControl(this.convertDateToInput(task.startDate), Validators.required),
       endDate: new FormControl(this.convertDateToInput(task.endDate), Validators.required),
-      readyPercent: new FormControl(task.readyPercent, [Validators.required, Validators.min(0), Validators.max(100)])
+      readyPercent: new FormControl(task.readyPercent, [Validators.required, Validators.min(0), Validators.max(100)]),
+      startDateTimePoints: new FormControl(null),
+      endDateTimePoints: new FormControl(null)
     });
   }
 
@@ -41,6 +66,8 @@ export class GanttEditModalComponent {
   }
 
   public saveClick(event: MouseEvent): void {
+    console.log(this.form.value);
+    
     const editedTask = this.form.value;
     const task = {...this.editableTask};
 

@@ -13,7 +13,7 @@ export interface GanttTask {
   color?: string;
 }
 
-export type GanttPeriod = 'Day'| 'Week' | 'Month';
+export type GanttPeriod = 'Day' | 'Week' | 'Month';
 
 export interface PeriodSettings {
   name: GanttPeriod;
@@ -62,4 +62,9 @@ export interface GanttTaskRow {
   task: GanttTask;
   childs?: GanttTaskRow[];
   opened?: boolean;
+}
+
+export interface TimePoint {
+  hours: string;
+  minutes: string;
 }

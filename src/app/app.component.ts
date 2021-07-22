@@ -27,7 +27,7 @@ export class AppComponent {
     {
       ID: 3,
       name: 'Survive at work',
-      startDate: new Date(2021, 5, 2, 3, 20),
+      startDate: new Date(2021, 5, 2, 3, 30),
       endDate: new Date(2021, 6, 25),
       readyPercent: 60,
       color: '#39e30f'
@@ -35,7 +35,7 @@ export class AppComponent {
     {
       ID: 4,
       name: 'Complete the internship',
-      startDate: new Date(2021, 4, 31, 6, 33),
+      startDate: new Date(2021, 4, 31, 6, 30),
       endDate: new Date(2021, 5, 13, 12, 30),
       readyPercent: 75,
       color: '#8c22f6'
@@ -45,7 +45,7 @@ export class AppComponent {
       parentID: 1,
       name: 'Create tasks table',
       startDate: new Date(2021, 5, 1, 12, 0),
-      endDate: new Date(2021, 5, 6, 4, 35),
+      endDate: new Date(2021, 5, 6, 4, 30),
       readyPercent: 44,
       color: '#ff1ec7'
     },
@@ -53,8 +53,8 @@ export class AppComponent {
       ID: 7,
       parentID: 1,
       name: 'Create timeline table',
-      startDate: new Date(2021, 5, 2, 5, 44),
-      endDate: new Date(2021, 5, 9, 4, 35),
+      startDate: new Date(2021, 5, 2, 5, 30),
+      endDate: new Date(2021, 5, 9, 4),
       readyPercent: 68,
       color: '#2c2628'
     },
@@ -63,7 +63,7 @@ export class AppComponent {
       parentID: 1,
       name: 'Create dependencies',
       startDate: new Date(2021, 5, 5, 16, 0),
-      endDate: new Date(2021, 5, 18, 4, 35),
+      endDate: new Date(2021, 5, 18, 4, 30),
       readyPercent: 51,
       color: '#5096a2'
     },
@@ -72,7 +72,7 @@ export class AppComponent {
       parentID: 2,
       name: 'Fix template with start',
       startDate: new Date(2021, 5, 5, 16, 0),
-      endDate: new Date(2021, 5, 18, 4, 35),
+      endDate: new Date(2021, 5, 18, 4, 30),
       readyPercent: 51,
       color: '#c70f5c'
     },
@@ -80,8 +80,8 @@ export class AppComponent {
       ID: 10,
       parentID: 7,
       name: 'Add horizontal scroll',
-      startDate: new Date(2021, 5, 4, 5, 44),
-      endDate: new Date(2021, 5, 8, 4, 35),
+      startDate: new Date(2021, 5, 4, 5, 30),
+      endDate: new Date(2021, 5, 8, 4, 30),
       readyPercent: 68,
       color: '#ff7615'
     },

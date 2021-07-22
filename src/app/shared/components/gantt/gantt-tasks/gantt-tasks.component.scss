@@ -28,10 +28,21 @@
   cursor: pointer;
 }
 
+.edit-icon {
+  margin-right: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
 .open-close-icon {
   display: inline-block;
   width: 16px;
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
+}
+
+.name-container {
+  display: flex;
+  align-items: center;
 }

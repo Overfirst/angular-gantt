@@ -37,12 +37,15 @@
                 [class.active-row]="activeRow === taskRow"
               >
                 <td nowrap>
-                  <div [ngStyle]="{ 'margin-left': 12 * level + 'px' }">
-                    <span
-                      class="open-close-icon"
-                      (click)="rowOpenCloseClicked($event, taskRow)"
-                    >{{ getRowOpenSymbol(taskRow) }}</span>
-                    <span>{{ taskRow.task.name }}</span>
+                  <div class="name-container">
+                    <span (click)="editTaskClick($event, taskRow)" class="edit-icon">✎</span>
+                    <div [ngStyle]="{ 'margin-left': 12 * level + 'px' }">
+                      <span
+                        class="open-close-icon"
+                        (click)="rowOpenCloseClicked($event, taskRow)"
+                      >{{ getRowOpenSymbol(taskRow) }}</span>
+                      <span>{{ taskRow.task.name }}</span>
+                    </div>
                   </div>
                 </td>
                 <td class="date-td" (click)="dateClick(taskRow.task.startDate)" nowrap>{{ taskRow.task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>

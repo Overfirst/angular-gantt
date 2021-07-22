@@ -33,6 +33,7 @@ export class GanttTasksComponent implements AfterViewInit {
   @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
   @Output() public dateClicked = new EventEmitter<Date>();
   @Output() public openCloseClicked = new EventEmitter<GanttTaskRow | null>();
+  @Output() public editTaskClicked = new EventEmitter<GanttTask>();
 
   private updateScrollPosition(): void {
     if (this.table) {
@@ -57,6 +58,11 @@ export class GanttTasksComponent implements AfterViewInit {
 
   private rowHasChilds(row: GanttTaskRow): boolean {
     return !!row.childs && row.childs.length > 0;
+  }
+
+  public editTaskClick(event: MouseEvent, taskRow: GanttTaskRow): void {
+    event.stopImmediatePropagation();
+    this.editTaskClicked.emit(taskRow.task);
   }
 
   public rowOpenCloseClicked(event: MouseEvent, row: GanttTaskRow): void {

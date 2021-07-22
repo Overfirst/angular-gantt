@@ -30,7 +30,7 @@ export class GanttComponent implements AfterViewInit {
   @Input() public dependencies: GanttTaskDependency[] = [];
   @Input() public contentHeight = 500;
 
-  public modalOpened = true;
+  public modalOpened = false;
 
   public tasksRows: GanttTaskRow[] = [];
   public visibleRows: GanttTaskRow[] = [];
@@ -83,6 +83,10 @@ export class GanttComponent implements AfterViewInit {
 
   public openCloseClicked(row: GanttTaskRow | null): void {
     this.visibleRows = this.service.getVisibleRows(this.tasksRows);
+  }
+
+  public editTaskClicked(task: GanttTask): void {
+    this.modalOpened = true;
   }
 
   public modalClicked(event: MouseEvent): void {

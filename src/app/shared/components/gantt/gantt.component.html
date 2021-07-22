@@ -30,7 +30,7 @@
   </div>
 
   <div *ngIf="modalOpened" class="modal-overlay">
-    <div class="edit-modal-container">
+    <div (click)="modalClicked($event)" class="edit-modal-container">
       <gantt-edit-modal
         (closeClicked)="modalCloseClicked($event)"
         (deleteClicked)="modalDeleteClicked($event)"

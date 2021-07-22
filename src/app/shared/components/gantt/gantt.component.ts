@@ -85,6 +85,10 @@ export class GanttComponent implements AfterViewInit {
     this.visibleRows = this.service.getVisibleRows(this.tasksRows);
   }
 
+  public modalClicked(event: MouseEvent): void {
+    event.stopPropagation();
+  }
+
   public modalCloseClicked(event: MouseEvent): void {
     this.modalOpened = false;
   }

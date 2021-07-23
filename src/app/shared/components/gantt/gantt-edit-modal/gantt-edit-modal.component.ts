@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GanttTask, TimePoint } from 'src/app/shared/interfaces';
+import { GanttEditService } from 'src/app/shared/services/gantt-edit.service';
 
 @Component({
   selector: 'gantt-edit-modal',
@@ -8,7 +9,9 @@ import { GanttTask, TimePoint } from 'src/app/shared/interfaces';
   styleUrls: ['./gantt-edit-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GanttEditModalComponent {
+export class GanttEditModalComponent implements AfterViewInit {
+  constructor(private service: GanttEditService, private cdr: ChangeDetectorRef) {}
+
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
   @Output() public saveClicked = new EventEmitter<GanttTask>();
@@ -17,40 +20,32 @@ export class GanttEditModalComponent {
   public form: FormGroup;
   private editableTask: GanttTask;
 
-  public timePoints: TimePoint[] = this.createTimePoints();
+  public timePoints: TimePoint[] = this.service.createTimePoints();
 
-  private createTimePoints(): TimePoint[] {
-    const timePoints: TimePoint[] = [];
-
-    for (let i = 0; i < 24; i++) {
-      for (let j = 0; j < 2; j++) {
-        
-        const hours = i;
-        const minutes = j % 2 === 0 ? 0 : 30;
-
-        const timePoint = {
-          hours: hours < 10 ? `0${hours}` : `${hours}`,
-          minutes: minutes < 10 ? `0${minutes}` : `${minutes}`
-        }
-
-        timePoints.push(timePoint);
-      }
-    }
-
-    return timePoints;
-  }
+  public startTime = '00:00';
+  public endTime = '00:00';
 
   @Input() public set task(task: GanttTask) {
     this.editableTask = task;
 
     this.form = new FormGroup({
       name: new FormControl(task.name, Validators.required),
-      startDate: new FormControl(this.convertDateToInput(task.startDate), Validators.required),
-      endDate: new FormControl(this.convertDateToInput(task.endDate), Validators.required),
+      startDate: new FormControl(this.service.convertDateToInput(task.startDate), Validators.required),
+      endDate: new FormControl(this.service.convertDateToInput(task.endDate), Validators.required),
       readyPercent: new FormControl(task.readyPercent, [Validators.required, Validators.min(0), Validators.max(100)]),
-      startDateTimePoints: new FormControl(null),
-      endDateTimePoints: new FormControl(null)
+      startDateTimePoint: new FormControl(this.startTime),
+      endDateTimePoint: new FormControl(this.endTime)
     });
+  }
+
+  public ngAfterViewInit(): void {
+    this.startTime = this.service.getStringTimePointFromDate(this.editableTask.startDate);
+    this.endTime = this.service.getStringTimePointFromDate(this.editableTask.endDate);
+
+    this.form.controls.startDateTimePoint.setValue(this.startTime);
+    this.form.controls.endDateTimePoint.setValue(this.endTime);
+
+    this.cdr.detectChanges();
   }
 
   public get task() {
@@ -66,28 +61,10 @@ export class GanttEditModalComponent {
   }
 
   public saveClick(event: MouseEvent): void {
-    console.log(this.form.value);
-    
-    const editedTask = this.form.value;
-    const task = {...this.editableTask};
-
-    task.name = editedTask.name;
-    task.readyPercent = editedTask.readyPercent;
-    task.startDate = new Date(editedTask.startDate);
-    task.endDate = new Date(editedTask.endDate);
-
-    this.saveClicked.emit(task);
+    this.saveClicked.emit(this.service.getEditedTaskFromFormData(this.form.value, this.editableTask));
   }
 
   public cancelClick(event: MouseEvent): void {
     this.cancelClicked.emit(event);
-  }
-
-  private convertDateToInput(date: Date): string {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
   }
 }

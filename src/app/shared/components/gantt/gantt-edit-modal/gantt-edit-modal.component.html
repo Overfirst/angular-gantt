@@ -18,20 +18,12 @@
 
       <div class="input-group">
         <label>Start date</label>
-        <input formControlName="startDate" type="date">
-
-        <select formControlName="startDateTimePoint" [value]="startTime">
-          <option *ngFor="let timePoint of timePoints">{{ timePoint.hours}}:{{ timePoint.minutes }}</option>
-        </select>
+        <input formControlName="startDate" type="datetime-local">
       </div>
 
       <div class="input-group">
         <label>End date</label>
-        <input formControlName="endDate" type="date">
-
-        <select formControlName="endDateTimePoint" [value]="endTime">
-          <option *ngFor="let timePoint of timePoints">{{ timePoint.hours}}:{{ timePoint.minutes }}</option>
-        </select>
+        <input formControlName="endDate" type="datetime-local">
       </div>
 
       <div class="input-group">

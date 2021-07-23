@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GanttTask, TimePoint } from 'src/app/shared/interfaces';
-import { GanttEditService } from 'src/app/shared/services/gantt-edit.service';
+import { GanttTask } from 'src/app/shared/interfaces';
+import { GanttService } from 'src/app/shared/services/gantt.service';
 
 @Component({
   selector: 'gantt-edit-modal',
@@ -9,8 +9,8 @@ import { GanttEditService } from 'src/app/shared/services/gantt-edit.service';
   styleUrls: ['./gantt-edit-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GanttEditModalComponent implements AfterViewInit {
-  constructor(private service: GanttEditService, private cdr: ChangeDetectorRef) {}
+export class GanttEditModalComponent {
+  constructor(private service: GanttService) {}
 
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
@@ -18,34 +18,18 @@ export class GanttEditModalComponent implements AfterViewInit {
   @Output() public cancelClicked = new EventEmitter<MouseEvent>();
 
   public form: FormGroup;
+  
   private editableTask: GanttTask;
-
-  public timePoints: TimePoint[] = this.service.createTimePoints();
-
-  public startTime = '00:00';
-  public endTime = '00:00';
 
   @Input() public set task(task: GanttTask) {
     this.editableTask = task;
 
     this.form = new FormGroup({
       name: new FormControl(task.name, Validators.required),
-      startDate: new FormControl(this.service.convertDateToInput(task.startDate), Validators.required),
-      endDate: new FormControl(this.service.convertDateToInput(task.endDate), Validators.required),
+      startDate: new FormControl(this.service.convertDateToInput(this.editableTask.startDate), Validators.required),
+      endDate: new FormControl(this.service.convertDateToInput(this.editableTask.endDate), Validators.required),
       readyPercent: new FormControl(task.readyPercent, [Validators.required, Validators.min(0), Validators.max(100)]),
-      startDateTimePoint: new FormControl(this.startTime),
-      endDateTimePoint: new FormControl(this.endTime)
     });
-  }
-
-  public ngAfterViewInit(): void {
-    this.startTime = this.service.getStringTimePointFromDate(this.editableTask.startDate);
-    this.endTime = this.service.getStringTimePointFromDate(this.editableTask.endDate);
-
-    this.form.controls.startDateTimePoint.setValue(this.startTime);
-    this.form.controls.endDateTimePoint.setValue(this.endTime);
-
-    this.cdr.detectChanges();
   }
 
   public get task() {
@@ -61,7 +45,16 @@ export class GanttEditModalComponent implements AfterViewInit {
   }
 
   public saveClick(event: MouseEvent): void {
-    this.saveClicked.emit(this.service.getEditedTaskFromFormData(this.form.value, this.editableTask));
+    const data = this.form.value;
+    const task = {...this.editableTask};
+
+    task.name = data.name;
+    task.readyPercent = data.readyPercent;
+
+    task.startDate = new Date(data.startDate);
+    task.endDate = new Date(data.endDate);
+
+    this.saveClicked.emit(task);
   }
 
   public cancelClick(event: MouseEvent): void {

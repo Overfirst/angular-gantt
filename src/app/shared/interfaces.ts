@@ -63,8 +63,3 @@ export interface GanttTaskRow {
   childs?: GanttTaskRow[];
   opened?: boolean;
 }
-
-export interface TimePoint {
-  hours: string;
-  minutes: string;
-}

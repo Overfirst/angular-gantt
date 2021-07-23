@@ -508,4 +508,19 @@ export class GanttService {
 
     return visibleDependencies;
   }
+
+  private resolve2digits(num: number): string {
+    return num < 10 ? `0${num}` : `${num}`;
+  }
+
+  public convertDateToInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    return `${year}-${this.resolve2digits(month)}-${this.resolve2digits(day)}T${this.resolve2digits(hours)}:${this.resolve2digits(minutes)}`;
+  }
 }

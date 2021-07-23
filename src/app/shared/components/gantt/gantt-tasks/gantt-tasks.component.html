@@ -50,7 +50,7 @@
                 </td>
                 <td class="date-td" (click)="dateClick(taskRow.task.startDate)" nowrap>{{ taskRow.task.startDate | date:'dd.MM.YYYY, HH:mm' }}</td>
                 <td class="date-td" (click)="dateClick(taskRow.task.endDate)" nowrap>{{ taskRow.task.endDate | date:'dd.MM.YYYY, HH:mm' }}</td>
-                <td nowrap>{{ taskRow.task.readyPercent }}</td>
+                <td nowrap>{{ taskRow.task.readyPercent | number:'.0-2' }}</td>
               </tr>
                <ng-container *ngIf="taskRow.childs && taskRow.opened">
                  <ng-container *ngTemplateOutlet="recursiveTemplate; context: {$implicit: taskRow.childs, level: level + 1}">

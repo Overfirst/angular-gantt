@@ -36,6 +36,8 @@ export class GanttEditModalComponent {
     });
   }
 
+  @Input() public parentTask: GanttTask | null = null;
+
   public get task() {
     return this.editableTask;
   }

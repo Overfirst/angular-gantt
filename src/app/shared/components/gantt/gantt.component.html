@@ -38,6 +38,7 @@
     <div (click)="modalClicked($event)" class="edit-modal-container">
       <gantt-edit-modal
         [task]="editableTask"
+        [parentTask]="editableTaskParent"
         (closeClicked)="modalCloseClicked($event)"
         (deleteClicked)="modalDeleteClicked($event)"
         (saveClicked)="modalSaveClicked($event)"

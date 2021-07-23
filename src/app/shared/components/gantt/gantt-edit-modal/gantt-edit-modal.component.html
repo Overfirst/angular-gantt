@@ -9,7 +9,11 @@
       <div class="input-group">
         <label>Task name</label>
         <div>
-          <input formControlName="name" type="text" [class.input-invalid]="form.controls.name.invalid">
+          <input
+            formControlName="name"
+            type="text"
+            [class.input-invalid]="form.controls.name.invalid"
+          >
           <div class="validator-box">
             <span *ngIf="form.controls.name.invalid">Fill in this field!</span>
           </div>
@@ -18,18 +22,40 @@
 
       <div class="input-group">
         <label>Start date</label>
-        <input formControlName="startDate" type="datetime-local">
+        <div>
+          <input
+            formControlName="startDate"
+            type="datetime-local"
+            [class.input-invalid]="form.controls.startDate.invalid"
+          >
+          <div class="validator-box">
+            <span *ngIf="form.controls.startDate.invalid">{{ form.controls.startDate.errors!.error! }}</span>
+          </div>
+        </div>
       </div>
 
       <div class="input-group">
         <label>End date</label>
-        <input formControlName="endDate" type="datetime-local">
+        <div>
+          <input
+            (change)="checkStartDateValidation()"
+            formControlName="endDate"
+            type="datetime-local"
+          >
+          <div class="validator-box">
+            <span></span>
+          </div>
+        </div>
       </div>
 
       <div class="input-group">
         <label>Complete percent</label>
         <div>
-          <input formControlName="readyPercent" type="number" [class.input-invalid]="form.controls.readyPercent.invalid">
+          <input
+            formControlName="readyPercent"
+            type="number"
+            [class.input-invalid]="form.controls.readyPercent.invalid"
+          >
           <div class="validator-box">
             <span *ngIf="form.controls.readyPercent.invalid">Valid values are from 0 to 100!</span>
           </div>

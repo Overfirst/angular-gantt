@@ -1,10 +1,8 @@
-$modal-height: 300px;
 $top-bottom-height: 48px;
 $top-bottom-border-color: rgb(207, 207, 207);
 
 .modal {
   width: 500px;
-  height: $modal-height;
   background-color: rgba(255, 255, 255);
   border-radius: 2px;
   transition: all 0.2s;
@@ -32,7 +30,6 @@ $top-bottom-border-color: rgb(207, 207, 207);
 .content {
   display: flex;
   align-items: center;
-  height: $modal-height - 2 * $top-bottom-height;
 }
 
 .top-bottom {
@@ -138,8 +135,11 @@ select {
 
 .input-group {
   display: flex;
-  margin-bottom: 16px;
   align-items: baseline;
+
+  &:first-child {
+    margin-top: 24px;
+  }
 
   label {
     font-size: 14px;
@@ -152,7 +152,7 @@ select {
 
 .validator-box {
   margin-top: 2px;
-  height: 12px;
+  height: 32px;
   font-size: 14px;
   color:rgb(255, 71, 71);
 }

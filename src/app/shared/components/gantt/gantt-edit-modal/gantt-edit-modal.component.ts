@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GanttTask } from 'src/app/shared/interfaces';
 import { GanttService } from 'src/app/shared/services/gantt.service';
+import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 
 @Component({
   selector: 'gantt-edit-modal',
@@ -10,7 +11,7 @@ import { GanttService } from 'src/app/shared/services/gantt.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttEditModalComponent {
-  constructor(private service: GanttService) {}
+  constructor(private service: GanttService, private cdr: ChangeDetectorRef) {}
 
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
@@ -24,10 +25,13 @@ export class GanttEditModalComponent {
   @Input() public set task(task: GanttTask) {
     this.editableTask = task;
 
+    const endControl = new FormControl(this.service.convertDateToInput(this.editableTask.endDate), Validators.required);
+    const startControl = new FormControl(this.service.convertDateToInput(this.editableTask.startDate), GanttValidators.startDateLaterValidator(endControl));
+
     this.form = new FormGroup({
       name: new FormControl(task.name, Validators.required),
-      startDate: new FormControl(this.service.convertDateToInput(this.editableTask.startDate), Validators.required),
-      endDate: new FormControl(this.service.convertDateToInput(this.editableTask.endDate), Validators.required),
+      startDate: startControl,
+      endDate: endControl,
       readyPercent: new FormControl(task.readyPercent, [Validators.required, Validators.min(0), Validators.max(100)]),
     });
   }
@@ -59,5 +63,9 @@ export class GanttEditModalComponent {
 
   public cancelClick(event: MouseEvent): void {
     this.cancelClicked.emit(event);
+  }
+
+  public checkStartDateValidation(): void {
+    this.form.controls.startDate.updateValueAndValidity();
   }
 }

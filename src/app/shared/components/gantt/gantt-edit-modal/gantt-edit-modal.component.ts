@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GanttTask } from 'src/app/shared/interfaces';
+import { GanttEditModalData, GanttTask } from 'src/app/shared/interfaces';
 import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 
@@ -22,11 +22,20 @@ export class GanttEditModalComponent {
   
   private editableTask: GanttTask;
 
-  @Input() public set task(task: GanttTask) {
+  @Input() public set data(data: GanttEditModalData) {
+    this.parentTask = data.parentTask;
+    this.task = data.task;
+  }
+
+  private set task(task: GanttTask) {
     this.editableTask = task;
 
-    const endControl = new FormControl(this.service.convertDateToInput(this.editableTask.endDate), Validators.required);
-    const startControl = new FormControl(this.service.convertDateToInput(this.editableTask.startDate), GanttValidators.startDateLaterValidator(endControl));
+    const endControl = new FormControl(this.service.convertDateToInput(this.editableTask.endDate), GanttValidators.dateOutsideParentTask(this.parentTask));
+    
+    const startControl = new FormControl(this.service.convertDateToInput(this.editableTask.startDate), [
+      GanttValidators.startDateLaterValidator(endControl),
+      GanttValidators.dateOutsideParentTask(this.parentTask)
+    ]);
 
     this.form = new FormGroup({
       name: new FormControl(task.name, Validators.required),
@@ -36,9 +45,9 @@ export class GanttEditModalComponent {
     });
   }
 
-  @Input() public parentTask: GanttTask | null = null;
+  private parentTask: GanttTask | null = null;
 
-  public get task() {
+  private get task() {
     return this.editableTask;
   }
 

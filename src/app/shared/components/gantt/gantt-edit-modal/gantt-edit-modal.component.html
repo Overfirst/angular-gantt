@@ -41,9 +41,10 @@
             (change)="checkStartDateValidation()"
             formControlName="endDate"
             type="datetime-local"
+            [class.input-invalid]="form.controls.endDate.invalid"
           >
           <div class="validator-box">
-            <span></span>
+            <span *ngIf="form.controls.endDate.invalid">{{ form.controls.endDate.errors!.error! }}</span>
           </div>
         </div>
       </div>

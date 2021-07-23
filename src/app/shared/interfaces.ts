@@ -63,3 +63,8 @@ export interface GanttTaskRow {
   childs?: GanttTaskRow[];
   opened?: boolean;
 }
+
+export interface GanttEditModalData {
+  task: GanttTask;
+  parentTask: GanttTask | null;
+}

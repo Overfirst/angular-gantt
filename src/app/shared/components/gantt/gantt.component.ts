@@ -19,7 +19,7 @@ export class GanttComponent implements AfterViewInit {
 
   @Input() public set tasks(tasks: GanttTask[]) {
     this._tasks = tasks;
-    this.tasksRows = this.service.getTasksRows(tasks);
+    this.tasksRows = this.service.getTasksRows(tasks, this.tasksRows);
     this.visibleRows = this.service.getVisibleRows(this.tasksRows);
   }
 

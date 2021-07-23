@@ -6,7 +6,9 @@ export class GanttService {
   public readonly rowHeight = 40;
   public readonly taskProgressHeight = 10;
 
-  public getTasksRows(tasks: GanttTask[]): GanttTaskRow[] {
+  public getTasksRows(tasks: GanttTask[], oldTasksRows: GanttTaskRow[]): GanttTaskRow[] {
+    const oldAllTaskRows = this.getAllRows(oldTasksRows);
+
     const createTasksRows = (tasks: GanttTask[], parentID: number | null): GanttTaskRow[] => {
       const rows: GanttTaskRow[] = [];
 
@@ -15,10 +17,13 @@ export class GanttService {
           task.parentID = null;
         }
 
+        const oldTaskRow = oldAllTaskRows.find(taskRow => taskRow.task.ID === task.ID);
+
         if (task.parentID === parentID) {
           rows.push({
             task,
-            childs: createTasksRows(tasks, task.ID)
+            childs: createTasksRows(tasks, task.ID),
+            opened: oldTaskRow?.opened || false
           });
         }
       });      

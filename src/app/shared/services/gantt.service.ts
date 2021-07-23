@@ -162,7 +162,7 @@ export class GanttService {
   }
 
   private partsForDay(different: number, date: Date, periodParts: PeriodPart[]): void {
-    for (let i = 0; i <= different; i++) {
+    for (let i = 0; i <= different + 1; i++) {
       const mainDate = this.minimizeDate(date);
       mainDate.setDate(mainDate.getDate() + i);
 

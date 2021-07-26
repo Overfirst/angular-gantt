@@ -87,7 +87,6 @@
   <div *ngIf="confirmOpened" class="modal-overlay">
     <div class="edit-modal-container">
       <gantt-confirm-modal
-        [canDelete]="canDelete"
         (noClicked)="confirmModalNoClick($event)"
         (yesClicked)="confirmModalYesClick($event)"
         (okClicked)="confirmModalOkClick($event)"

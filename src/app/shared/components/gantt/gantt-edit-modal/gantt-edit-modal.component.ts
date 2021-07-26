@@ -28,12 +28,10 @@ export class GanttEditModalComponent {
   private childs: GanttTask[] = [];
 
   public confirmOpened = false;
-  public canDelete = false;
 
   @Input() public set data(data: GanttEditModalData) {
     this.parentTask = data.parentTask;
     this.childs = data.childs;
-    this.canDelete = data.canDelete;
     this.task = data.task;
   }
 

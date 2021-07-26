@@ -68,5 +68,9 @@ export interface GanttEditModalData {
   task: GanttTask;
   parentTask: GanttTask | null;
   childs: GanttTask[];
-  canDelete: boolean;
+}
+
+export interface GanttTaskRemoveData {
+  newTasks: GanttTask[];
+  newDependencies: GanttTaskDependency[];
 }

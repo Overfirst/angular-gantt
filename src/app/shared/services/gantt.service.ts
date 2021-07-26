@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, GanttTaskDependency, GanttTaskRow, PeriodPart, TaskTimelineData } from '../interfaces';
+import { GanttDependenciesData, GanttLine, GanttPeriod, GanttTask, GanttTaskDependency, GanttTaskRemoveData, GanttTaskRow, PeriodPart, TaskTimelineData } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class GanttService {
@@ -524,23 +524,42 @@ export class GanttService {
     return `${year}-${this.resolve2digits(month)}-${this.resolve2digits(day)}T${this.resolve2digits(hours)}:${this.resolve2digits(minutes)}`;
   }
 
-  public canDeleteTask(task: GanttTask, tasks: GanttTask[], dependencies: GanttTaskDependency[]): boolean {
-    if (task.parentID === null || task.parentID === undefined) {
-      return false;
-    }
+  public removeTask(task: GanttTask, tasks: GanttTask[], dependencies: GanttTaskDependency[]): GanttTaskRemoveData {
+    const newTasks = [...tasks];
+    const newDependencies = [...dependencies];
 
-    for (let i = 0; i < tasks.length; i++) {
-      if (tasks[i].parentID === task.ID) {
-        return false;
+    (function filter(task: GanttTask): void {
+      let idx = newTasks.findIndex(currentTask => currentTask.ID === task.ID);
+      
+      if (idx === -1) {
+        return;
       }
-    }
 
-    for (let i = 0; i < dependencies.length; i++) {
-      if (dependencies[i].fromID === task.ID || dependencies[i].toID === task.ID) {
-        return false;
-      }
-    }
+      newTasks.splice(idx, 1);
 
-    return true;
+      const toDelete: GanttTaskDependency[] = [];
+
+      dependencies.forEach(dependency => {
+        if (dependency.fromID === task.ID || dependency.toID === task.ID) {
+          toDelete.push(dependency);
+        }
+      });
+
+      toDelete.forEach(dependency => {
+        const idx = newDependencies.findIndex(currentDependency => currentDependency === dependency);  
+  
+        if (idx !== -1) {
+          newDependencies.splice(idx, 1);
+        }
+      });
+
+      tasks.forEach(currentTask => {
+        if (currentTask.parentID === task.ID) {
+          filter(currentTask);
+        }
+      });
+    })(task);
+
+    return { newTasks, newDependencies };
   }
 }

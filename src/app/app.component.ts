@@ -84,12 +84,11 @@ export class AppComponent {
       endDate: new Date(2021, 5, 8, 4, 30),
       readyPercent: 68,
       color: '#ff7615'
-    },
+    }
   ];
 
   public dependencies: GanttTaskDependency[] = [
     { fromID: 1, toID: 4 },
-    { fromID: 4, toID: 5 },
     { fromID: 2, toID: 1 },
     { fromID: 3, toID: 2 },
     { fromID: 6, toID: 7 },

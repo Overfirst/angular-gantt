@@ -29,6 +29,7 @@
             [class.input-invalid]="form.controls.startDate.invalid"
           >
           <div class="validator-box">
+            <span *ngIf="form.controls.startDate.errors?.required">Fill in this field!</span>
             <span *ngIf="form.controls.startDate.invalid">{{ form.controls.startDate.errors!.error! }}</span>
           </div>
         </div>
@@ -44,6 +45,7 @@
             [class.input-invalid]="form.controls.endDate.invalid"
           >
           <div class="validator-box">
+            <span *ngIf="form.controls.endDate.errors?.required">Fill in this field!</span>
             <span *ngIf="form.controls.endDate.invalid">{{ form.controls.endDate.errors!.error! }}</span>
           </div>
         </div>

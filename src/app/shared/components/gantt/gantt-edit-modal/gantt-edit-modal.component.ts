@@ -21,20 +21,28 @@ export class GanttEditModalComponent {
   public form: FormGroup;
   
   private editableTask: GanttTask;
+  private childs: GanttTask[] = [];
 
   @Input() public set data(data: GanttEditModalData) {
     this.parentTask = data.parentTask;
+    this.childs = data.childs;
     this.task = data.task;
   }
 
   private set task(task: GanttTask) {
     this.editableTask = task;
 
-    const endControl = new FormControl(this.service.convertDateToInput(this.editableTask.endDate), GanttValidators.dateOutsideParentTask(this.parentTask));
+    const endControl = new FormControl(this.service.convertDateToInput(this.editableTask.endDate), [
+      Validators.required,
+      GanttValidators.dateOutsideParentTask(this.parentTask),
+      GanttValidators.dateOutsideChildTask(this.childs)
+    ]);
     
     const startControl = new FormControl(this.service.convertDateToInput(this.editableTask.startDate), [
+      Validators.required,
       GanttValidators.startDateLaterValidator(endControl),
-      GanttValidators.dateOutsideParentTask(this.parentTask)
+      GanttValidators.dateOutsideParentTask(this.parentTask),
+      GanttValidators.dateOutsideChildTask(this.childs)
     ]);
 
     this.form = new FormGroup({

@@ -30,4 +30,20 @@ export class GanttValidators {
       return null;      
     }
   }
+
+  static dateOutsideChildTask(childs: GanttTask[]): ValidatorFn {
+    return function(control: AbstractControl): ValidationErrors | null {
+      const date = new Date(control.value);
+
+      for (let i = 0; i < childs.length; i++) {
+        const task = childs[i];
+
+        if (date > task.startDate && date < task.endDate) {
+          return { error: `Going beyond the child task! [${task.ID}]` };
+        }
+      }      
+
+      return null;
+    }
+  }
 }

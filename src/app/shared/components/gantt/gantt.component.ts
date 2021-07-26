@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow } from '../../interfaces';
+import { GanttEditModalData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow } from '../../interfaces';
 import { GanttService } from '../../services/gantt.service';
 
 @Component({
@@ -45,8 +45,7 @@ export class GanttComponent implements AfterViewInit {
 
   public activeRow: GanttTaskRow | null = null;
 
-  public editableTask: GanttTask;
-  public editableTaskParent: GanttTask | null = null;
+  public editModalData: GanttEditModalData;
 
   public ngAfterViewInit(): void {
     this.calculateWidth();
@@ -89,8 +88,20 @@ export class GanttComponent implements AfterViewInit {
   }
 
   public editTaskClicked(task: GanttTask): void {
-    this.editableTask = task;
-    this.editableTaskParent = this.tasks.find(currentTask => currentTask.ID === task.parentID) || null;
+    const childs: GanttTask[] = [];
+
+    this.tasks.forEach(currentTask => {
+      if (currentTask.parentID === task.ID) {
+        childs.push(currentTask);
+      }
+    });
+
+    this.editModalData = {
+      task,
+      parentTask: this.tasks.find(currentTask => currentTask.ID === task.parentID) || null,
+      childs
+    };
+
     this.modalOpened = true;
   }
 
@@ -107,12 +118,12 @@ export class GanttComponent implements AfterViewInit {
   }
 
   public modalSaveClicked(editedTask: GanttTask): void {
-    console.log(editedTask);
+    const { task } = this.editModalData;
 
-    this.editableTask.name = editedTask.name;
-    this.editableTask.readyPercent = editedTask.readyPercent;
-    this.editableTask.startDate = editedTask.startDate;
-    this.editableTask.endDate = editedTask.endDate;
+    task.name = editedTask.name;
+    task.readyPercent = editedTask.readyPercent;
+    task.startDate = editedTask.startDate;
+    task.endDate = editedTask.endDate;
 
     this.tasks = [...this.tasks];
     this.modalOpened = false;

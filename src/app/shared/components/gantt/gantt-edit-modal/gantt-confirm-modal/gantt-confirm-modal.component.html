@@ -1,0 +1,23 @@
+<div class="modal">
+  <div class="top top-bottom">
+    <span class="header-text">Remove task</span>
+  </div>
+
+  <div class="content">
+    <span class="content-text">{{ canDelete
+      ? 'Are you sure you want to delete this task?'
+      : 'Tasks that have a parent, children, or dependencies cannot be deleted!'
+    }}</span>
+  </div>
+
+  <div class="bottom top-bottom">
+    <ng-container *ngIf="canDelete; else deleteImpossible">
+      <button (click)="noClick($event)" class="btn btn-delete">No</button>
+      <button (click)="yesClick($event)" class="btn btn-save">Yes</button>
+    </ng-container>
+
+    <ng-template #deleteImpossible>
+      <button (click)="okClick($event)" class="btn btn-save">Ok</button>
+    </ng-template>
+  </div>
+</div>

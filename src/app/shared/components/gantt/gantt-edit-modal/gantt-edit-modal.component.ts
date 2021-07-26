@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GanttEditModalData, GanttTask } from 'src/app/shared/interfaces';
 import { GanttService } from 'src/app/shared/services/gantt.service';
@@ -7,25 +7,33 @@ import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 @Component({
   selector: 'gantt-edit-modal',
   templateUrl: './gantt-edit-modal.component.html',
-  styleUrls: ['./gantt-edit-modal.component.scss'],
+  styleUrls: [
+    './gantt-edit-modal.component.scss',
+    '../gantt.component.scss'
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttEditModalComponent {
-  constructor(private service: GanttService, private cdr: ChangeDetectorRef) {}
+  constructor(private service: GanttService) {}
 
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
   @Output() public saveClicked = new EventEmitter<GanttTask>();
   @Output() public cancelClicked = new EventEmitter<MouseEvent>();
+  @Output() public taskDelete = new EventEmitter<void>();
 
   public form: FormGroup;
   
   private editableTask: GanttTask;
   private childs: GanttTask[] = [];
 
+  public confirmOpened = false;
+  public canDelete = false;
+
   @Input() public set data(data: GanttEditModalData) {
     this.parentTask = data.parentTask;
     this.childs = data.childs;
+    this.canDelete = data.canDelete;
     this.task = data.task;
   }
 
@@ -49,7 +57,11 @@ export class GanttEditModalComponent {
       name: new FormControl(task.name, Validators.required),
       startDate: startControl,
       endDate: endControl,
-      readyPercent: new FormControl(task.readyPercent, [Validators.required, Validators.min(0), Validators.max(100)]),
+      readyPercent: new FormControl(task.readyPercent, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(100)
+      ]),
     });
   }
 
@@ -64,6 +76,7 @@ export class GanttEditModalComponent {
   }
 
   public deleteClick(event: MouseEvent): void {
+    this.confirmOpened = true;
     this.deleteClicked.emit(event);
   }
 
@@ -86,5 +99,18 @@ export class GanttEditModalComponent {
 
   public checkStartDateValidation(): void {
     this.form.controls.startDate.updateValueAndValidity();
+  }
+
+  public confirmModalNoClick(event: MouseEvent): void {
+    this.confirmOpened = false;
+  }
+
+  public confirmModalYesClick(event: MouseEvent): void {
+    this.confirmOpened = false;
+    this.taskDelete.emit();
+  }
+
+  public confirmModalOkClick(event: MouseEvent): void {
+    this.confirmOpened = false;
   }
 }

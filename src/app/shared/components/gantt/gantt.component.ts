@@ -99,7 +99,8 @@ export class GanttComponent implements AfterViewInit {
     this.editModalData = {
       task,
       parentTask: this.tasks.find(currentTask => currentTask.ID === task.parentID) || null,
-      childs
+      childs,
+      canDelete: this.service.canDeleteTask(task, this.tasks, this.dependencies)
     };
 
     this.modalOpened = true;
@@ -131,5 +132,10 @@ export class GanttComponent implements AfterViewInit {
 
   public modalCancelClicked(event: MouseEvent): void {
     this.modalOpened = false;
+  }
+
+  public modalDeleteTask(): void {
+    this.modalOpened = false;
+    this.tasks = this.tasks.filter(task => task !== this.editModalData.task);
   }
 }

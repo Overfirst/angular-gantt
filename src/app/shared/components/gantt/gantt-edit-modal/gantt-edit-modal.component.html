@@ -1,7 +1,7 @@
 <div class="modal">
-  <div class="top-bottom">
+  <div class="top top-bottom">
     <span class="header-text">Edit task</span>
-    <span (click)="closeClick($event)" class="header-text">✕</span>
+    <span (click)="closeClick($event)" class="header-text header-close">✕</span>
   </div>
 
   <div class="content">
@@ -67,7 +67,7 @@
     </form>
   </div>
 
-  <div class="top-bottom">
+  <div class="bottom top-bottom">
     <button
       (click)="deleteClick($event)"
       class="btn btn-delete"
@@ -81,6 +81,17 @@
         [class.btn-disabled]="form.invalid"
       >Save</button>
       <button (click)="cancelClick($event)" class="btn">Cancel</button>
+    </div>
+  </div>
+
+  <div *ngIf="confirmOpened" class="modal-overlay">
+    <div class="edit-modal-container">
+      <gantt-confirm-modal
+        [canDelete]="canDelete"
+        (noClicked)="confirmModalNoClick($event)"
+        (yesClicked)="confirmModalYesClick($event)"
+        (okClicked)="confirmModalOkClick($event)"
+      ></gantt-confirm-modal>
     </div>
   </div>
 </div>

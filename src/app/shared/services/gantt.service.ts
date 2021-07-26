@@ -523,4 +523,24 @@ export class GanttService {
 
     return `${year}-${this.resolve2digits(month)}-${this.resolve2digits(day)}T${this.resolve2digits(hours)}:${this.resolve2digits(minutes)}`;
   }
+
+  public canDeleteTask(task: GanttTask, tasks: GanttTask[], dependencies: GanttTaskDependency[]): boolean {
+    if (task.parentID === null || task.parentID === undefined) {
+      return false;
+    }
+
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].parentID === task.ID) {
+        return false;
+      }
+    }
+
+    for (let i = 0; i < dependencies.length; i++) {
+      if (dependencies[i].fromID === task.ID || dependencies[i].toID === task.ID) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }

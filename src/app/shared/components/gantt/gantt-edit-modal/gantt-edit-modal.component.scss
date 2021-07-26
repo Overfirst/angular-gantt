@@ -12,18 +12,17 @@ $top-bottom-border-color: rgb(207, 207, 207);
 .header-text {
   font-size: 20px;
   margin-left: 16px;
+}
 
-  &:last-child {
-    font-size: 20px;
-    opacity: 0.7;
-    margin-right: 16px;
-    cursor: pointer;
-    transition: 0.1s;
+.header-close {
+  opacity: 0.7;
+  margin-right: 16px;
+  cursor: pointer;
+  transition: 0.1s;
 
-    &:hover {
-      transform: scale(1.25, 1.25);
-      opacity: 1;
-    }
+  &:hover {
+    transform: scale(1.25, 1.25);
+    opacity: 1;
   }
 }
 
@@ -37,14 +36,14 @@ $top-bottom-border-color: rgb(207, 207, 207);
   align-items: center;
   height: $top-bottom-height;
   justify-content: space-between;
+}
 
-  &:first-child {
-    border-bottom: 1px solid $top-bottom-border-color;
-  }
+.top {
+  border-bottom: 1px solid $top-bottom-border-color;
+}
 
-  &:last-child {
-    border-top: 1px solid $top-bottom-border-color;
-  }
+.bottom {
+  border-top: 1px solid $top-bottom-border-color;
 }
 
 .btn {

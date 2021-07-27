@@ -1,11 +1,11 @@
 <div class="modal">
   <div class="top top-bottom">
-    <span class="header-text">Edit task</span>
+    <span class="header-text">{{ createMode ? 'Create' : 'Edit' }} task</span>
     <span (click)="closeClick($event)" class="header-text header-close">✕</span>
   </div>
 
   <div class="content">
-    <form [formGroup]="form">
+    <form *ngIf="!createMode" [formGroup]="form">
       <div class="input-group">
         <label>Task name</label>
         <div>
@@ -98,21 +98,126 @@
         </div>
       </div>
     </form>
+
+    <form *ngIf="createMode" [formGroup]="form">
+      <div class="input-group">
+        <label>Task name</label>
+        <div>
+          <input
+            formControlName="name"
+            type="text"
+            [class.input-invalid]="form.controls.name.touched && form.controls.name.invalid"
+          >
+          <div class="validator-box">
+            <span *ngIf="form.controls.name.touched && form.controls.name.invalid">Fill in this field!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Start date</label>
+        <div>
+          <input
+            formControlName="startDate"
+            type="datetime-local"
+            [class.input-invalid]="form.controls.startDate.touched && form.controls.startDate.invalid"
+          >
+          <div class="validator-box">
+            <span *ngIf="form.controls.startDate.touched && form.controls.startDate.errors?.required">Fill in this field!</span>
+            <span *ngIf="form.controls.startDate.touched && form.controls.startDate.invalid && !form.controls.startDate.errors?.required">{{ form.controls.startDate.errors!.error! }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>End date</label>
+        <div>
+          <input
+            (change)="checkStartDateValidation()"
+            formControlName="endDate"
+            type="datetime-local"
+            [class.input-invalid]="form.controls.endDate.touched && form.controls.endDate.invalid"
+          >
+          <div class="validator-box">
+            <span *ngIf="form.controls.endDate.touched && form.controls.endDate.errors?.required">Fill in this field!</span>
+            <span *ngIf="form.controls.endDate.touched && form.controls.endDate.invalid && !form.controls.endDate.errors?.required">{{ form.controls.endDate.errors!.error! }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Complete percent</label>
+        <div>
+          <input
+            formControlName="readyPercent"
+            type="number"
+            [class.input-invalid]="form.controls.readyPercent.touched && form.controls.readyPercent.invalid"
+            min="0"
+            max="100"
+          >
+          <div class="validator-box">
+            <span *ngIf="form.controls.readyPercent.touched && form.controls.readyPercent.invalid">Valid values are from 0 to 100!</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="createData.length !== 0" class="input-group">
+        <label>Parent</label>
+        <div>
+          <select
+            (change)="parentChanged()"
+            formControlName="possibleParents"
+            [(ngModel)]="selectedParent"
+          >
+            <option [ngValue]="null">None</option>
+            <option *ngFor="let task of createData" [ngValue]="task">{{ task.name }}</option>
+          </select>
+          <div class="validator-box">
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Successor</label>
+        <div>
+          <select
+            formControlName="successor"
+            [(ngModel)]="selectedSuccessor"
+          >
+            <option [ngValue]="null">None</option>
+            <option *ngFor="let task of createData" [ngValue]="task">{{ task.name }}</option>
+          </select>
+          <div class="validator-box">
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 
   <div class="bottom top-bottom">
     <button
+      *ngIf="!createMode"
       (click)="deleteClick($event)"
       class="btn btn-delete"
     >Delete</button>
 
     <div>
       <button
-        [disabled]="form.invalid"
-        (click)="saveClick($event)"
         class="btn btn-save"
+        *ngIf="!createMode"
+        (click)="saveClick($event)"
+        [disabled]="form.invalid"
         [class.btn-disabled]="form.invalid"
       >Save</button>
+
+      <button
+        class="btn btn-save"
+        *ngIf="createMode"
+        (click)="createClick($event)"
+        [disabled]="form.invalid"
+        [class.btn-disabled]="form.invalid"
+      >Create</button>
+
       <button (click)="cancelClick($event)" class="btn">Cancel</button>
     </div>
   </div>

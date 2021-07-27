@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GanttEditModalData, GanttEditModalSaveData, GanttTask, GanttTaskWrapper } from 'src/app/shared/interfaces';
+import { GanttEditModalData, GanttModalSaveData, GanttTask, GanttTaskWrapper } from 'src/app/shared/interfaces';
 import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 
@@ -18,14 +18,18 @@ export class GanttTaskModalComponent {
 
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
-  @Output() public saveClicked = new EventEmitter<GanttEditModalSaveData>();
+  @Output() public saveClicked = new EventEmitter<GanttModalSaveData>();
+  @Output() public createClicked = new EventEmitter<GanttModalSaveData>();
   @Output() public cancelClicked = new EventEmitter<MouseEvent>();
   @Output() public taskDelete = new EventEmitter<void>();
 
   public form: FormGroup;
   public confirmOpened = false;
+  @Input() public createMode = false;
 
   public editModalData: GanttEditModalData;
+  public createModalData: GanttTask[];
+
   public selectedParentWrapper: GanttTaskWrapper = { task: null };
   private selectedParentTask: GanttTask | null;
 
@@ -41,6 +45,10 @@ export class GanttTaskModalComponent {
   public selectedSuccessor: GanttTask | null;
 
   @Input() public set editData(data: GanttEditModalData) {
+    if (this.createMode) {
+      return;
+    }
+
     this.editModalData = data;
     this.selectedParent = data.parentTask;
     this.selectedSuccessor = data.currentSuccessor;
@@ -72,6 +80,44 @@ export class GanttTaskModalComponent {
     });
   }
 
+  @Input() public set createData(data: GanttTask[]) {
+    if (!this.createMode) {
+      return;
+    }
+
+    this.createModalData = data;
+    this.selectedParent = null;
+    this.selectedSuccessor = null;
+
+    const endControl = new FormControl(null, [
+      Validators.required,
+      GanttValidators.dateOutsideParentTask(this.selectedParentWrapper),
+    ]);
+    
+    const startControl = new FormControl(null, [
+      Validators.required,
+      GanttValidators.startDateLaterValidator(endControl),
+      GanttValidators.dateOutsideParentTask(this.selectedParentWrapper),
+    ]);
+
+    this.form = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      startDate: startControl,
+      endDate: endControl,
+      readyPercent: new FormControl(null, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(100)
+      ]),
+      possibleParents: new FormControl(null),
+      successor: new FormControl(null)
+    });
+  }
+
+  public get createData() {
+    return this.createModalData;
+  }
+
   public get editData() {
     return this.editModalData;
   }
@@ -85,18 +131,42 @@ export class GanttTaskModalComponent {
     this.deleteClicked.emit(event);
   }
 
-  public saveClick(event: MouseEvent): void {
+  private getTaskFromForm(): GanttTask {
     const data = this.form.value;
-    const task = {...this.editData.task};
+    
+    const generalData = {
+      parentID: this.selectedParent?.ID || null,
+      name: data.name,
+      readyPercent: data.readyPercent,
+      startDate: new Date(data.startDate),
+      endDate: new Date(data.endDate),
+    };
 
-    task.parentID = this.selectedParent?.ID || null;
-    task.name = data.name;
-    task.readyPercent = data.readyPercent;
+    if (!this.createMode) {
+      return {
+        ...this.editData.task,
+        ...generalData
+      };
+    }
 
-    task.startDate = new Date(data.startDate);
-    task.endDate = new Date(data.endDate);
+    return {
+      ID: new Date().getTime(),
+      ...generalData
+    };
+  }
 
-    this.saveClicked.emit({ task, successor: this.selectedSuccessor });
+  public saveClick(event: MouseEvent): void {
+    this.saveClicked.emit({
+      task: this.getTaskFromForm(),
+      successor: this.selectedSuccessor
+    });
+  }
+
+  public createClick(event: MouseEvent): void {
+    this.createClicked.emit({
+      task: this.getTaskFromForm(),
+      successor: this.selectedSuccessor
+    });
   }
 
   public cancelClick(event: MouseEvent): void {

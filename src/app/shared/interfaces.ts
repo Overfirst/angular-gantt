@@ -82,7 +82,7 @@ export interface GanttTaskWrapper {
   task: GanttTask | null;
 }
 
-export interface GanttEditModalSaveData {
+export interface GanttModalSaveData {
   task: GanttTask;
   successor: GanttTask | null;
 }

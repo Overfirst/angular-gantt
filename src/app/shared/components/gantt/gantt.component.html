@@ -5,8 +5,9 @@
   </gantt-periods>
 
   <button
-    [disabled]="modalOpened"
     class="create-btn"
+    (click)="createTaskClicked($event)"
+    [disabled]="modalOpened"
     [class.btn-disabled]="modalOpened"
   >New task</button>
 </div>
@@ -45,10 +46,13 @@
   <div *ngIf="modalOpened" class="modal-overlay">
     <div (click)="modalClicked($event)" class="edit-modal-container">
       <gantt-task-modal
+        [createMode]="createMode"
         [editData]="editModalData"
+        [createData]="tasks"
         (closeClicked)="modalCloseClicked($event)"
         (deleteClicked)="modalDeleteClicked($event)"
         (saveClicked)="modalSaveClicked($event)"
+        (createClicked)="modalCreateClicked($event)"
         (cancelClicked)="modalCancelClicked($event)"
         (taskDelete)="modalDeleteTask()"
       ></gantt-task-modal>

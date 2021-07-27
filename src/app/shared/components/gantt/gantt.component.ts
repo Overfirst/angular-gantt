@@ -33,6 +33,7 @@ export class GanttComponent implements AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef, private service: GanttService) {}
 
+  private _contentHeight = 500;
   private _tasks: GanttTask[];
 
   @Input() public set tasks(tasks: GanttTask[]) {
@@ -42,7 +43,14 @@ export class GanttComponent implements AfterViewInit {
   }
 
   @Input() public dependencies: GanttTaskDependency[] = [];
-  @Input() public contentHeight = 500;
+  
+  @Input() public set contentHeight(height: number) {
+    this._contentHeight = height < 500 ? 500 : height
+  };
+
+  public get contentHeight() {
+    return this._contentHeight;
+  }
 
   public get tasks() {
     return this._tasks;

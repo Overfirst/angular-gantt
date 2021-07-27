@@ -1,6 +1,6 @@
 <div [style.width]="width + 'px'" class="gantt-timeline">
   <div (click)="selectRow(null)" #header class="timeline-header">
-    <table>
+    <table #headerTable>
       <thead *ngIf="tasksRows.length !== 0">
         <tr rowHeight>
           <td
@@ -34,10 +34,10 @@
     </table>
   </div>
 
-  <div class="content">
+  <div *ngIf="headerTable" class="content">
     <div #mainTable [style.height]="contentHeight + 'px'" class="main-tables" [class.hide-scrolls]="tasksRows.length === 0">
       <div class="main-table">
-        <table>
+        <table [style.width]="headerTable.clientWidth + 'px'">
           <tbody>
             <ng-container *ngFor="let taskRow of tasksRows; index as idx">
               <tr

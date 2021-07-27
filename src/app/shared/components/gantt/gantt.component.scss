@@ -32,3 +32,31 @@
   transform: translate(-50%, -50%);
   font-size: 48px;
 }
+
+.control-panel {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.create-btn {
+  padding: 6px;
+  border: 1px solid #a5a5a5;
+  background: #d6d6d6;
+  margin-left: 12px;
+  border-radius: 3px;
+
+  &:not(.btn-disabled) {
+    cursor: pointer;
+  }
+
+  transition: all 0.15s;
+  font-size: 14px;
+
+  &:hover:not(.header-btn-active, .btn-disabled) {
+    background-color: #b1adad;
+  }
+
+  &:hover:is(.header-btn-active) {
+    cursor: default;
+  }
+}

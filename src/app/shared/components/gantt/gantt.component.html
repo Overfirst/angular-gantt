@@ -1,7 +1,15 @@
-<gantt-periods
-  [disabled]="modalOpened"
-  (periodChange)="periodChange($event)">
-</gantt-periods>
+<div class="control-panel">
+  <gantt-periods
+    [disabled]="modalOpened"
+    (periodChange)="periodChange($event)">
+  </gantt-periods>
+
+  <button
+    [disabled]="modalOpened"
+    class="create-btn"
+    [class.btn-disabled]="modalOpened"
+  >New task</button>
+</div>
 
 <div #mainRef class="gantt-content" (click)="modalOpened = false">
   <div #tasksRef>

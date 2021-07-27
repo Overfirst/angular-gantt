@@ -1,10 +1,8 @@
-<nav>
-  <button
-    *ngFor="let p of periods"
-    (click)="period = p"
-    class="header-btn"
-    [class.header-btn-active]="period === p"
-    [disabled]="disabled"
-    [class.btn-disabled]="disabled"
-  >{{ p }}</button>
-</nav>
+<button
+  *ngFor="let p of periods"
+  (click)="period = p"
+  class="header-btn"
+  [class.header-btn-active]="period === p"
+  [disabled]="disabled"
+  [class.btn-disabled]="disabled"
+>{{ p }}</button>

@@ -8,7 +8,7 @@
           <col style="max-width: 160px; width: 160px;">
           <col style="max-width: 110px; width: 110px;">
         </colgroup>
-        <thead>
+        <thead *ngIf="tasksRows.length !== 0">
           <tr rowHeight>
             <td nowrap rowspan="2">Tasks</td>
             <td nowrap rowspan="2">Actual start date</td>

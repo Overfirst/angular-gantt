@@ -1,7 +1,7 @@
 <div [style.width]="width + 'px'" class="gantt-timeline">
   <div (click)="selectRow(null)" #header class="timeline-header">
     <table>
-      <thead>
+      <thead *ngIf="tasksRows.length !== 0">
         <tr rowHeight>
           <td
             *ngFor="let part of periodParts"
@@ -35,7 +35,7 @@
   </div>
 
   <div class="content">
-    <div #mainTable [style.height]="contentHeight + 'px'" class="main-tables">
+    <div #mainTable [style.height]="contentHeight + 'px'" class="main-tables" [class.hide-scrolls]="tasksRows.length === 0">
       <div class="main-table">
         <table>
           <tbody>

@@ -17,7 +17,7 @@
       (editTaskClicked)="editTaskClicked($event)"
     ></gantt-tasks>
   </div>
-
+  
   <div #timelineRef>
     <gantt-timeline
       [contentHeight]="contentHeight"
@@ -33,7 +33,7 @@
       (editTaskClicked)="editTaskClicked($event)"
     ></gantt-timeline>
   </div>
-
+  
   <div *ngIf="modalOpened" class="modal-overlay">
     <div (click)="modalClicked($event)" class="edit-modal-container">
       <gantt-task-modal
@@ -45,5 +45,9 @@
         (taskDelete)="modalDeleteTask()"
       ></gantt-task-modal>
     </div>
+  </div>
+
+  <div *ngIf="tasks.length === 0" class="tasks-empty">
+    <span>There is not a single task!</span>
   </div>
 </div>

@@ -1,6 +1,12 @@
-<div class="wrapper" [attr.width]="width + 'px'" [attr.height]="height + 'px'">
-  <svg [attr.width]="width + 'px'" [attr.height]="height + 'px'">
-    
+<div
+  class="wrapper"
+  [attr.width]="width + 'px'"
+  [attr.height]="height + 'px'"
+>
+  <svg
+    [attr.width]="width + 'px'"
+    [attr.height]="height + 'px'"
+  >
     <ng-container *ngFor="let line of lines">
       <line
         [attr.x1]="line.x1"
@@ -16,7 +22,5 @@
         [attr.points]="getLineArrowPoints(line)"
       />
     </ng-container>
-    
-
   </svg>
 </div>

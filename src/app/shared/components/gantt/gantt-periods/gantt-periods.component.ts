@@ -8,8 +8,8 @@ import { GanttPeriod } from '../../../interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttPeriodsComponent implements OnInit {
-  public readonly periods: GanttPeriod[] = ['Day', 'Week', 'Month'];
   private selectedPeriod: GanttPeriod;
+  public readonly periods: GanttPeriod[] = ['Day', 'Week', 'Month'];
 
   public get period(): GanttPeriod {
     return this.selectedPeriod;
@@ -20,8 +20,8 @@ export class GanttPeriodsComponent implements OnInit {
     this.periodChange.emit(this.selectedPeriod);
   }
 
-  @Output() public periodChange = new EventEmitter<GanttPeriod>();
   @Input() public disabled = false;
+  @Output() public periodChange = new EventEmitter<GanttPeriod>();
 
   public ngOnInit(): void {
     this.period = 'Week';

@@ -13,6 +13,10 @@ import { GanttService } from '../../../services/gantt.service';
 export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   public periodParts: PeriodPart[];
 
+  private currentWidth = 0;
+  private scrollTopValue = 0;
+  private _selectedDate: Date;
+
   private selectedPeriod: GanttPeriod = 'Week';
 
   private tasksRowsList: GanttTaskRow[] = [];
@@ -24,11 +28,11 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
   private tasksTimelineData: TaskTimelineData[] = [];
   public showDependencies = false;
 
+  constructor(public service: GanttService) { }
+
   @ViewChild('header') header: ElementRef<HTMLElement>;
   @ViewChild('mainTable') mainTable: ElementRef<HTMLElement>;
   @ViewChild('tasksProgressTable') tasksProgressTable: ElementRef<HTMLElement>;
-
-  constructor(public service: GanttService) { }
 
   @Input() public contentHeight = 500;
   @Input() public activeRow: GanttTaskRow | null = null;
@@ -39,34 +43,19 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     this.tasksTimelineData = this.service.updateTimelineData(this.tasksRows, this.tasksTimelineData);
   }
 
-  public get tasksRows() {
-    return this.tasksRowsList;
-  }
-
-  public set tasks(tasks: GanttTask[]) {
-    this.tasksList = tasks;
-    this.recalculatePeriodParts();
-  }
-
   @Input() public set period(period: GanttPeriod) {
     this.selectedPeriod = period;
     this.recalculatePeriodParts();
   }
 
-  private currentWidth = 0;
-
   @Input() public set width(width: number) {
     this.currentWidth = width;
   }
-
-  private scrollTopValue = 0;
 
   @Input() public set scrollTop(scrollValue: number) {
     this.scrollTopValue = scrollValue;
     this.updateScrollPosition();
   }
-
-  private _selectedDate: Date;
 
   @Input() public set selectedDate(date: Date) {
     this._selectedDate = date;
@@ -94,15 +83,24 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  public get selectedDate() {
-    return this._selectedDate;
-  }
-
   @Input() public dependencies: GanttTaskDependency[] = [];
   
   @Output() public onScroll = new EventEmitter<GanttScrollSyncEvent>()
   @Output() public rowChanged = new EventEmitter<GanttTaskRow | null>();
   @Output() public editTaskClicked = new EventEmitter<GanttTask>();
+
+  public get tasksRows() {
+    return this.tasksRowsList;
+  }
+
+  public set tasks(tasks: GanttTask[]) {
+    this.tasksList = tasks;
+    this.recalculatePeriodParts();
+  }
+
+  public get selectedDate() {
+    return this._selectedDate;
+  }
 
   public ngAfterViewInit(): void {
     this.showDependencies = true;
@@ -124,6 +122,59 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
 
   public get period() {
     return this.selectedPeriod;
+  }
+
+  public getDependenciesData(): GanttDependenciesData {
+    return {
+      tasksInfo: this.tasksTimelineData,
+      dependencies: this.service.getVisibleDependencies(this.dependencies, this.tasksRows),
+      period: this.period
+    };
+  }
+
+  public getMainTableWidth(): number {
+    return this.tasksProgressTable.nativeElement.clientWidth;
+  }
+
+  public getMainTableHeight(): number {
+    return this.tasksProgressTable.nativeElement.clientHeight;
+  }
+
+  public getTaskProgressData(taskRow: GanttTaskRow, wrapper: HTMLElement): TaskProgressInput {
+    const data: TaskProgressInput = {
+      task: taskRow.task,
+      period: this.period,
+      minDate: this.periodParts[0].detail[0],
+      marginTop: wrapper.offsetTop
+    };
+
+    const idx = this.tasksProgressData.findIndex(currentData => currentData.task === data.task);
+    
+    if (idx !== -1) {
+      this.tasksProgressData.splice(idx, 1);
+    }
+
+    this.tasksProgressData.push(data);
+    return data;
+  }
+
+  public selectRow(rows: GanttTaskRow | null): void {
+    this.activeRow = rows;
+    this.rowChanged.emit(this.activeRow);
+  }
+
+  public taskProgressDataChanged(data: TaskTimelineData): void {
+    const idx = this.tasksTimelineData.findIndex(task => data.taskID === task.taskID);
+
+    if (idx !== -1) {
+      this.tasksTimelineData.splice(idx, 1);
+    }
+
+    this.tasksTimelineData.push(data);
+  }
+
+  public taskProgressDoubleClick(taskRow: GanttTaskRow): void {
+    this.editTaskClicked.emit(taskRow.task);
   }
 
   private recalculatePeriodParts(): void {
@@ -172,62 +223,9 @@ export class GanttTimelineComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public getDependenciesData(): GanttDependenciesData {
-    return {
-      tasksInfo: this.tasksTimelineData,
-      dependencies: this.service.getVisibleDependencies(this.dependencies, this.tasksRows),
-      period: this.period
-    };
-  }
-
-  public getMainTableWidth(): number {
-    return this.tasksProgressTable.nativeElement.clientWidth;
-  }
-
-  public getMainTableHeight(): number {
-    return this.tasksProgressTable.nativeElement.clientHeight;
-  }
-
-  public getTaskProgressData(taskRow: GanttTaskRow, wrapper: HTMLElement): TaskProgressInput {
-    const data: TaskProgressInput = {
-      task: taskRow.task,
-      period: this.period,
-      minDate: this.periodParts[0].detail[0],
-      marginTop: wrapper.offsetTop
-    };
-
-    const idx = this.tasksProgressData.findIndex(currentData => currentData.task === data.task);
-    
-    if (idx !== -1) {
-      this.tasksProgressData.splice(idx, 1);
-    }
-
-    this.tasksProgressData.push(data);
-    return data;
-  }
-
-  public selectRow(rows: GanttTaskRow | null): void {
-    this.activeRow = rows;
-    this.rowChanged.emit(this.activeRow);
-  }
-
   private clearScrollSubscription(): void {
     if (this.scrollSubscription && !this.scrollSubscription.closed) {
       this.scrollSubscription.unsubscribe()
     }
-  }
-
-  public taskProgressDataChanged(data: TaskTimelineData): void {
-    const idx = this.tasksTimelineData.findIndex(task => data.taskID === task.taskID);
-
-    if (idx !== -1) {
-      this.tasksTimelineData.splice(idx, 1);
-    }
-
-    this.tasksTimelineData.push(data);
-  }
-
-  public taskProgressDoubleClick(taskRow: GanttTaskRow): void {
-    this.editTaskClicked.emit(taskRow.task);
   }
 }

@@ -9,27 +9,6 @@ import { GanttService } from '../../services/gantt.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttComponent implements AfterViewInit {
-  @ViewChild('mainRef') public mainRef: ElementRef<HTMLElement>;
-  @ViewChild('tasksRef') public tasksRef: ElementRef<HTMLElement>;
-  @ViewChild('timelineRef') public timelineRef: ElementRef<HTMLElement>;
-
-  constructor(private cdr: ChangeDetectorRef, private service: GanttService) {}
-
-  private _tasks: GanttTask[];
-
-  @Input() public set tasks(tasks: GanttTask[]) {
-    this._tasks = tasks;
-    this.tasksRows = this.service.getTasksRows(tasks, this.tasksRows);
-    this.visibleRows = this.service.getVisibleRows(this.tasksRows);
-  }
-
-  public get tasks() {
-    return this._tasks;
-  }
-
-  @Input() public dependencies: GanttTaskDependency[] = [];
-  @Input() public contentHeight = 500;
-
   public modalOpened = false;
   public createMode = false;
 
@@ -47,6 +26,27 @@ export class GanttComponent implements AfterViewInit {
   public activeRow: GanttTaskRow | null = null;
 
   public editModalData: GanttEditModalData;
+
+  @ViewChild('mainRef') public mainRef: ElementRef<HTMLElement>;
+  @ViewChild('tasksRef') public tasksRef: ElementRef<HTMLElement>;
+  @ViewChild('timelineRef') public timelineRef: ElementRef<HTMLElement>;
+
+  constructor(private cdr: ChangeDetectorRef, private service: GanttService) {}
+
+  private _tasks: GanttTask[];
+
+  @Input() public set tasks(tasks: GanttTask[]) {
+    this._tasks = tasks;
+    this.tasksRows = this.service.getTasksRows(tasks, this.tasksRows);
+    this.visibleRows = this.service.getVisibleRows(this.tasksRows);
+  }
+
+  @Input() public dependencies: GanttTaskDependency[] = [];
+  @Input() public contentHeight = 500;
+
+  public get tasks() {
+    return this._tasks;
+  }
 
   public ngAfterViewInit(): void {
     this.calculateWidth();

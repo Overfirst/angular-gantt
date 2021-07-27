@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div class="input-group">
+      <div *ngIf="editData.possibleSuccessors.length !== 0" class="input-group">
         <label>Successor</label>
         <div>
           <select
@@ -190,7 +190,7 @@
         </div>
       </div>
 
-      <div class="input-group">
+      <div *ngIf="createData.length !== 0" class="input-group">
         <label>Successor</label>
         <div>
           <select

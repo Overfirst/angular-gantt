@@ -9,6 +9,8 @@ import { GanttScrollSyncEvent, GanttTask, GanttTaskRow } from '../../../interfac
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttTasksComponent implements AfterViewInit {
+  private scrollTopValue = 0;
+
   constructor(private service: GanttService) {}
 
   @ViewChild('table') private table: ElementRef<any>;
@@ -17,15 +19,8 @@ export class GanttTasksComponent implements AfterViewInit {
   @Input() public contentHeight = 500;
   @Input() public activeRow: GanttTaskRow | null = null;
 
-  private scrollTopValue = 0;
-
   @Input() public set scrollTop(scrollValue: number) {
     this.scrollTopValue = scrollValue;
-    this.updateScrollPosition();
-  }
-
-  public ngAfterViewInit(): void {
-    this.initScrollCallbacks();
     this.updateScrollPosition();
   }
 
@@ -35,29 +30,14 @@ export class GanttTasksComponent implements AfterViewInit {
   @Output() public openCloseClicked = new EventEmitter<GanttTaskRow | null>();
   @Output() public editTaskClicked = new EventEmitter<GanttTask>();
 
-  private updateScrollPosition(): void {
-    if (this.table) {
-      this.table.nativeElement.scrollTop = this.scrollTopValue;
-    }
-  }
-
-  private initScrollCallbacks(): void {
-    const table = this.table.nativeElement;
-
-    table.onwheel = (event: WheelEvent) => {
-      if (!event.shiftKey) {
-        this.onScroll.emit({ scrollValue: table.scrollTop + event.deltaY });
-      }
-    }
+  public ngAfterViewInit(): void {
+    this.initScrollCallbacks();
+    this.updateScrollPosition();
   }
 
   public selectRow(needRow: GanttTaskRow | null): void {
     this.activeRow = this.service.searchRow(needRow, this.tasksRows);
     this.rowChanged.emit(this.activeRow);
-  }
-
-  private rowHasChilds(row: GanttTaskRow): boolean {
-    return !!row.childs && row.childs.length > 0;
   }
 
   public editTaskClick(event: MouseEvent, taskRow: GanttTaskRow): void {
@@ -85,5 +65,25 @@ export class GanttTasksComponent implements AfterViewInit {
 
   public dateClick(date: Date): void {
     this.dateClicked.emit(date);
+  }
+
+  private initScrollCallbacks(): void {
+    const table = this.table.nativeElement;
+
+    table.onwheel = (event: WheelEvent) => {
+      if (!event.shiftKey) {
+        this.onScroll.emit({ scrollValue: table.scrollTop + event.deltaY });
+      }
+    }
+  }
+
+  private updateScrollPosition(): void {
+    if (this.table) {
+      this.table.nativeElement.scrollTop = this.scrollTopValue;
+    }
+  }
+
+  private rowHasChilds(row: GanttTaskRow): boolean {
+    return !!row.childs && row.childs.length > 0;
   }
 }

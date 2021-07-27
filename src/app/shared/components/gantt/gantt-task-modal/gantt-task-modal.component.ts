@@ -14,36 +14,22 @@ import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GanttTaskModalComponent {
-  constructor(private service: GanttService) {}
-
-  @Output() public closeClicked = new EventEmitter<MouseEvent>();
-  @Output() public deleteClicked = new EventEmitter<MouseEvent>();
-  @Output() public saveClicked = new EventEmitter<GanttModalSaveData>();
-  @Output() public createClicked = new EventEmitter<GanttModalSaveData>();
-  @Output() public cancelClicked = new EventEmitter<MouseEvent>();
-  @Output() public taskDelete = new EventEmitter<void>();
+  private selectedParentTask: GanttTask | null;
 
   public form: FormGroup;
   public confirmOpened = false;
-  @Input() public createMode = false;
 
   public editModalData: GanttEditModalData;
   public createModalData: GanttTask[];
 
   public selectedParentWrapper: GanttTaskWrapper = { task: null };
-  private selectedParentTask: GanttTask | null;
-
-  public set selectedParent(task: GanttTask | null) {
-    this.selectedParentTask = task;
-    this.selectedParentWrapper.task = task;
-  }
-
-  public get selectedParent() {
-    return this.selectedParentTask;
-  }
 
   public selectedSuccessor: GanttTask | null;
   public selectedColor: string = '#ffffff'
+
+  constructor(private service: GanttService) {}
+
+  @Input() public createMode = false;
 
   @Input() public set editData(data: GanttEditModalData) {
     if (this.createMode) {
@@ -117,7 +103,23 @@ export class GanttTaskModalComponent {
       color: new FormControl(null)
     });
   }
+  
+  @Output() public closeClicked = new EventEmitter<MouseEvent>();
+  @Output() public deleteClicked = new EventEmitter<MouseEvent>();
+  @Output() public saveClicked = new EventEmitter<GanttModalSaveData>();
+  @Output() public createClicked = new EventEmitter<GanttModalSaveData>();
+  @Output() public cancelClicked = new EventEmitter<MouseEvent>();
+  @Output() public taskDelete = new EventEmitter<void>();
 
+  public set selectedParent(task: GanttTask | null) {
+    this.selectedParentTask = task;
+    this.selectedParentWrapper.task = task;
+  }
+
+  public get selectedParent() {
+    return this.selectedParentTask;
+  }
+  
   public get createData() {
     return this.createModalData;
   }
@@ -133,31 +135,6 @@ export class GanttTaskModalComponent {
   public deleteClick(event: MouseEvent): void {
     this.confirmOpened = true;
     this.deleteClicked.emit(event);
-  }
-
-  private getTaskFromForm(): GanttTask {
-    const data = this.form.value;
-    
-    const generalData = {
-      parentID: this.selectedParent?.ID || null,
-      name: data.name,
-      readyPercent: data.readyPercent,
-      startDate: new Date(data.startDate),
-      endDate: new Date(data.endDate),
-      color: this.selectedColor
-    };
-
-    if (!this.createMode) {
-      return {
-        ...this.editData.task,
-        ...generalData
-      };
-    }
-
-    return {
-      ID: new Date().getTime(),
-      ...generalData
-    };
   }
 
   public saveClick(event: MouseEvent): void {
@@ -198,5 +175,30 @@ export class GanttTaskModalComponent {
   public parentChanged(): void {
     this.form.controls.startDate.updateValueAndValidity();
     this.form.controls.endDate.updateValueAndValidity();
+  }
+
+  private getTaskFromForm(): GanttTask {
+    const data = this.form.value;
+    
+    const generalData = {
+      parentID: this.selectedParent?.ID || null,
+      name: data.name,
+      readyPercent: data.readyPercent,
+      startDate: new Date(data.startDate),
+      endDate: new Date(data.endDate),
+      color: this.selectedColor
+    };
+
+    if (!this.createMode) {
+      return {
+        ...this.editData.task,
+        ...generalData
+      };
+    }
+
+    return {
+      ID: new Date().getTime(),
+      ...generalData
+    };
   }
 }

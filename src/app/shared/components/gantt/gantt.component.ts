@@ -100,6 +100,7 @@ export class GanttComponent implements AfterViewInit {
       task,
       parentTask: this.tasks.find(currentTask => currentTask.ID === task.parentID) || null,
       childs,
+      possibleParents: this.service.getTaskPossibleParents(task, this.tasks)
     };
 
     this.modalOpened = true;
@@ -120,6 +121,7 @@ export class GanttComponent implements AfterViewInit {
   public modalSaveClicked(editedTask: GanttTask): void {
     const { task } = this.editModalData;
 
+    task.parentID = editedTask.parentID;
     task.name = editedTask.name;
     task.readyPercent = editedTask.readyPercent;
     task.startDate = editedTask.startDate;

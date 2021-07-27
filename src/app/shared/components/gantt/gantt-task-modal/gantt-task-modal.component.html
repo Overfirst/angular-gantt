@@ -64,6 +64,18 @@
           </div>
         </div>
       </div>
+
+      <div *ngIf="editData.possibleParents.length !== 0" class="input-group">
+        <label>Parent</label>
+        <div>
+          <select formControlName="possibleParents" [(ngModel)]="selectedParent">
+            <option [ngValue]="null">None</option>
+            <option *ngFor="let task of editData.possibleParents" [ngValue]="task">{{ task.name }}</option>
+          </select>
+          <div class="validator-box">
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 

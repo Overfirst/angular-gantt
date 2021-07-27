@@ -92,6 +92,8 @@ $top-bottom-border-color: rgb(207, 207, 207);
   opacity: 0.45;
 }
 
+$total-input-length: 250px;
+
 input, select {
   display: block;
 
@@ -107,17 +109,8 @@ input, select {
     color: #fff;
     background: rgb(255, 124, 124);
   }
-}
 
-$total-input-length: 250px;
-$input-time-length: 60px;
-
-input {
   width: $total-input-length;
-
-  &[type="date"] {
-    width: $total-input-length - $input-time-length;
-  }
 }
 
 .input-invalid {
@@ -126,10 +119,6 @@ input {
   &:focus {
     border-color: rgb(255, 71, 71);
   }
-}
-
-select {
-  width: $input-time-length;
 }
 
 .input-group {

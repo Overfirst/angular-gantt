@@ -68,6 +68,7 @@ export interface GanttEditModalData {
   task: GanttTask;
   parentTask: GanttTask | null;
   childs: GanttTask[];
+  possibleParents: GanttTask[];
 }
 
 export interface GanttTaskRemoveData {

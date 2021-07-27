@@ -23,50 +23,43 @@ export class GanttTaskModalComponent {
   @Output() public taskDelete = new EventEmitter<void>();
 
   public form: FormGroup;
-  
-  private editableTask: GanttTask;
-  private childs: GanttTask[] = [];
-
   public confirmOpened = false;
 
-  @Input() public set data(data: GanttEditModalData) {
-    this.parentTask = data.parentTask;
-    this.childs = data.childs;
-    this.task = data.task;
-  }
+  public editModalData: GanttEditModalData;
+  public selectedParent: GanttTask | null;
 
-  private set task(task: GanttTask) {
-    this.editableTask = task;
+  @Input() public set editData(data: GanttEditModalData) {
+    this.editModalData = data;
+    this.selectedParent = this.editModalData.parentTask;
 
-    const endControl = new FormControl(this.service.convertDateToInput(this.editableTask.endDate), [
+    const endControl = new FormControl(this.service.convertDateToInput(data.task.endDate), [
       Validators.required,
-      GanttValidators.dateOutsideParentTask(this.parentTask),
-      GanttValidators.dateOutsideChildTask(this.childs)
+      GanttValidators.dateOutsideParentTask(this.editModalData.parentTask),
+      GanttValidators.dateOutsideChildTask(this.editModalData.childs)
     ]);
     
-    const startControl = new FormControl(this.service.convertDateToInput(this.editableTask.startDate), [
+    const startControl = new FormControl(this.service.convertDateToInput(data.task.startDate), [
       Validators.required,
       GanttValidators.startDateLaterValidator(endControl),
-      GanttValidators.dateOutsideParentTask(this.parentTask),
-      GanttValidators.dateOutsideChildTask(this.childs)
+      GanttValidators.dateOutsideParentTask(this.editModalData.parentTask),
+      GanttValidators.dateOutsideChildTask(this.editModalData.childs)
     ]);
 
     this.form = new FormGroup({
-      name: new FormControl(task.name, Validators.required),
+      name: new FormControl(data.task.name, Validators.required),
       startDate: startControl,
       endDate: endControl,
-      readyPercent: new FormControl(task.readyPercent, [
+      readyPercent: new FormControl(data.task.readyPercent, [
         Validators.required,
         Validators.min(0),
         Validators.max(100)
       ]),
+      possibleParents: new FormControl(null)
     });
   }
 
-  private parentTask: GanttTask | null = null;
-
-  private get task() {
-    return this.editableTask;
+  public get editData() {
+    return this.editModalData;
   }
 
   public closeClick(event: MouseEvent): void {
@@ -80,8 +73,9 @@ export class GanttTaskModalComponent {
 
   public saveClick(event: MouseEvent): void {
     const data = this.form.value;
-    const task = {...this.editableTask};
+    const task = {...this.editData.task};
 
+    task.parentID = this.selectedParent?.ID || null;
     task.name = data.name;
     task.readyPercent = data.readyPercent;
 

@@ -562,4 +562,28 @@ export class GanttService {
 
     return { newTasks, newDependencies };
   }
+
+  public getTaskPossibleParents(task: GanttTask, tasks: GanttTask[]): GanttTask[] {
+    const possibleParents: GanttTask[] = [];
+    const taskChilds: GanttTask[] = [];
+
+    (function getTaskChilds(task: GanttTask): void {
+      tasks.forEach(currentTask => {
+        if (currentTask.parentID === task.ID) {
+          taskChilds.push(currentTask);
+          getTaskChilds(currentTask);
+        }
+      });
+    })(task);
+
+    tasks.forEach(currentTask => {
+      if (currentTask.ID === task.ID || taskChilds.find(task => task.ID === currentTask.ID)) {
+        return;
+      }
+
+      possibleParents.push(currentTask);
+    })
+
+    return possibleParents;
+  }
 }

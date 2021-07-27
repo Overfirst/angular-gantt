@@ -84,6 +84,42 @@ export class AppComponent {
       endDate: new Date(2021, 5, 8, 4, 30),
       readyPercent: 68,
       color: '#ff7615'
+    },
+    {
+      ID: 1000,
+      name: 'Test task 1',
+      startDate: new Date(2021, 5, 1),
+      endDate: new Date(2021, 5, 6),
+      readyPercent: 59,
+      color: '#03914c'
+    },
+    {
+      ID: 1001,
+      parentID: 1000,
+      name: 'Test task 2',
+      startDate: new Date(2021, 5, 1, 4),
+      endDate: new Date(2021, 5, 5),
+      readyPercent: 80,
+      color: '#ffa200'
+    },
+    {
+      ID: 1002,
+      parentID: 1001,
+      name: 'Test task 3',
+      startDate: new Date(2021, 5, 1, 12),
+      endDate: new Date(2021, 5, 4, 11),
+
+      readyPercent: 80,
+      color: '#1e00ff'
+    },
+    {
+      ID: 1003,
+      parentID: 1001,
+      name: 'Test task 4',
+      startDate: new Date(2021, 5, 2),
+      endDate: new Date(2021, 5, 4),
+      readyPercent: 80,
+      color: '#ff1acd'
     }
   ];
 
@@ -93,6 +129,11 @@ export class AppComponent {
     { fromID: 3, toID: 2 },
     { fromID: 6, toID: 7 },
     { fromID: 7, toID: 8 },
+    { fromID: 9, toID: 3 },
+
+    { fromID: 1000, toID: 1001 },
+    { fromID: 1001, toID: 1002 },
+    { fromID: 1002, toID: 1003 },
     { fromID: 9, toID: 3 },
   ];
 }

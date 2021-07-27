@@ -97,6 +97,19 @@
           </div>
         </div>
       </div>
+
+      <div class="input-group">
+        <label>Color</label>
+        <div>
+          <input
+            [(ngModel)]="selectedColor"
+            formControlName="color"
+            type="color"
+          >
+          <div class="validator-box">
+          </div>
+        </div>
+      </div>
     </form>
 
     <form *ngIf="createMode" [formGroup]="form">
@@ -191,6 +204,19 @@
           </div>
         </div>
       </div>
+
+      <div class="input-group">
+        <label>Color</label>
+        <div>
+          <input
+            [(ngModel)]="selectedColor"
+            formControlName="color"
+            type="color"
+          >
+          <div class="validator-box">
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 
@@ -200,6 +226,8 @@
       (click)="deleteClick($event)"
       class="btn btn-delete"
     >Delete</button>
+
+    <div *ngIf="createMode"></div>
 
     <div>
       <button

@@ -137,6 +137,7 @@ export class GanttComponent implements AfterViewInit {
     task.readyPercent = data.task.readyPercent;
     task.startDate = data.task.startDate;
     task.endDate = data.task.endDate;
+    task.color = data.task.color;
 
     this.tasks = [...this.tasks];
     

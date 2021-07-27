@@ -43,6 +43,7 @@ export class GanttTaskModalComponent {
   }
 
   public selectedSuccessor: GanttTask | null;
+  public selectedColor: string = '#ffffff'
 
   @Input() public set editData(data: GanttEditModalData) {
     if (this.createMode) {
@@ -52,6 +53,7 @@ export class GanttTaskModalComponent {
     this.editModalData = data;
     this.selectedParent = data.parentTask;
     this.selectedSuccessor = data.currentSuccessor;
+    this.selectedColor = data.task.color || '#ffffff';
 
     const endControl = new FormControl(this.service.convertDateToInput(data.task.endDate), [
       Validators.required,
@@ -76,7 +78,8 @@ export class GanttTaskModalComponent {
         Validators.max(100)
       ]),
       possibleParents: new FormControl(null),
-      successor: new FormControl(null)
+      successor: new FormControl(null),
+      color: new FormControl(null)
     });
   }
 
@@ -110,7 +113,8 @@ export class GanttTaskModalComponent {
         Validators.max(100)
       ]),
       possibleParents: new FormControl(null),
-      successor: new FormControl(null)
+      successor: new FormControl(null),
+      color: new FormControl(null)
     });
   }
 
@@ -140,6 +144,7 @@ export class GanttTaskModalComponent {
       readyPercent: data.readyPercent,
       startDate: new Date(data.startDate),
       endDate: new Date(data.endDate),
+      color: this.selectedColor
     };
 
     if (!this.createMode) {

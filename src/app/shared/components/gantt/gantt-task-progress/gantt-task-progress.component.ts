@@ -46,7 +46,11 @@ export class GanttTaskProgressComponent {
   ) {}
 
   public get color(): string {
-    return this.data.task.color || GanttTaskProgressComponent.defaultColor;
+    if (!this.data.task.color) {
+      this.data.task.color = GanttTaskProgressComponent.defaultColor;
+    }
+
+    return this.data.task.color;
   }
 
   public get title(): string {

@@ -36,10 +36,10 @@
                 (click)="selectRow(taskRow)"
                 [class.active-row]="activeRow === taskRow"
               >
-                <td nowrap>
+                <td  nowrap>
                   <div class="name-container">
                     <span (click)="editTaskClick($event, taskRow)" class="edit-icon">✎</span>
-                    <div [ngStyle]="{ 'margin-left': 12 * level + 'px' }">
+                    <div [ngStyle]="{ 'margin-left': 12 * level + 'px' }" class="name-wrapper">
                       <span
                         class="open-close-icon"
                         (click)="rowOpenCloseClicked($event, taskRow)"

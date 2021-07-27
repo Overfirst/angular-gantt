@@ -47,3 +47,9 @@
   display: flex;
   align-items: center;
 }
+
+.name-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

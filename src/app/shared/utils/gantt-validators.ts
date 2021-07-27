@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
-import { GanttTask } from "../interfaces";
+import { GanttTask, GanttTaskWrapper } from "../interfaces";
 
 export class GanttValidators {
   static startDateLaterValidator(connectControl: AbstractControl): ValidatorFn {
@@ -15,15 +15,15 @@ export class GanttValidators {
     }
   }
 
-  static dateOutsideParentTask(parentTask: GanttTask | null): ValidatorFn {
+  static dateOutsideParentTask(wrapper: GanttTaskWrapper): ValidatorFn {
     return function(control: AbstractControl): ValidationErrors | null {
-      if (!parentTask) {
+      if (!wrapper.task) {
         return null;
       }
 
       const date = new Date(control.value);
 
-      if (date < parentTask.startDate || date > parentTask.endDate) {
+      if (date < wrapper.task.startDate || date > wrapper.task.endDate) {
         return { error: 'The date goes beyond the parent!' };
       }
 

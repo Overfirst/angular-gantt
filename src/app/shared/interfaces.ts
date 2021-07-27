@@ -75,3 +75,7 @@ export interface GanttTaskRemoveData {
   newTasks: GanttTask[];
   newDependencies: GanttTaskDependency[];
 }
+
+export interface GanttTaskWrapper {
+  task: GanttTask | null;
+}

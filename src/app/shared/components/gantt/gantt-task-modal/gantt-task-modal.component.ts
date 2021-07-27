@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GanttEditModalData, GanttTask } from 'src/app/shared/interfaces';
+import { GanttEditModalData, GanttTask, GanttTaskWrapper } from 'src/app/shared/interfaces';
 import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 
@@ -26,7 +26,17 @@ export class GanttTaskModalComponent {
   public confirmOpened = false;
 
   public editModalData: GanttEditModalData;
-  public selectedParent: GanttTask | null;
+  public selectedParentWrapper: GanttTaskWrapper = { task: null };
+  private selectedParentTask: GanttTask | null;
+
+  public set selectedParent(task: GanttTask | null) {
+    this.selectedParentTask = task;
+    this.selectedParentWrapper.task = task;
+  }
+
+  public get selectedParent() {
+    return this.selectedParentTask;
+  }
 
   @Input() public set editData(data: GanttEditModalData) {
     this.editModalData = data;
@@ -34,14 +44,14 @@ export class GanttTaskModalComponent {
 
     const endControl = new FormControl(this.service.convertDateToInput(data.task.endDate), [
       Validators.required,
-      GanttValidators.dateOutsideParentTask(this.editModalData.parentTask),
+      GanttValidators.dateOutsideParentTask(this.selectedParentWrapper),
       GanttValidators.dateOutsideChildTask(this.editModalData.childs)
     ]);
     
     const startControl = new FormControl(this.service.convertDateToInput(data.task.startDate), [
       Validators.required,
       GanttValidators.startDateLaterValidator(endControl),
-      GanttValidators.dateOutsideParentTask(this.editModalData.parentTask),
+      GanttValidators.dateOutsideParentTask(this.selectedParentWrapper),
       GanttValidators.dateOutsideChildTask(this.editModalData.childs)
     ]);
 
@@ -104,5 +114,10 @@ export class GanttTaskModalComponent {
 
   public confirmModalOkClick(event: MouseEvent): void {
     this.confirmOpened = false;
+  }
+
+  public parentChanged(): void {
+    this.form.controls.startDate.updateValueAndValidity();
+    this.form.controls.endDate.updateValueAndValidity();
   }
 }

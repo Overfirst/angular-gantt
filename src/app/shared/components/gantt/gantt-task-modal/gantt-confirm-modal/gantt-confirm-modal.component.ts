@@ -4,7 +4,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
   selector: 'gantt-confirm-modal',
   templateUrl: './gantt-confirm-modal.component.html',
   styleUrls: [
-    '../gantt-edit-modal.component.scss',
+    '../gantt-task-modal.component.scss',
     './gantt-confirm-modal.component.scss'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush

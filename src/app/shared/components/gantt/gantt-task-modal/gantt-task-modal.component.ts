@@ -5,15 +5,15 @@ import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 
 @Component({
-  selector: 'gantt-edit-modal',
-  templateUrl: './gantt-edit-modal.component.html',
+  selector: 'gantt-task-modal',
+  templateUrl: './gantt-task-modal.component.html',
   styleUrls: [
-    './gantt-edit-modal.component.scss',
+    './gantt-task-modal.component.scss',
     '../gantt.component.scss'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GanttEditModalComponent {
+export class GanttTaskModalComponent {
   constructor(private service: GanttService) {}
 
   @Output() public closeClicked = new EventEmitter<MouseEvent>();

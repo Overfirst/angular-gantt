@@ -82,6 +82,21 @@
           </div>
         </div>
       </div>
+
+      <div class="input-group">
+        <label>Successor</label>
+        <div>
+          <select
+            formControlName="successor"
+            [(ngModel)]="selectedSuccessor"
+          >
+            <option [ngValue]="null">None</option>
+            <option *ngFor="let task of editData.possibleSuccessors" [ngValue]="task">{{ task.name }}</option>
+          </select>
+          <div class="validator-box">
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 

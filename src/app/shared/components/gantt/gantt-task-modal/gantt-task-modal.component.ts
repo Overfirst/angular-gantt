@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GanttEditModalData, GanttTask, GanttTaskWrapper } from 'src/app/shared/interfaces';
+import { GanttEditModalData, GanttEditModalSaveData, GanttTask, GanttTaskWrapper } from 'src/app/shared/interfaces';
 import { GanttService } from 'src/app/shared/services/gantt.service';
 import { GanttValidators } from 'src/app/shared/utils/gantt-validators';
 
@@ -18,7 +18,7 @@ export class GanttTaskModalComponent {
 
   @Output() public closeClicked = new EventEmitter<MouseEvent>();
   @Output() public deleteClicked = new EventEmitter<MouseEvent>();
-  @Output() public saveClicked = new EventEmitter<GanttTask>();
+  @Output() public saveClicked = new EventEmitter<GanttEditModalSaveData>();
   @Output() public cancelClicked = new EventEmitter<MouseEvent>();
   @Output() public taskDelete = new EventEmitter<void>();
 
@@ -38,9 +38,12 @@ export class GanttTaskModalComponent {
     return this.selectedParentTask;
   }
 
+  public selectedSuccessor: GanttTask | null;
+
   @Input() public set editData(data: GanttEditModalData) {
     this.editModalData = data;
-    this.selectedParent = this.editModalData.parentTask;
+    this.selectedParent = data.parentTask;
+    this.selectedSuccessor = data.currentSuccessor;
 
     const endControl = new FormControl(this.service.convertDateToInput(data.task.endDate), [
       Validators.required,
@@ -64,7 +67,8 @@ export class GanttTaskModalComponent {
         Validators.min(0),
         Validators.max(100)
       ]),
-      possibleParents: new FormControl(null)
+      possibleParents: new FormControl(null),
+      successor: new FormControl(null)
     });
   }
 
@@ -92,7 +96,7 @@ export class GanttTaskModalComponent {
     task.startDate = new Date(data.startDate);
     task.endDate = new Date(data.endDate);
 
-    this.saveClicked.emit(task);
+    this.saveClicked.emit({ task, successor: this.selectedSuccessor });
   }
 
   public cancelClick(event: MouseEvent): void {

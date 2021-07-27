@@ -69,6 +69,8 @@ export interface GanttEditModalData {
   parentTask: GanttTask | null;
   childs: GanttTask[];
   possibleParents: GanttTask[];
+  possibleSuccessors: GanttTask[];
+  currentSuccessor: GanttTask | null;
 }
 
 export interface GanttTaskRemoveData {
@@ -78,4 +80,9 @@ export interface GanttTaskRemoveData {
 
 export interface GanttTaskWrapper {
   task: GanttTask | null;
+}
+
+export interface GanttEditModalSaveData {
+  task: GanttTask;
+  successor: GanttTask | null;
 }

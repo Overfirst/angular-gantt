@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { GanttEditModalData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow } from '../../interfaces';
+import { GanttEditModalData, GanttEditModalSaveData, GanttPeriod, GanttScrollSyncEvent, GanttTask, GanttTaskDependency, GanttTaskRow } from '../../interfaces';
 import { GanttService } from '../../services/gantt.service';
 
 @Component({
@@ -96,11 +96,15 @@ export class GanttComponent implements AfterViewInit {
       }
     });
 
+    const needDependency = this.dependencies.find(dependency => dependency.fromID === task.ID) || null;
+
     this.editModalData = {
       task,
       parentTask: this.tasks.find(currentTask => currentTask.ID === task.parentID) || null,
       childs,
-      possibleParents: this.service.getTaskPossibleParents(task, this.tasks)
+      possibleParents: this.service.getTaskPossibleParents(task, this.tasks),
+      possibleSuccessors: this.tasks.filter(currentTask => currentTask.ID !== task.ID),
+      currentSuccessor: needDependency ? this.tasks.find(task => task.ID === needDependency.toID)! : null
     };
 
     this.modalOpened = true;
@@ -118,16 +122,23 @@ export class GanttComponent implements AfterViewInit {
 
   }
 
-  public modalSaveClicked(editedTask: GanttTask): void {
+  public modalSaveClicked(data: GanttEditModalSaveData): void {
     const { task } = this.editModalData;
 
-    task.parentID = editedTask.parentID;
-    task.name = editedTask.name;
-    task.readyPercent = editedTask.readyPercent;
-    task.startDate = editedTask.startDate;
-    task.endDate = editedTask.endDate;
+    task.parentID = data.task.parentID;
+    task.name = data.task.name;
+    task.readyPercent = data.task.readyPercent;
+    task.startDate = data.task.startDate;
+    task.endDate = data.task.endDate;
 
     this.tasks = [...this.tasks];
+    
+    this.dependencies = this.dependencies.filter(dependency => dependency.fromID !== data.task.ID);
+
+    if (data.successor) {
+      this.dependencies.push({ fromID: task.ID, toID: data.successor.ID })
+    }
+
     this.modalOpened = false;
   }
 

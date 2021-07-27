@@ -34,12 +34,6 @@ export class GanttService {
     return createTasksRows(tasks, null);
   }
 
-  private weekStart(date: Date): Date {
-    const newDate = new Date(date);
-    newDate.setDate(date.getDate() - date.getDay() + (date.getDay() == 0 ? -6 : 1))
-    return newDate;
-  }
-
   public weekEnd(date: Date): Date {
     const endDate = new Date(date);
     endDate.setDate(date.getDate() + 6 - (date.getDay() === 0 ? 6 : date.getDay() - 1));
@@ -72,7 +66,6 @@ export class GanttService {
 
   public getMonthWeekCapacity(date: Date): number {
     const newDate = new Date(date);
-    
 
     const totalDays = this.daysInMonth(newDate);
     const addition = newDate.getDate();
@@ -80,7 +73,6 @@ export class GanttService {
     if (addition + 6 >= totalDays) {
       return totalDays - addition + 1;
     }
-    
 
     return 7;
   }
@@ -130,106 +122,6 @@ export class GanttService {
     }
   }
 
-  private getDateLimits(tasks: GanttTask[]): { minDate: Date, maxDate: Date } {
-    const dates = [
-      ...tasks.map(task => Number(task.startDate)),
-      ...tasks.map(task => Number(task.endDate))
-    ];
-
-    return {
-      minDate: new Date(Math.min(...dates)),
-      maxDate: new Date(Math.max(...dates))
-    };
-  }
-
-  private datesDifferent(first: Date, second: Date, period: GanttPeriod): number {
-    const diff = Math.abs(first.getTime() - second.getTime());
-    let result: number;
-
-    switch (period) {
-      case 'Day':
-        result = diff / (24 * 3600 * 1000);
-        break;
-      case 'Week':
-        result = diff / (7 * 24 * 3600 * 1000);
-        break;
-      case 'Month':
-        result = (second.getMonth() + 12 * second.getFullYear()) - (first.getMonth() + 12 * first.getFullYear());
-        break;
-    }
-
-    return parseInt(result.toString());
-  }
-
-  private partsForDay(different: number, date: Date, periodParts: PeriodPart[]): void {
-    for (let i = 0; i <= different + 1; i++) {
-      const mainDate = this.minimizeDate(date);
-      mainDate.setDate(mainDate.getDate() + i);
-
-      const detailDates: Date[] = [];
-
-      for (let j = 0; j <= 23; j++) {
-        const detailDate = new Date(mainDate);
-        detailDate.setHours(j);
-        detailDates.push(detailDate);
-      }
-
-      const periodPart: PeriodPart = {
-        main: mainDate,
-        detail: detailDates
-      };
-
-      periodParts.push(periodPart);
-    }
-  }
-
-  private partsForWeek(different: number, date: Date, periodParts: PeriodPart[]): void {
-    for (let i = 0; i <= different; i++) {
-      const mainDate = this.weekStart(this.minimizeDate(date));
-      mainDate.setDate(mainDate.getDate() + 7 * i);
-
-      const detailDates: Date[] = [];
-
-      for (let j = 0; j <= 6; j++) {
-        const detailDate = new Date(mainDate);
-        detailDate.setDate(detailDate.getDate() + j);
-        detailDates.push(detailDate);
-      }
-
-      const periodPart: PeriodPart = {
-        main: mainDate,
-        detail: detailDates
-      };
-
-      periodParts.push(periodPart);
-    }
-  }
-
-  private partsForMonth(different: number, date: Date, periodParts: PeriodPart[]): void {
-    const startDate = this.minimizeDate(date);
-    startDate.setDate(1);
-
-    for (let i = 0; i <= different; i++) {
-      const mainDate = new Date(startDate);
-      mainDate.setMonth(mainDate.getMonth() + i);
-
-      const detailDates: Date[] = [];
-
-      for (let j = 0; j < 5; j++) {
-        const detailDate = new Date(mainDate);
-        detailDate.setDate(detailDate.getDate() + 7 * j);
-        detailDates.push(detailDate);
-      }
-
-      const periodPart: PeriodPart = {
-        main: mainDate,
-        detail: detailDates
-      };
-
-      periodParts.push(periodPart);
-    }
-  }
-
   public computeDateOffset(date: Date, period: GanttPeriod, minDate: Date): number {
     let result: number;
 
@@ -264,30 +156,6 @@ export class GanttService {
     }
 
     return result * 100;
-  }
-
-  private getDifferentHours(first: Date, second: Date): number {
-    return Math.abs(first.getTime() - second.getTime()) / (3600 * 1000);
-  }
-
-  private getDifferentDays(first: Date, second: Date): number {
-    return Math.abs(first.getTime() - second.getTime()) / (24 * 3600 * 1000);
-  }
-
-  private getDifferentWeeks(first: Date, second: Date): number {
-    const result = Math.abs(first.getTime() - second.getTime()) / (7 * 24 * 3600 * 1000)
-    return result;
-  }
-
-  private minimizeDate(date: Date): Date {
-    const newDate = new Date(date);
-
-    newDate.setHours(0);
-    newDate.setMinutes(0);
-    newDate.setSeconds(0);
-    newDate.setMilliseconds(0);
-
-    return newDate;
   }
 
   public computeDependencies(data: GanttDependenciesData): GanttLine[] {
@@ -425,47 +293,6 @@ export class GanttService {
     return result;
   }
 
-  private getAllRows(rows: GanttTaskRow[]): GanttTaskRow[] {
-    const allRows: GanttTaskRow[] = [];
-
-    (function openRows(rows: GanttTaskRow[]) {
-      rows.forEach(row => {
-        allRows.push(row);
-
-        if (row.childs) {
-          openRows(row.childs);
-        }
-      })
-    })(rows);
-
-    return allRows;
-  }
-
-  private rowIsVisible(row: GanttTaskRow, rows: GanttTaskRow[]): boolean {
-    let isVisible = true;
-
-    (function parentIsOpened(row: GanttTaskRow) {
-      if (row.task.parentID === undefined || row.task.parentID === null) {
-        return;
-      }
-
-      const parentRow = rows.find(currentRow => currentRow.task.ID === row.task.parentID);
-
-      if (!parentRow) {
-        return;
-      }
-
-      if (!parentRow.opened) {
-        isVisible = false;
-        return;
-      }
-      
-      parentIsOpened(parentRow);
-    })(row);
-
-    return isVisible;
-  }
-
   public getVisibleRows(rows: GanttTaskRow[]): GanttTaskRow[] {
     const visibleRows: GanttTaskRow[] = [];
     const allRows = this.getAllRows(rows);
@@ -507,10 +334,6 @@ export class GanttService {
     });
 
     return visibleDependencies;
-  }
-
-  private resolve2digits(num: number): string {
-    return num < 10 ? `0${num}` : `${num}`;
   }
 
   public convertDateToInput(date: Date): string {
@@ -585,5 +408,180 @@ export class GanttService {
     })
 
     return possibleParents;
+  }
+  
+  private weekStart(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setDate(date.getDate() - date.getDay() + (date.getDay() == 0 ? -6 : 1))
+    return newDate;
+  }
+
+  private getDateLimits(tasks: GanttTask[]): { minDate: Date, maxDate: Date } {
+    const dates = [
+      ...tasks.map(task => Number(task.startDate)),
+      ...tasks.map(task => Number(task.endDate))
+    ];
+
+    return {
+      minDate: new Date(Math.min(...dates)),
+      maxDate: new Date(Math.max(...dates))
+    };
+  }
+
+  private datesDifferent(first: Date, second: Date, period: GanttPeriod): number {
+    const diff = Math.abs(first.getTime() - second.getTime());
+    let result: number;
+
+    switch (period) {
+      case 'Day':
+        result = diff / (24 * 3600 * 1000);
+        break;
+      case 'Week':
+        result = diff / (7 * 24 * 3600 * 1000);
+        break;
+      case 'Month':
+        result = (second.getMonth() + 12 * second.getFullYear()) - (first.getMonth() + 12 * first.getFullYear());
+        break;
+    }
+
+    return parseInt(result.toString());
+  }
+
+  private partsForDay(different: number, date: Date, periodParts: PeriodPart[]): void {
+    for (let i = 0; i <= different + 1; i++) {
+      const mainDate = this.minimizeDate(date);
+      mainDate.setDate(mainDate.getDate() + i);
+
+      const detailDates: Date[] = [];
+
+      for (let j = 0; j <= 23; j++) {
+        const detailDate = new Date(mainDate);
+        detailDate.setHours(j);
+        detailDates.push(detailDate);
+      }
+
+      const periodPart: PeriodPart = {
+        main: mainDate,
+        detail: detailDates
+      };
+
+      periodParts.push(periodPart);
+    }
+  }
+
+  private partsForWeek(different: number, date: Date, periodParts: PeriodPart[]): void {
+    for (let i = 0; i <= different; i++) {
+      const mainDate = this.weekStart(this.minimizeDate(date));
+      mainDate.setDate(mainDate.getDate() + 7 * i);
+
+      const detailDates: Date[] = [];
+
+      for (let j = 0; j <= 6; j++) {
+        const detailDate = new Date(mainDate);
+        detailDate.setDate(detailDate.getDate() + j);
+        detailDates.push(detailDate);
+      }
+
+      const periodPart: PeriodPart = {
+        main: mainDate,
+        detail: detailDates
+      };
+
+      periodParts.push(periodPart);
+    }
+  }
+
+  private partsForMonth(different: number, date: Date, periodParts: PeriodPart[]): void {
+    const startDate = this.minimizeDate(date);
+    startDate.setDate(1);
+
+    for (let i = 0; i <= different; i++) {
+      const mainDate = new Date(startDate);
+      mainDate.setMonth(mainDate.getMonth() + i);
+
+      const detailDates: Date[] = [];
+
+      for (let j = 0; j < 5; j++) {
+        const detailDate = new Date(mainDate);
+        detailDate.setDate(detailDate.getDate() + 7 * j);
+        detailDates.push(detailDate);
+      }
+
+      const periodPart: PeriodPart = {
+        main: mainDate,
+        detail: detailDates
+      };
+
+      periodParts.push(periodPart);
+    }
+  }
+
+  private getDifferentHours(first: Date, second: Date): number {
+    return Math.abs(first.getTime() - second.getTime()) / (3600 * 1000);
+  }
+
+  private getDifferentDays(first: Date, second: Date): number {
+    return Math.abs(first.getTime() - second.getTime()) / (24 * 3600 * 1000);
+  }
+
+  private getDifferentWeeks(first: Date, second: Date): number {
+    const result = Math.abs(first.getTime() - second.getTime()) / (7 * 24 * 3600 * 1000)
+    return result;
+  }
+
+  private minimizeDate(date: Date): Date {
+    const newDate = new Date(date);
+
+    newDate.setHours(0);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+
+    return newDate;
+  }
+
+  private getAllRows(rows: GanttTaskRow[]): GanttTaskRow[] {
+    const allRows: GanttTaskRow[] = [];
+
+    (function openRows(rows: GanttTaskRow[]) {
+      rows.forEach(row => {
+        allRows.push(row);
+
+        if (row.childs) {
+          openRows(row.childs);
+        }
+      })
+    })(rows);
+
+    return allRows;
+  }
+
+  private rowIsVisible(row: GanttTaskRow, rows: GanttTaskRow[]): boolean {
+    let isVisible = true;
+
+    (function parentIsOpened(row: GanttTaskRow) {
+      if (row.task.parentID === undefined || row.task.parentID === null) {
+        return;
+      }
+
+      const parentRow = rows.find(currentRow => currentRow.task.ID === row.task.parentID);
+
+      if (!parentRow) {
+        return;
+      }
+
+      if (!parentRow.opened) {
+        isVisible = false;
+        return;
+      }
+      
+      parentIsOpened(parentRow);
+    })(row);
+
+    return isVisible;
+  }
+
+  private resolve2digits(num: number): string {
+    return num < 10 ? `0${num}` : `${num}`;
   }
 }
